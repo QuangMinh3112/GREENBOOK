@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/admin', function () {
-    return view('Admin.dashbroad');
-});
 Route::get('/table', function () {
     return view('dataTable');
 });
 Route::get('/form', function () {
     return view('form');
+});
+Route::prefix('admin')->group(function () {
+    Route::prefix('category')->controller(CategoryController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.category.index');
+        Route::get('show/{id}', 'show')->name('admin.category.show');
+        Route::post('store', 'store')->name('admin.category.store');
+    });
 });

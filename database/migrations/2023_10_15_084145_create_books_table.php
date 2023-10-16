@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('short_description');
             $table->string('slug');
             $table->string('published_company');
-            $table->date('pushlished_year');
+            $table->year('pushlished_year');
             $table->tinyInteger('width');
             $table->tinyInteger('height');
             $table->integer('quantity');

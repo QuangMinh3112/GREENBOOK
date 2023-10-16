@@ -19,41 +19,8 @@
 
 
         <li class="nav-title">Quản lý ...</li>
-        <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="#">
-                <i class="bi bi-bookmark me-2"></i>
-                <span class="d-inline-block">Danh mục</span></a>
-            <ul class="nav-group-items">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-list-ol me-2"></i>Danh sách</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-plus-circle me-2"></i>Thêm mới</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-trash me-2"></i>Thùng rác</a>
-                </li>
-            </ul>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.category.index') }}"><i class="bi bi-bookmark me-2"></i>Danh mục</a>
         </li>
-        <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="#">
-                <i class="bi bi-box-seam me-2"></i>
-                <span class="d-inline-block">Sản phẩm</span></a>
-            <ul class="nav-group-items">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-list-ol me-2"></i>Danh sách</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-plus-circle me-2"></i>Thêm mới</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-trash me-2"></i>Thùng rác</a>
-                </li>
-            </ul>
-        </li>
-
-
-
         {{-- MENU BOTTOM --}}
         {{-- <li class="nav-item mt-auto"><a class="nav-link" href="https://coreui.io/docs/templates/installation/"
                 target="_blank">
