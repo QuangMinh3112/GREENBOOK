@@ -21,4 +21,18 @@ class Category extends Model
     {
         return Str::limit($this->description, 30, '...');
     }
+    // public function parentCategory()
+    // {
+    //     return $this->belongsTo(Category::class, 'parent_id');
+    // }
+    // public function getFullCategoryAttribute()
+    // {
+    //     $category = $this;
+    //     $path = $category->name;
+    //     while($category->parentCategory){
+    //         $category = $category->parentCategory;
+    //         $path = $category->name . '>' . $path;
+    //     }
+    //     return $path;
+    // }
 }

@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     private $category;
+    // protected $append = [
+    //     'getParentsTree'
+    // ];
+
+    // public static function getParentsTree($category, $title)
+    // {
+    //     if ($category->parent_id == null) {
+    //         return $title;
+    //     }
+    //     $parent = Category::find($category->parent_id);
+    //     $title = $parent->title . ' > ' . $title;
+    //     return CategoryController::getParentsTree($parent, $title);
+    // }
+
     public function __construct(Category $category)
     {
         $this->category = $category;
