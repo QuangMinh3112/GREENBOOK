@@ -27,6 +27,10 @@ Route::prefix('admin')->group(function () {
     Route::prefix('category')->controller(CategoryController::class)->group(function () {
         Route::get('/', 'index')->name('admin.category.index');
         Route::get('show/{id}', 'show')->name('admin.category.show');
+        Route::get('create', 'create')->name('admin.category.create');
         Route::post('store', 'store')->name('admin.category.store');
+        Route::get('edit/{id}', 'edit')->name('admin.category.edit');
+        Route::post('update/{id}', 'update')->name('admin.category.update');
+        Route::get('delete/{id}', 'delete')->name('admin.category.delete');
     });
 });
