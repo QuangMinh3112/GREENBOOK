@@ -28,11 +28,11 @@ class BookFactory extends Factory
             'short_description' => $this->faker->paragraph(3),
             'slug' => $this->faker->slug(6),
             'published_company' => $this->faker->name(),
-            'pushlished_year' => $this->faker->numberBetween(1950, date('Y')),
+            'published_year' => $this->faker->numberBetween(1950, date('Y')),
             'width' => $this->faker->numberBetween(15, 20),
             'height' => $this->faker->numberBetween(10, 13),
             'quantity' => $this->faker->numberBetween(10, 150),
-            'status' => $this->faker->numberBetween(0, 2),
+            'status' => $this->faker->numberBetween(0, 1),
             'sale' => $this->faker->numberBetween(0, 1),
             'number_of_pages' => $this->faker->numberBetween(100, 300),
         ];

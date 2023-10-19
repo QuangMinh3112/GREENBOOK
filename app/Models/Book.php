@@ -10,16 +10,21 @@ use Illuminate\Support\Str;
 class Book extends Model
 {
     use HasFactory, SoftDeletes;
-    public function getCategoryName($id)
+    public function getCategoryName()
     {
-        $category = Category::find($this->id);
-        if($category)
-        {
+        $category = Category::find($this->category_id);
+        if ($category) {
             return $category->name;
-        }
-        else
-        {
+        } else {
             return "Rỗng";
+        }
+    }
+    public function getStatus()
+    {
+        if ($this->status == 0) {
+            return "Inactive";
+        } else {
+            return "Active";
         }
     }
 }

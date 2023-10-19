@@ -5,8 +5,7 @@
     <div class="row">
         <div class="col-6">
             <div class="my-2">
-                <a href="{{ route('admin.category.create') }}" class="btn btn-outline-success"><i
-                        class="fa-solid fa-plus"></i></a>
+                <a href="{{ route('admin.book.create') }}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i></a>
                 <a class="btn btn-outline-dark" href=""><i class="fa-solid fa-trash"></i></i></a>
 
             </div>
@@ -34,6 +33,7 @@
                                     <th scope="col">Tên sách</th>
                                     <th scope="col">Danh mục</th>
                                     <th scope="col">Giá sách</th>
+                                    <th scope="col">Trạng thái</th>
                                     <th scope="col">Hình ảnh</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
@@ -43,18 +43,29 @@
                                     <tr>
                                         <th>{{ $data->id }}</th>
                                         <td>{{ $data->name }}</td>
-                                        <td>{{ $data->getCategoryName($data->category_id) }}</td>
+                                        <td>{{ $data->getCategoryName() }}</td>
                                         <td>{{ $data->price }} VNĐ</td>
-                                        <td><img src="{{ $data->image }}" alt="" height="100px"></td>
+                                        <td>
+
+                                            <button
+                                                class="
+                                                @if ($data->status == 1) btn btn-success
+                                                    @else
+                                                    btn btn-danger @endif
+                                            "
+                                                disabled>{{ $data->getStatus() }}</button>
+                                        </td>
+                                        <td><img src="{{ asset('storage/' . $data->image) }}" alt="" height="100px">
+                                        </td>
                                         <td>
                                             <!-- Nút View -->
-                                            <a href="{{ route('admin.category.show', ['id' => $data->id]) }}"
+                                            <a href="{{ route('admin.book.show', ['id' => $data->id]) }}"
                                                 class="btn btn-outline-primary">
                                                 <i class="fa-solid fa-eye"></i>
                                             </a>
                                             {{-- Sửa --}}
                                             <a class="btn btn-outline-warning"
-                                                href="{{ route('admin.category.edit', ['id' => $data->id]) }}">
+                                                href="{{ route('admin.book.edit', ['id' => $data->id]) }}">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                             {{-- Xoá --}}

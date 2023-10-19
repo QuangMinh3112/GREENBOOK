@@ -5,7 +5,7 @@
     <div class="col-8 mx-auto">
         <div class="card mb-4 shadow">
             <div class="card-header bg-dark text-white">
-                <h3>Thêm danh mục mới</h3>
+                <h3>Chỉnh sửa danh mục</h3>
             </div>
             <div class="card-body">
                 <div class="example"></div>
