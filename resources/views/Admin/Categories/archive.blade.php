@@ -5,9 +5,8 @@
     <div class="row">
         <div class="col-6">
             <div class="my-2">
-                <a href="{{ route('admin.category.create') }}" class="btn btn-outline-success"><i
-                        class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href=""><i class="fa-solid fa-trash"></i></i></a>
+                <a class="btn btn-outline-primary" href="{{ route('admin.category.index') }}"><i
+                        class="fa-solid fa-list"></i></a>
             </div>
         </div>
         <div class="col-6">
@@ -39,29 +38,27 @@
                                     <th>ID</th>
                                     <th scope="col">Tên</th>
                                     <th scope="col">Danh mục cha</th>
+                                    <th scope="col">Mô tả</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $data)
+                                @foreach ($archiveCategory as $data)
                                     <tr>
                                         <td>{{ $data->id }}</td>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->getFullCategoryAttribute() }}</td>
+                                        <td>{{ $data->limit() }}</td>
                                         <td>
-                                            <!-- Nút View -->
-                                            <a href="{{ route('admin.category.show', ['id' => $data->id]) }}"
-                                                class="btn btn-outline-primary">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                            {{-- Sửa --}}
-                                            <a class="btn btn-outline-warning"
-                                                href="{{ route('admin.category.edit', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            {{-- Khôi phục --}}
+                                            <a class="btn btn-outline-success"
+                                                href="{{ route('admin.category.restore', ['id' => $data->id]) }}">
+                                                <i class="fa-solid fa-arrow-rotate-left"></i>
                                             </a>
                                             {{-- Xoá --}}
-                                            <a class="btn btn-outline-danger" href="">
-                                                <i class="fa-solid fa-trash"></i>
+                                            <a class="btn btn-outline-danger"
+                                                href="{{ route('admin.category.destroy', ['id' => $data->id]) }}">
+                                                <i class="fa-solid fa-circle-xmark"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -69,7 +66,7 @@
                             </tbody>
                         </table>
                         <div class="">
-                            {{ $categories->links() }}
+                            {{ $archiveCategory->links() }}
                         </div>
                     </div>
                 </div>

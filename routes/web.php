@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +33,20 @@ Route::prefix('admin')->group(function () {
         Route::get('edit/{id}', 'edit')->name('admin.category.edit');
         Route::post('update/{id}', 'update')->name('admin.category.update');
         Route::get('delete/{id}', 'delete')->name('admin.category.delete');
+        Route::get('archive', 'archive')->name('admin.category.archive');
+        Route::get('restore/{id}', 'restore')->name('admin.category.restore');
+        Route::get('destrpy/{id}', 'destroy')->name('admin.category.destroy');
+    });
+    Route::prefix('book')->controller(BookController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.book.index');
+        Route::get('show/{id}', 'show')->name('admin.book.show');
+        Route::get('create', 'create')->name('admin.book.create');
+        Route::post('store', 'store')->name('admin.book.store');
+        Route::get('edit/{id}', 'edit')->name('admin.book.edit');
+        Route::post('update/{id}', 'update')->name('admin.book.update');
+        Route::get('delete/{id}', 'delete')->name('admin.book.delete');
+        Route::get('archive', 'archive')->name('admin.book.archive');
+        Route::get('restore/{id}', 'restore')->name('admin.book.restore');
+        Route::get('destrpy/{id}', 'destroy')->name('admin.book.destroy');
     });
 });

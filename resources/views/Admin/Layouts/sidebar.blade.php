@@ -11,15 +11,17 @@
 
         {{--  --}}
         <li class="nav-title">TRANG CHỦ ADMIN</li>
-        <li class="nav-item"><a class="nav-link" href="#">
-                <svg class="nav-icon">
-                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-drop"></use>
-                </svg>DASHBROAD</a>
-        </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.category.index') }}"><i
+                    class="fa-solid fa-gauge me-2"></i>Bảng điều khiển</a>
+
 
 
         <li class="nav-title">Quản lý ...</li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('admin.category.index') }}"><i class="bi bi-bookmark me-2"></i>Danh mục</a>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.category.index') }}"><i
+                    class="fa-solid fa-flag me-2"></i>Danh mục</a>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.book.index') }}"><i
+                    class="fa-solid fa-book me-2"></i>Sách</a>
+
         </li>
         {{-- MENU BOTTOM --}}
         {{-- <li class="nav-item mt-auto"><a class="nav-link" href="https://coreui.io/docs/templates/installation/"

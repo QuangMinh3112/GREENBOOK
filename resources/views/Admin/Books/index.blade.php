@@ -1,5 +1,5 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách danh mục')
+@section('title', 'Danh sách sách')
 @extends('Admin.Layouts.layout')
 @section('content')
     <div class="row">
@@ -7,28 +7,21 @@
             <div class="my-2">
                 <a href="{{ route('admin.category.create') }}" class="btn btn-outline-success"><i
                         class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href="{{ route('admin.category.archive') }}"><i
-                        class="fa-solid fa-trash"></i></i></a>
+                <a class="btn btn-outline-dark" href=""><i class="fa-solid fa-trash"></i></i></a>
+
             </div>
         </div>
         <div class="col-6">
-            <div class="my-2">
-                @if (session('category.add.success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('category.add.success') }}
-                    </div>
-                @endif
-                @if (session('category.update.success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('category.update.success') }}
-                    </div>
-                @endif
-            </div>
+            {{-- <div class="my-2">
+                <div class="alert alert-success" role="alert">
+                    Thêm sửa xoá thành công...
+                </div>
+            </div> --}}
         </div>
     </div>
     <div class="card mb-4 shadow">
         <div class="card-header bg-dark text-white">
-            <h2 class="mx-3 align-items-center">Danh sách danh mục</h2>
+            <h2>Danh sách sách</h2>
         </div>
         <div class="card-body">
             <div class="example">
@@ -38,17 +31,21 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th scope="col">Tên</th>
-                                    <th scope="col">Danh mục cha</th>
+                                    <th scope="col">Tên sách</th>
+                                    <th scope="col">Danh mục</th>
+                                    <th scope="col">Giá sách</th>
+                                    <th scope="col">Hình ảnh</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $data)
+                                @foreach ($books as $data)
                                     <tr>
-                                        <td>{{ $data->id }}</td>
+                                        <th>{{ $data->id }}</th>
                                         <td>{{ $data->name }}</td>
-                                        <td>{{ $data->getFullCategoryAttribute() }}</td>
+                                        <td>{{ $data->getCategoryName($data->category_id) }}</td>
+                                        <td>{{ $data->price }} VNĐ</td>
+                                        <td><img src="{{ $data->image }}" alt="" height="100px"></td>
                                         <td>
                                             <!-- Nút View -->
                                             <a href="{{ route('admin.category.show', ['id' => $data->id]) }}"
@@ -71,15 +68,10 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="">
-                            {{ $categories->links() }}
-                        </div>
+                        {{ $books->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('script')
 @endsection

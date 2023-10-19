@@ -105,9 +105,21 @@ class CategoryController extends Controller
             }
         }
     }
+    public function archive()
+    {
+        $archiveCategory = $this->category->onlyTrashed()->paginate(10);
+        return view('Admin.Categories.archive', compact('archiveCategory'));
+    }
+    public function restore(string $id)
+    {
+        $category = $this->category->withTrashed()->find($id);
+        $category->restore();
+        return back()->with('category.restore.success', 'Khôi phục danh mục thành công');
+    }
     public function destroy(string $id)
     {
-        //
-
+        $category = $this->category->withTrashed()->find($id);
+        $category->forceDelete();
+        return back()->with('category.delete.success', 'Xoá vĩnh viễn danh mục thành công');
     }
 }

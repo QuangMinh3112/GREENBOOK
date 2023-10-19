@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'categories';
     protected $fillable = [
         'name',
