@@ -6,7 +6,8 @@
         <div class="col-6">
             <div class="my-2">
                 <a href="{{ route('admin.book.create') }}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href=""><i class="fa-solid fa-trash"></i></i></a>
+                <a class="btn btn-outline-dark" href="{{ route('admin.book.archive') }}"><i
+                        class="fa-solid fa-trash"></i></i></a>
 
             </div>
         </div>
@@ -71,7 +72,7 @@
                                             {{-- Xoá --}}
                                             <a onclick="return confirm('Bạn có chắc không ?')"
                                                 class="btn btn-outline-danger"
-                                                href="{{ route('admin.category.delete', ['id' => $data->id]) }}">
+                                                href="{{ route('admin.book.delete', ['id' => $data->id]) }}">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>

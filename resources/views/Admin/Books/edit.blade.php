@@ -100,14 +100,16 @@
                         <div class="d-flex justify-content-between mb-3">
                             <div class="col-6 ">
                                 <label class="form-label">Chiều dài(CM)</label>
-                                <input class="form-control" type="text" name="width" value="{{ old('width') }}">
+                                <input class="form-control" type="text" name="width"
+                                    value="{{ $book->width ?? old('width') }}">
                                 @error('width')
                                     <span class="text-danger fst-italic">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-5 ">
                                 <label class="form-label">Chiều rộng(CM)</label>
-                                <input class="form-control" type="text" name="height" value="{{ old('height') }}">
+                                <input class="form-control" type="text" name="height"
+                                    value="{{ $book->height ?? old('height') }}">
                                 @error('height')
                                     <span class="text-danger fst-italic">{{ $message }}</span>
                                 @enderror
@@ -116,22 +118,27 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mô tả ngắn sách</label>
-                            <textarea name="short_description" class="form-control" rows="3">{{ old('short_description') }}</textarea>
+                            <textarea name="short_description" class="form-control" rows="3">{{ $book->short_description ?? old('short_description') }}</textarea>
                             @error('short_description')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mô tả đầy đủ</label>
-                            <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
+                            <textarea name="description" class="form-control" rows="5">{{ $book->description ?? old('description') }}</textarea>
                             @error('description')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="d-flex justify-content-between mb-3">
-                            <div class="col-5 m-1">
+                            <div class="col-12 m-1">
                                 <label class="form-label">Ảnh bìa</label>
-                                <input class="form-control" type="file" name="image">
+                                <input class="form-control" type="file" name="image"
+                                    value="{{ $book->image ?? old('image') }}">
+                                <div class="m-3 mx-auto shadow">
+                                    <img class="rounded" src="{{ asset('storage./' . $book->image) }}" alt=""
+                                        width="100%" height="300px" height="">
+                                </div>
                                 @error('image')
                                     <span class="text-danger fst-italic">{{ $message }}</span>
                                 @enderror
@@ -146,8 +153,8 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-outline-success">
-                                <i class="fa-solid fa-floppy-disk me-2"></i>Thêm mới
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="fa-solid fa-floppy-disk me-2"></i>Cập nhật
                             </button>
                             <a href="" class="btn btn-outline-warning">
                                 <i class="fa-solid fa-arrow-left me-2"></i>
