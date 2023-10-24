@@ -11,8 +11,8 @@
 @endphp
 
 <option selected>Chọn danh mục</option>
-@foreach ($categories as $category)
-    @php
+@php
+    foreach ($categories as $category) {
         printCategory($category, ' ');
-    @endphp
-@endforeach
+    }
+@endphp

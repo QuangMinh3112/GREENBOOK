@@ -59,22 +59,18 @@
                                         <td><img src="{{ asset('storage/' . $data->image) }}" alt="" height="100px">
                                         </td>
                                         <td>
-                                            <!-- Nút View -->
-                                            <a href="{{ route('admin.book.show', ['id' => $data->id]) }}"
-                                                class="btn btn-outline-primary">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                            {{-- Sửa --}}
-                                            <a class="btn btn-outline-warning"
-                                                href="{{ route('admin.book.edit', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                            {{-- Xoá --}}
-                                            <a onclick="return confirm('Bạn có chắc không ?')"
-                                                class="btn btn-outline-danger"
-                                                href="{{ route('admin.book.delete', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
+                                            <div class="d-flex justify-content-between">
+                                                <!-- Nút View -->
+                                                <x-view-btn :route="'admin.book.show'" :id="$data->id" />
+                                                {{-- Sửa --}}
+                                                <x-edit-btn :route="'admin.book.edit'" :id="$data->id"/>
+                                                {{-- Xoá --}}
+                                                <a onclick="return confirm('Bạn có chắc không ?')"
+                                                    class="btn btn-outline-danger"
+                                                    href="{{ route('admin.book.delete', ['id' => $data->id]) }}">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

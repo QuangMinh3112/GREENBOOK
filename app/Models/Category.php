@@ -31,7 +31,9 @@ class Category extends Model
         $path = $category->name;
         while ($category->parentCategory) {
             $category = $category->parentCategory;
-            $path = $category->name . ' >> ' . $path;
+            if ($category->name != $this->name) {
+                $path = $category->name . ' >> ' . $path;
+            }
         }
         if ($path === $category->name) {
             return "Không có";

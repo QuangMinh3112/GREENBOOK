@@ -49,23 +49,14 @@
                                         <td>{{ $data->id }}</td>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->getFullCategoryAttribute() }}</td>
-                                        <td>
+                                        <td class="d-flex">
                                             <!-- Nút View -->
-                                            <a href="{{ route('admin.category.show', ['id' => $data->id]) }}"
-                                                class="btn btn-outline-primary">
-                                                <i class="fa-solid fa-eye"></i>
+                                            <x-button.view-btn :route="'admin.category.show'" :id="$data->id" />
                                             </a>
                                             {{-- Sửa --}}
-                                            <a class="btn btn-outline-warning"
-                                                href="{{ route('admin.category.edit', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
+                                            <x-button.edit-btn :route="'admin.category.edit'" :id="$data->id" />
                                             {{-- Xoá --}}
-                                            <a onclick="return confirm('Bạn có chắc không ?')"
-                                                class="btn btn-outline-danger"
-                                                href="{{ route('admin.category.delete', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
+                                            <x-button.soft-del-btn :route="'admin.category.delete'" :id="$data->id" />
                                         </td>
                                     </tr>
                                 @endforeach
