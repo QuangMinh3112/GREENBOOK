@@ -118,7 +118,9 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mô tả đầy đủ</label>
-                            <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
+                            <div class="" id="editor">
+                                <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
+                            </div>
                             @error('description')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
@@ -143,4 +145,5 @@
         </div>
     </div>
     </div>
+
 @endsection
