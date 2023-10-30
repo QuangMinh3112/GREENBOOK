@@ -27,7 +27,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Miêu tả</label>
                             <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
@@ -37,13 +36,8 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-outline-success">
-                                <i class="fa-solid fa-floppy-disk me-2"></i>Thêm mới
-                            </button>
-                            <a href="" class="btn btn-outline-warning">
-                                <i class="fa-solid fa-arrow-left me-2"></i>
-                                Quay lại
-                            </a>
+                            <x-button.submit-btn :name="'Thêm mới'" />
+                            <x-button.previous-btn />
                         </div>
                     </form>
                 </div>

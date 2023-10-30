@@ -7,6 +7,8 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+// use RealRashid\SweetAlert\Facades\Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CategoryController extends Controller
 {
@@ -16,9 +18,12 @@ class CategoryController extends Controller
     {
         $this->category = $category;
     }
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->category->paginate(10);
+        $categories = $this->category->latest()->paginate(10);
+        if ($request->post() && $request->search) {
+            $categories = Category::where('name', 'like', '%' . $request->search . '%')->paginate(10);
+        }
         return view('Admin.Categories.index', compact('categories'));
     }
 
@@ -46,7 +51,11 @@ class CategoryController extends Controller
             $newCategory->description = $request->description;
             $newCategory->save();
             if ($newCategory->save()) {
-                return redirect()->route('admin.category.index')->with('category.add.success', 'Thêm danh mục thành công !!!');
+                Alert::success('Thêm danh mục thành công');
+                return redirect()->route('admin.category.index');
+            } else {
+                Alert::error('Đã sảy ra một số vấn đề');
+                return back();
             }
         }
     }
@@ -88,7 +97,8 @@ class CategoryController extends Controller
             $updateCategory->description = $request->description;
             $updateCategory->save();
             if ($updateCategory->save()) {
-                return redirect()->route('admin.category.index')->with('category.update.success', 'Cập nhập danh mục thành công !!!');
+                Alert::success('Cập nhật danh mục thành công !!!');
+                return redirect()->route('admin.category.index');
             }
         }
     }
@@ -101,7 +111,8 @@ class CategoryController extends Controller
         if ($id) {
             $archiveCategory = $this->category->where('id', $id);
             if ($archiveCategory->delete()) {
-                return redirect()->route('admin.category.index')->with('category.archive.success', 'Danh mục đã được chuyển vào thùng rác !!!');
+                Alert::success('Đã di chuyển vào thùng rác');
+                return redirect()->route('admin.category.index');
             }
         }
     }
@@ -114,12 +125,18 @@ class CategoryController extends Controller
     {
         $category = $this->category->withTrashed()->find($id);
         $category->restore();
-        return back()->with('category.restore.success', 'Khôi phục danh mục thành công');
+        if ($category->restore()) {
+            Alert::success('Khôi phục thành công');
+            return back();
+        }
     }
     public function destroy(string $id)
     {
         $category = $this->category->withTrashed()->find($id);
         $category->forceDelete();
-        return back()->with('category.delete.success', 'Xoá vĩnh viễn danh mục thành công');
+        if ($category->forceDelete()) {
+            Alert::success('Xoá thành công');
+            return back();
+        }
     }
 }

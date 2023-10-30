@@ -4,25 +4,20 @@
 @section('content')
     <div class="row">
         <div class="col-6">
-            <div class="my-2">
-                <a href="{{ route('admin.category.create') }}" class="btn btn-outline-success"><i
-                        class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href="{{ route('admin.category.archive') }}"><i
-                        class="fa-solid fa-trash"></i></i></a>
+            <div class="my-2 d-flex">
+                <x-button.add-btn :route="'admin.category.create'" />
+                <x-button.archive-btn :route="'admin.category.archive'" />
             </div>
         </div>
         <div class="col-6">
             <div class="my-2">
-                @if (session('category.add.success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('category.add.success') }}
+                <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.category.search') }}">
+                    @csrf
+                    <div class="mx-2">
+                        <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo tên">
                     </div>
-                @endif
-                @if (session('category.update.success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('category.update.success') }}
-                    </div>
-                @endif
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
             </div>
         </div>
     </div>
@@ -52,7 +47,6 @@
                                         <td class="d-flex">
                                             <!-- Nút View -->
                                             <x-button.view-btn :route="'admin.category.show'" :id="$data->id" />
-                                            </a>
                                             {{-- Sửa --}}
                                             <x-button.edit-btn :route="'admin.category.edit'" :id="$data->id" />
                                             {{-- Xoá --}}

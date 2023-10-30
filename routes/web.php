@@ -27,6 +27,7 @@ Route::get('/form', function () {
 Route::prefix('admin')->group(function () {
     Route::prefix('category')->controller(CategoryController::class)->group(function () {
         Route::get('/', 'index')->name('admin.category.index');
+        Route::post('/', 'index')->name('admin.category.search');
         Route::get('show/{id}', 'show')->name('admin.category.show');
         Route::get('create', 'create')->name('admin.category.create');
         Route::post('store', 'store')->name('admin.category.store');
@@ -39,6 +40,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('book')->controller(BookController::class)->group(function () {
         Route::get('/', 'index')->name('admin.book.index');
+        Route::post('/', 'index')->name('admin.book.search');
         Route::get('show/{id}', 'show')->name('admin.book.show');
         Route::get('create', 'create')->name('admin.book.create');
         Route::post('store', 'store')->name('admin.book.store');

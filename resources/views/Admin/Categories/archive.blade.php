@@ -5,8 +5,7 @@
     <div class="row">
         <div class="col-6">
             <div class="my-2">
-                <a class="btn btn-outline-primary" href="{{ route('admin.category.index') }}"><i
-                        class="fa-solid fa-list"></i></a>
+                <x-button.list-btn :route="'admin.category.index'" />
             </div>
         </div>
         <div class="col-6">
@@ -49,17 +48,11 @@
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->getFullCategoryAttribute() }}</td>
                                         <td>{{ $data->limit() }}</td>
-                                        <td>
+                                        <td class="d-flex">
                                             {{-- Khôi phục --}}
-                                            <a class="btn btn-outline-success"
-                                                href="{{ route('admin.category.restore', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-arrow-rotate-left"></i>
-                                            </a>
+                                            <x-button.restore-btn :route="'admin.category.restore'" :id="$data->id" />
                                             {{-- Xoá --}}
-                                            <a class="btn btn-outline-danger"
-                                                href="{{ route('admin.category.destroy', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-circle-xmark"></i>
-                                            </a>
+                                            <x-button.force-del-btn :route="'admin.category.destroy'" :id="$data->id" />
                                         </td>
                                     </tr>
                                 @endforeach

@@ -27,4 +27,15 @@ class CategoryRequest extends FormRequest
             'description' => 'required|min:10|max:255',
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Bắt buộc phải điền tên',
+            'name.min' => 'Tối thiểu 5 kí tự',
+            'name.max' => 'Tối đa 255 kí tự',
+            'description.required' => 'Bắt buộc phải điền mô tả',
+            'description.min' => 'Tối thiểu 5 kí tự',
+            'description.max' => 'Tối đa 255 kí tự',
+        ];
+    }
 }

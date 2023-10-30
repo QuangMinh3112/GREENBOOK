@@ -5,9 +5,8 @@
     <div class="row">
         <div class="col-6">
             <div class="my-2">
-                <a href="{{ route('admin.category.create') }}" class="btn btn-outline-success"><i
-                        class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href=""><i class="fa-solid fa-trash"></i></i></a>
+                <x-button.add-btn :route="'admin.book.create'" />
+                <x-button.archive-btn :route="'admin.book.archive'" />
             </div>
         </div>
         <div class="col-6">

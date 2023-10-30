@@ -153,10 +153,8 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-outline-primary">
-                                <i class="fa-solid fa-floppy-disk me-2"></i>Cập nhật
-                            </button>
-                            <x-previous-btn />
+                            <x-button.submit-btn :name="'Cập nhật'" />
+                            <x-button.previous-btn />
                         </div>
                     </form>
                 </div>

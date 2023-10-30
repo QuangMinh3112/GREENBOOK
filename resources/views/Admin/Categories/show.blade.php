@@ -4,10 +4,9 @@
 @section('content')
     <div class="row">
         <div class="col-6">
-            <div class="my-2">
-                <a href="{{ route('admin.category.create') }}" class="btn btn-outline-success"><i
-                        class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href=""><i class="fa-solid fa-trash"></i></i></a>
+            <div class="my-2 d-flex">
+                <x-button.add-btn :route="'admin.category.create'" />
+                <x-button.archive-btn :route="'admin.category.archive'" />
             </div>
         </div>
         <div class="col-6">
@@ -59,10 +58,7 @@
                             </tbody>
                         </table>
                         <div class="d-flex float-sm-end">
-                            <a href="{{url()->previous()}}" class="btn btn-outline-warning">
-                                <i class="fa-solid fa-arrow-left me-2"></i>
-                                Quay lại
-                            </a>
+                            <x-button.previous-btn />
                         </div>
                     </div>
                 </div>

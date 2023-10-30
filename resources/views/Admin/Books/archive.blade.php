@@ -5,16 +5,10 @@
     <div class="row">
         <div class="col-6">
             <div class="my-2">
-                <a class="btn btn-outline-primary" href="{{ route('admin.book.index') }}"><i class="fa-solid fa-list"></i></a>
-
+                <x-button.list-btn :route="'admin.book.index'" />
             </div>
         </div>
         <div class="col-6">
-            {{-- <div class="my-2">
-                <div class="alert alert-success" role="alert">
-                    Thêm sửa xoá thành công...
-                </div>
-            </div> --}}
         </div>
     </div>
     <div class="card mb-4 shadow">
@@ -56,18 +50,11 @@
                                         </td>
                                         <td><img src="{{ asset('storage/' . $data->image) }}" alt="" height="100px">
                                         </td>
-                                        <td>
-                                            <!-- Nút View -->
-                                            <a href="{{ route('admin.book.restore', ['id' => $data->id]) }}"
-                                                class="btn btn-outline-primary">
-                                                <i class="fa-solid fa-arrow-rotate-left"></i>
-                                            </a>
+                                        <td class="d-fex">
+                                            <!-- Nút khôi phục -->
+                                            <x-button.restore-btn :route="'admin.book.restore'" :id="$data->id" />
                                             {{-- Xoá --}}
-                                            <a onclick="return confirm('Bạn có chắc không ?')"
-                                                class="btn btn-outline-danger"
-                                                href="{{ route('admin.book.destroy', ['id' => $data->id]) }}">
-                                                <i class="fa-solid fa-circle-xmark"></i>
-                                            </a>
+                                            <x-button.force-del-btn :route="'admin.book.destroy'" :id="$data->id" />
                                         </td>
                                     </tr>
                                 @endforeach

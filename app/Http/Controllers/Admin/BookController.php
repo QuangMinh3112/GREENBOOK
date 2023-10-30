@@ -22,11 +22,33 @@ class BookController extends Controller
         $this->book = $book;
         $this->category = $category;
     }
-    public function index()
+    public function index(Request $request)
     {
         //
         $books = $this->book->paginate(10);
-        return view('Admin.Books.index', compact('books'));
+        $categories = $this->category::tree();
+        $query = Book::query();
+        if ($request->isMethod('POST')) {
+            $category_id = $request->category_id;
+            $price = $request->price;
+            $status = $request->status;
+            $name = $request->name;
+            $query = Book::query();
+            if ($category_id) {
+                $query = Book::where('category_id', $category_id);
+            }
+            if ($price) {
+                $query = Book::where('price', $price);
+            }
+            if ($status) {
+                $query = Book::where('status', $status);
+            }
+            if ($name) {
+                $query = Book::where('name', $name);
+            }
+            $books = $query->latest()->paginate(10);
+        }
+        return view('Admin.Books.index', compact('books', 'categories'));
     }
 
     /**

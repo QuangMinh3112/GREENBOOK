@@ -3,20 +3,34 @@
 @extends('Admin.Layouts.layout')
 @section('content')
     <div class="row">
-        <div class="col-6">
+        <div class="col-4">
             <div class="my-2">
                 <a href="{{ route('admin.book.create') }}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i></a>
                 <a class="btn btn-outline-dark" href="{{ route('admin.book.archive') }}"><i
                         class="fa-solid fa-trash"></i></i></a>
-
             </div>
         </div>
-        <div class="col-6">
-            {{-- <div class="my-2">
-                <div class="alert alert-success" role="alert">
-                    Thêm sửa xoá thành công...
-                </div>
-            </div> --}}
+        <div class="col-8">
+            <div class="my-2">
+                <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.book.search') }}">
+                    @csrf
+                    <select class="form-select" style="width: 25%" name="category_id">
+                        @include('Admin.partials.category-option')
+                    </select>
+                    <div class="mx-2">
+                        <input type="number" name="price" class="form-control" placeholder="Giá tiền">
+                    </div>
+                    <select class="form-select" style="width: 25%" name="status">
+                        <option selected disabled>Trạng thái</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                    <div class="mx-2">
+                        <input type="text" name="name" class="form-control" placeholder="Tên">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="card mb-4 shadow">
@@ -59,17 +73,13 @@
                                         <td><img src="{{ asset('storage/' . $data->image) }}" alt="" height="100px">
                                         </td>
                                         <td>
-                                            <div class="d-flex justify-content-between">
+                                            <div class="d-flex">
                                                 <!-- Nút View -->
-                                                <x-view-btn :route="'admin.book.show'" :id="$data->id" />
+                                                <x-button.view-btn :route="'admin.book.show'" :id="$data->id" />
                                                 {{-- Sửa --}}
-                                                <x-edit-btn :route="'admin.book.edit'" :id="$data->id"/>
+                                                <x-button.edit-btn :route="'admin.book.edit'" :id="$data->id" />
                                                 {{-- Xoá --}}
-                                                <a onclick="return confirm('Bạn có chắc không ?')"
-                                                    class="btn btn-outline-danger"
-                                                    href="{{ route('admin.book.delete', ['id' => $data->id]) }}">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </a>
+                                                <x-button.soft-del-btn :route="'admin.book.delete'" :id="$data->id" />
                                             </div>
                                         </td>
                                     </tr>

@@ -10,7 +10,8 @@
             <div class="card-body">
                 <div class="example"></div>
                 <div class="rounded-bottom">
-                    <form class="p-3 active" id="preview-1000" method="POST" action="{{ route('admin.category.update', ['id'=>$category->id]) }}">
+                    <form class="p-3 active" id="preview-1000" method="POST"
+                        action="{{ route('admin.category.update', ['id' => $category->id]) }}">
                         @csrf
                         <div class="d-flex justify-content-between">
                             <div class="col-5 mb-3">
@@ -34,10 +35,7 @@
                             <button type="submit" class="btn btn-outline-primary">
                                 <i class="fa-solid fa-pen me-2"></i>Cập nhật
                             </button>
-                            <a href="{{ url()->previous() }}" class="btn btn-outline-warning">
-                                <i class="fa-solid fa-arrow-left me-2"></i>
-                                Quay lại
-                            </a>
+                            <x-button.previous-btn />
                         </div>
                     </form>
                 </div>
