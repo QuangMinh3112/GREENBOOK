@@ -18,16 +18,19 @@
                         @include('Admin.partials.category-option')
                     </select>
                     <div class="mx-2">
-                        <input type="number" name="price" class="form-control" placeholder="Giá tiền">
+                        <input type="number" name="price" class="form-control" placeholder="Giá tiền"
+                            value="{{ session('price') }}">
                     </div>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
+                        <option value="1" {{ session('status') == '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ session('status') == '0' ? 'selected' : '' }}>Inactive</option>
                     </select>
                     <div class="mx-2">
-                        <input type="text" name="name" class="form-control" placeholder="Tên">
+                        <input type="text" name="name" class="form-control" placeholder="Tên"
+                            value="{{ session('name') }}">
                     </div>
+
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
@@ -54,7 +57,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($books)>0)
+                                @if (count($books) > 0)
                                     @php
                                         $i = 1;
                                     @endphp

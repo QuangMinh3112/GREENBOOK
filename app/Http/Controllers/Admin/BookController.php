@@ -48,6 +48,10 @@ class BookController extends Controller
                 $query = Book::where('name', 'like', '%' . $name . '%');
             }
             $books = $query->latest()->paginate(10);
+            $request->session()->flash('category_id', $request->input('category_id'));
+            $request->session()->flash('price', $request->input('price'));
+            $request->session()->flash('status', $request->input('status'));
+            $request->session()->flash('name', $request->input('name'));
         }
         return view('Admin.Books.index', compact('books', 'categories'));
     }
