@@ -125,7 +125,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mô tả đầy đủ</label>
-                            <textarea name="description" class="form-control" rows="5">{{ $book->description ?? old('description') }}</textarea>
+                            <textarea id="editor" name="description" class="form-control" rows="5">{{ $book->description ?? old('description') }}</textarea>
                             @error('description')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
@@ -136,20 +136,13 @@
                                 <input class="form-control" type="file" name="image"
                                     value="{{ $book->image ?? old('image') }}">
                                 <div class="m-3 mx-auto shadow">
-                                    <img class="rounded" src="{{ asset('storage./' . $book->image) }}" alt=""
+                                    <img class="rounded" src="{{ asset('storage/' . $book->image) }}" alt=""
                                         width="100%" height="300px" height="">
                                 </div>
                                 @error('image')
                                     <span class="text-danger fst-italic">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="col-5 m-1">
-                                <label class="form-label">Ảnh chi tiết</label>
-                                <input class="form-control" type="file" name="name" value="{{ old('name') }}">
-                                @error('name')
-                                    <span class="text-danger fst-italic">{{ $message }}</span>
-                                @enderror
-                            </div> --}}
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">

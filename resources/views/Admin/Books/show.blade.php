@@ -4,18 +4,13 @@
 @section('content')
     <div class="row">
         <div class="col-6">
-            <div class="my-2">
+            <div class="my-2 d-flex">
                 <x-button.add-btn :route="'admin.book.create'" />
                 <x-button.archive-btn :route="'admin.book.archive'" />
             </div>
         </div>
         <div class="col-6">
             <div class="my-2">
-                @if (session('category.add.success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('category.add.success') }}
-                    </div>
-                @endif
             </div>
         </div>
     </div>
@@ -66,7 +61,8 @@
                                 </tr>
                                 <tr>
                                     <td><b>Mô tả</b></td>
-                                    <td>{{ $book->description }}</td>
+                                    <td>{!! html_entity_decode($book->description) !!}</td>
+
                                 </tr>
                                 <tr>
                                     <td><b>Slug</b></td>
@@ -104,7 +100,7 @@
                             </tbody>
                         </table>
                         <div class="d-flex float-sm-end">
-                            <x-previous-btn />
+                            <x-button.previous-btn />
                         </div>
                     </div>
                 </div>

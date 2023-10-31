@@ -2,7 +2,7 @@
 @section('title', 'Thêm sách mới')
 @extends('Admin.Layouts.layout')
 @section('content')
-    <div class="col-8 mx-auto">
+    <div class="col-8 mx-auto w-100">
         <div class="card mb-4 shadow">
             <div class="card-header bg-dark text-white">
                 <h3>Thêm sách mới</h3>
@@ -118,9 +118,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mô tả đầy đủ</label>
-                            <div class="" id="editor">
-                                <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
-                            </div>
+                            <textarea id="editor" name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
                             @error('description')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
