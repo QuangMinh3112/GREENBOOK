@@ -2,7 +2,7 @@
 @section('title', 'Cập nhật sách')
 @extends('Admin.Layouts.layout')
 @section('content')
-    <div class="col-8 mx-auto">
+    <div class="col-8 mx-auto w-100">
         <div class="card mb-4 shadow">
             <div class="card-header bg-dark text-white">
                 <h3>Cập nhật sách</h3>
@@ -135,9 +135,9 @@
                                 <label class="form-label">Ảnh bìa</label>
                                 <input class="form-control" type="file" name="image"
                                     value="{{ $book->image ?? old('image') }}">
-                                <div class="m-3 mx-auto shadow">
-                                    <img class="rounded" src="{{ asset('storage/' . $book->image) }}" alt=""
-                                        width="100%" height="300px" height="">
+                                <div class="m-3 mx-auto ">
+                                    <img class="rounded shadow" src="{{ asset('storage/' . $book->image) }}"
+                                        alt="" width="30%">
                                 </div>
                                 @error('image')
                                     <span class="text-danger fst-italic">{{ $message }}</span>
@@ -155,4 +155,5 @@
         </div>
     </div>
     </div>
+
 @endsection

@@ -22,8 +22,8 @@
                     </div>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
                     </select>
                     <div class="mx-2">
                         <input type="text" name="name" class="form-control" placeholder="Tên">
@@ -44,7 +44,7 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>STT</th>
                                     <th scope="col">Tên sách</th>
                                     <th scope="col">Danh mục</th>
                                     <th scope="col">Giá sách</th>
@@ -54,36 +54,51 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($books as $data)
-                                    <tr>
-                                        <th>{{ $data->id }}</th>
-                                        <td>{{ $data->name }}</td>
-                                        <td>{{ $data->getCategoryName() }}</td>
-                                        <td>{{ $data->price }} VNĐ</td>
-                                        <td>
+                                @if (count($books)>0)
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @foreach ($books as $data)
+                                        <tr>
+                                            <th>{{ $i }}</th>
+                                            <td>{{ $data->name }}</td>
+                                            <td>{{ $data->getCategoryName() }}</td>
+                                            <td>{{ $data->price }} VNĐ</td>
+                                            <td>
 
-                                            <button
-                                                class="
+                                                <button
+                                                    class="
                                                 @if ($data->status == 1) btn btn-success
                                                     @else
                                                     btn btn-danger @endif
                                             "
-                                                disabled>{{ $data->getStatus() }}</button>
-                                        </td>
-                                        <td><img src="{{ asset('storage/' . $data->image) }}" alt="" height="100px">
-                                        </td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <!-- Nút View -->
-                                                <x-button.view-btn :route="'admin.book.show'" :id="$data->id" />
-                                                {{-- Sửa --}}
-                                                <x-button.edit-btn :route="'admin.book.edit'" :id="$data->id" />
-                                                {{-- Xoá --}}
-                                                <x-button.soft-del-btn :route="'admin.book.delete'" :id="$data->id" />
-                                            </div>
+                                                    disabled>{{ $data->getStatus() }}</button>
+                                            </td>
+                                            <td><img src="{{ asset('storage/' . $data->image) }}" alt=""
+                                                    height="100px">
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <!-- Nút View -->
+                                                    <x-button.view-btn :route="'admin.book.show'" :id="$data->id" />
+                                                    {{-- Sửa --}}
+                                                    <x-button.edit-btn :route="'admin.book.edit'" :id="$data->id" />
+                                                    {{-- Xoá --}}
+                                                    <x-button.soft-del-btn :route="'admin.book.delete'" :id="$data->id" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $i++;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            Không có dữ liệu
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                         {{ $books->links() }}

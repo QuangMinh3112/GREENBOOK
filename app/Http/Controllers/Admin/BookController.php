@@ -9,6 +9,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BookController extends Controller
 {
@@ -25,7 +26,7 @@ class BookController extends Controller
     public function index(Request $request)
     {
         //
-        $books = $this->book->paginate(10);
+        $books = $this->book->latest()->paginate(10);
         $categories = $this->category::tree();
         $query = Book::query();
         if ($request->isMethod('POST')) {
@@ -44,7 +45,7 @@ class BookController extends Controller
                 $query = Book::where('status', $status);
             }
             if ($name) {
-                $query = Book::where('name', $name);
+                $query = Book::where('name', 'like', '%' . $name . '%');
             }
             $books = $query->latest()->paginate(10);
         }
@@ -87,6 +88,7 @@ class BookController extends Controller
             $this->book->image = $img;
             $this->book->save();
             if ($this->book->save()) {
+                Alert::success('Thêm sách thành công');
                 return redirect()->route('admin.book.index');
             }
         }
@@ -150,6 +152,8 @@ class BookController extends Controller
                     $book->image = $img;
                     $book->save();
                     if ($book->save()) {
+                        Alert::success('Cập nhật thành công');
+
                         return redirect()->route('admin.book.index');
                     }
                 }
@@ -166,6 +170,7 @@ class BookController extends Controller
             $book = $this->book->find($id);
             $book->delete();
             if ($book->delete()) {
+                Alert::success('Đã di chuyển vào thùng rác');
                 return back();
             }
         }
@@ -191,7 +196,10 @@ class BookController extends Controller
             $img = $this->book->withTrashed()->where('id', $id)->select('image')->first()->image;
             Storage::delete('/public/' . $img);
             $book->forceDelete();
-            return back();
+            if ($book->forceDelete()) {
+                Alert::success('Xoá thành công');
+                return back();
+            }
         }
     }
 }
