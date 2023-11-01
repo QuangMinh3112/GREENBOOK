@@ -59,11 +59,10 @@
                                     <td><b>Mô tả ngắn</b></td>
                                     <td>{{ $book->short_description }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td><b>Mô tả</b></td>
-                                    <td>{!! html_entity_decode($book->description) !!}</td>
 
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td><b>Slug</b></td>
                                     <td>{{ $book->slug }}</td>
@@ -105,6 +104,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow">
+        <div class="card-header bg-dark text-white">
+            <h2 class="mx-3 align-items-center">Mô tả sách</h2>
+        </div>
+        <div class="card-body ">
+            {!! html_entity_decode($book->description) !!}
         </div>
     </div>
 @endsection

@@ -43,6 +43,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/', 'index')->name('admin.book.search');
         Route::get('show/{id}', 'show')->name('admin.book.show');
         Route::get('create', 'create')->name('admin.book.create');
+        Route::post('upload', 'upload')->name('admin.book.upload');
         Route::post('store', 'store')->name('admin.book.store');
         Route::get('edit/{id}', 'edit')->name('admin.book.edit');
         Route::post('update/{id}', 'update')->name('admin.book.update');
