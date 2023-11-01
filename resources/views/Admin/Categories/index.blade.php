@@ -39,21 +39,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $data)
+                                @if (count($categories) > 0)
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @foreach ($categories as $data)
+                                        <tr>
+                                            <td>{{ $i }}</td>
+                                            <td>{{ $data->name }}</td>
+                                            <td>{{ $data->getFullCategoryAttribute() }}</td>
+                                            <td class="d-flex">
+                                                <!-- Nút View -->
+                                                <x-button.view-btn :route="'admin.category.show'" :id="$data->id" />
+                                                {{-- Sửa --}}
+                                                <x-button.edit-btn :route="'admin.category.edit'" :id="$data->id" />
+                                                {{-- Xoá --}}
+                                                <x-button.soft-del-btn :route="'admin.category.delete'" :id="$data->id" />
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $i++;
+                                        @endphp
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td>{{ $data->id }}</td>
-                                        <td>{{ $data->name }}</td>
-                                        <td>{{ $data->getFullCategoryAttribute() }}</td>
-                                        <td class="d-flex">
-                                            <!-- Nút View -->
-                                            <x-button.view-btn :route="'admin.category.show'" :id="$data->id" />
-                                            {{-- Sửa --}}
-                                            <x-button.edit-btn :route="'admin.category.edit'" :id="$data->id" />
-                                            {{-- Xoá --}}
-                                            <x-button.soft-del-btn :route="'admin.category.delete'" :id="$data->id" />
-                                        </td>
+                                        <td colspan="5" class="text-center">Không có dữ liệu</td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                         <div class="">

@@ -10,6 +10,27 @@ use Illuminate\Support\Str;
 class Book extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = "books";
+    protected $fillable = [
+        'name',
+        'image',
+        'detail_image',
+        'price',
+        'author',
+        'category_id',
+        'description',
+        'short_description',
+        'slug',
+        'published_company',
+        'published_year',
+        'width',
+        'height',
+        'quantity',
+        'status',
+        'sale',
+        'number_of_pages',
+    ];
+
     public function getCategoryName()
     {
         $category = Category::find($this->category_id);
