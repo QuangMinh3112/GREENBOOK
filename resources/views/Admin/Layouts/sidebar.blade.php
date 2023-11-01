@@ -17,6 +17,9 @@
 
 
         <li class="nav-title">Quản lý ...</li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.user.index') }}"><i class="bi bi-bookmark me-2">
+            </i>Người dùng</a>
+                </li>
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.category.index') }}"><i
                     class="fa-solid fa-flag me-2"></i>Danh mục</a>
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.book.index') }}"><i

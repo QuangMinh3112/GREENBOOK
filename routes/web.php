@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -51,4 +53,22 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', 'restore')->name('admin.book.restore');
         Route::get('destrpy/{id}', 'destroy')->name('admin.book.destroy');
     });
+    Route::prefix('user')->controller(UsersController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.user.index');
+        Route::get('/create', 'create')->name('admin.user.create');
+        Route::post('/store', 'store')->name('admin.user.store');
+        Route::delete('/delete/{id}', 'delete')->name('admin.user.delete');
+        Route::get('/edit/{id}', 'edit')->name('admin.user.edit');
+        Route::post('/update/{id}', 'update')->name('admin.user.update');
+        Route::get('/show/{id}', 'show')->name('admin.user.show');
+        Route::get('archive', 'archive')->name('admin.user.archive');
+        Route::get('restore/{id}', 'restore')->name('admin.user.restore');
+        Route::get('destrpy/{id}', 'destroy')->name('admin.user.destroy');
+        
+        
+    });
 });
+
+
+Route::get('/login', [AuthController::class, 'index']);
+Route::post('admin/saveLogin', [AuthController::class, 'check'])->name('login.check');
