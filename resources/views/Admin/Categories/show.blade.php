@@ -6,7 +6,6 @@
         <div class="col-6">
             <div class="my-2 d-flex">
                 <x-button.add-btn :route="'admin.category.create'" />
-                <x-button.archive-btn :route="'admin.category.archive'" />
             </div>
         </div>
         <div class="col-6">

@@ -17,9 +17,11 @@
                     <select class="form-select" style="width: 25%" name="category_id">
                         @include('Admin.partials.category-option')
                     </select>
-                    <div class="mx-2">
-                        <input type="number" name="price" class="form-control" placeholder="Giá tiền"
-                            value="{{ session('price') }}">
+                    <div class="mx-2 d-flex gap-2">
+                        <input type="number" name="start_price" class="form-control" placeholder="Giá tối thiểu ₫"
+                            value="{{ session('start_price') }}">
+                        <input type="number" name="end_price" class="form-control" placeholder="Giá tối đa ₫"
+                            value="{{ session('end_price') }}">
                     </div>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>

@@ -19,7 +19,7 @@ class CategoryController extends Controller
     }
     public function index(Request $request)
     {
-        $categories = $this->category->latest()->paginate(10);
+        $categories = $this->category->where('parent_id', null)->with('children')->get();
         if ($request->post() && $request->search) {
             $categories = Category::where('name', 'like', '%' . $request->search . '%')->paginate(10);
         }
@@ -108,34 +108,16 @@ class CategoryController extends Controller
     public function delete(string $id)
     {
         if ($id) {
-            $archiveCategory = $this->category->where('id', $id);
-            if ($archiveCategory->delete()) {
-                Alert::success('Đã di chuyển vào thùng rác');
-                return redirect()->route('admin.category.index');
+            $rootCategory = $this->category->find($id);
+            if ($rootCategory) {
+                foreach ($rootCategory->children as $child) {
+                    $this->delete($child->id);
+                }
             }
-        }
-    }
-    public function archive()
-    {
-        $archiveCategory = $this->category->onlyTrashed()->paginate(10);
-        return view('Admin.Categories.archive', compact('archiveCategory'));
-    }
-    public function restore(string $id)
-    {
-        $category = $this->category->withTrashed()->find($id);
-        $category->restore();
-        if ($category->restore()) {
-            Alert::success('Khôi phục thành công');
-            return back();
-        }
-    }
-    public function destroy(string $id)
-    {
-        $category = $this->category->withTrashed()->find($id);
-        $category->forceDelete();
-        if ($category->forceDelete()) {
-            Alert::success('Xoá thành công');
-            return back();
+            if ($rootCategory->delete()) {
+                Alert::success('Đã di chuyển vào thùng rác');
+                return back();
+            }
         }
     }
 }

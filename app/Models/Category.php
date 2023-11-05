@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'categories';
     protected $fillable = [
         'name',
@@ -17,13 +17,13 @@ class Category extends Model
         'slug',
         'parent_id'
     ];
-    public function limit()
-    {
-        return Str::limit($this->description, 30, '...');
-    }
     public function parentCategory()
     {
         return $this->belongsTo(Category::class, 'parent_id');
+    }
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
     }
     public function getFullCategoryAttribute()
     {
@@ -32,7 +32,7 @@ class Category extends Model
         while ($category->parentCategory) {
             $category = $category->parentCategory;
             if ($category->name != $this->name) {
-                $path = $category->name . ' >> ' . $path;
+                $path = $category->name . " \u{27A4} " . $path;
             }
         }
         if ($path === $category->name) {

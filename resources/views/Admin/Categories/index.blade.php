@@ -6,7 +6,6 @@
         <div class="col-6">
             <div class="my-2 d-flex">
                 <x-button.add-btn :route="'admin.category.create'" />
-                <x-button.archive-btn :route="'admin.category.archive'" />
             </div>
         </div>
         <div class="col-6">
@@ -29,48 +28,29 @@
             <div class="example">
                 <div class="rounded-bottom">
                     <div class="p-3">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th scope="col">Tên</th>
-                                    <th scope="col">Danh mục cha</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($categories) > 0)
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                    @foreach ($categories as $data)
-                                        <tr>
-                                            <td>{{ $i }}</td>
-                                            <td>{{ $data->name }}</td>
-                                            <td>{{ $data->getFullCategoryAttribute() }}</td>
-                                            <td class="d-flex">
-                                                <!-- Nút View -->
-                                                <x-button.view-btn :route="'admin.category.show'" :id="$data->id" />
-                                                {{-- Sửa --}}
-                                                <x-button.edit-btn :route="'admin.category.edit'" :id="$data->id" />
-                                                {{-- Xoá --}}
-                                                <x-button.soft-del-btn :route="'admin.category.delete'" :id="$data->id" />
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $i++;
-                                        @endphp
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="5" class="text-center">Không có dữ liệu</td>
-                                    </tr>
+                        <ul>
+                            @foreach ($categories as $data)
+                                <li
+                                    class="d-flex justify-content-between w-100 p-2 shadow-sm my-3 rounded align-items-center border">
+                                    <div class="mx-3">
+                                        {{ $data->name }}
+                                    </div>
+                                    <div class="d-flex">
+                                        <!-- Nút View -->
+                                        <x-button.view-btn :route="'admin.category.show'" :id="$data->id" />
+                                        {{-- Sửa --}}
+                                        <x-button.edit-btn :route="'admin.category.edit'" :id="$data->id" />
+                                        {{-- Xoá --}}
+                                        <x-button.force-del-btn :route="'admin.category.delete'" :id="$data->id" />
+                                    </div>
+                                </li>
+                                @if (isset($data->children) && count($data->children))
+                                    @include('Admin.partials.category-tree', [
+                                        'children' => $data->children,
+                                    ])
                                 @endif
-                            </tbody>
-                        </table>
-                        <div class="">
-                            {{ $categories->links() }}
-                        </div>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>

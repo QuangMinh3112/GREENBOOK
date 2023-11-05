@@ -36,9 +36,6 @@ Route::prefix('admin')->group(function () {
         Route::get('edit/{id}', 'edit')->name('admin.category.edit');
         Route::post('update/{id}', 'update')->name('admin.category.update');
         Route::get('delete/{id}', 'delete')->name('admin.category.delete');
-        Route::get('archive', 'archive')->name('admin.category.archive');
-        Route::get('restore/{id}', 'restore')->name('admin.category.restore');
-        Route::get('destrpy/{id}', 'destroy')->name('admin.category.destroy');
     });
     Route::prefix('book')->controller(BookController::class)->group(function () {
         Route::get('/', 'index')->name('admin.book.index');
@@ -65,8 +62,6 @@ Route::prefix('admin')->group(function () {
         Route::get('archive', 'archive')->name('admin.user.archive');
         Route::get('restore/{id}', 'restore')->name('admin.user.restore');
         Route::get('destrpy/{id}', 'destroy')->name('admin.user.destroy');
-        
-        
     });
 });
 
