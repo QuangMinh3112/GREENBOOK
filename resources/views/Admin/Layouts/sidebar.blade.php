@@ -17,15 +17,22 @@
 
 
         <li class="nav-title">Quản lý ...</li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('admin.user.index') }}"><i class="bi bi-bookmark me-2">
-            </i>Người dùng</a>
-                </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.user.index') }}"><i
+                    class="fa-solid fa-user me-2"></i>
+                </i>Người dùng</a>
+        </li>
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.category.index') }}"><i
-                    class="fa-solid fa-flag me-2"></i>Danh mục</a>
+                    class="fa-solid fa-flag me-2"></i>Danh mục sách</a>
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.book.index') }}"><i
                     class="fa-solid fa-book me-2"></i>Sách</a>
-
         </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.category-post.index') }}"><i
+                    class="fa-solid fa-print me-2"></i>Danh mục bài đăng</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href=""><i class="fa-solid fa-paste me-2"></i></i>Bài đăng</a>
+        </li>
+
+
         {{-- MENU BOTTOM --}}
         {{-- <li class="nav-item mt-auto"><a class="nav-link" href="https://coreui.io/docs/templates/installation/"
                 target="_blank">

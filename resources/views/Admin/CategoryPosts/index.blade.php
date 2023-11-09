@@ -1,5 +1,5 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách danh mục sách')
+@section('title', 'Danh sách danh mục bài đăng')
 @extends('Admin.Layouts.layout')
 @section('content')
     <div class="row">
@@ -29,7 +29,7 @@
                 <div class="rounded-bottom">
                     <div class="p-3">
                         <ul>
-                            @foreach ($categories as $data)
+                            @foreach ($categoryPost as $data)
                                 <li
                                     class="d-flex justify-content-between w-100 p-2 shadow-sm my-3 rounded align-items-center border">
                                     <div class="mx-3">

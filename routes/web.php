@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CategoryPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,17 @@ Route::prefix('admin')->group(function () {
         Route::get('archive', 'archive')->name('admin.book.archive');
         Route::get('restore/{id}', 'restore')->name('admin.book.restore');
         Route::get('destrpy/{id}', 'destroy')->name('admin.book.destroy');
+    });
+    Route::prefix('category-post')->controller(CategoryPostController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.category-post.index');
+        Route::post('/', 'index')->name('admin.category-post.search');
+        Route::get('show/{id}', 'show')->name('admin.category-post.show');
+        Route::get('create', 'create')->name('admin.category-post.create');
+        Route::post('upload', 'upload')->name('admin.category-post.upload');
+        Route::post('store', 'store')->name('admin.category-post.store');
+        Route::get('edit/{id}', 'edit')->name('admin.category-post.edit');
+        Route::post('update/{id}', 'update')->name('admin.category-post.update');
+        Route::get('destrpy/{id}', 'destroy')->name('admin.category-post.destroy');
     });
     Route::prefix('user')->controller(UsersController::class)->group(function () {
         Route::get('/', 'index')->name('admin.user.index');
