@@ -57,12 +57,10 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <!-- Nút View -->
-                                                    <x-button.view-btn :route="'admin.book.show'" :id="$data->id" />
-                                                    {{-- Sửa --}}
-                                                    <x-button.edit-btn :route="'admin.book.edit'" :id="$data->id" />
+                                                    {{-- Khôi phục --}}
+                                                    <x-button.restore-btn :route="'admin.book.restore'" :id="$data->id" />
                                                     {{-- Xoá --}}
-                                                    <x-button.soft-del-btn :route="'admin.book.delete'" :id="$data->id" />
+                                                    <x-button.force-del-btn :route="'admin.book.destroy'" :id="$data->id" />
                                                 </div>
                                             </td>
                                         </tr>

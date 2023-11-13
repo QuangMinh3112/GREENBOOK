@@ -208,6 +208,7 @@ class BookController extends Controller
         if ($id) {
             $book = $this->book->withTrashed()->find($id);
             $book->restore();
+            Alert::success('Khôi phục thành công');
             return back();
         }
     }
@@ -219,9 +220,10 @@ class BookController extends Controller
             $img = $this->book->withTrashed()->where('id', $id)->select('image')->first()->image;
             Storage::delete('/public/' . $img);
             $book->forceDelete();
-            if ($book->forceDelete()) {
+            if ($book) {
+                $book->forceDelete();
                 Alert::success('Xoá thành công');
-                return back();
+                return redirect()->route('admin.book.archive');
             }
         }
     }

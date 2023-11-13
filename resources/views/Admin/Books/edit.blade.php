@@ -155,15 +155,4 @@
         </div>
     </div>
     </div>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                ckfinder: {
-                    uploadUrl: "{{ route('admin.book.upload', ['_token' => csrf_token()]) }}",
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
 @endsection

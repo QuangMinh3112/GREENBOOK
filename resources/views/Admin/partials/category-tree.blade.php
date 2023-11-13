@@ -6,17 +6,17 @@
                 <div class="mx-3 ">{{ $child->name }}</div>
                 <div class="d-flex">
                     <!-- Nút View -->
-                    <x-button.view-btn :route="'admin.category.show'" :id="$child->id" />
+                    <x-button.view-btn :route="$show" :id="$child->id" />
                     {{-- Sửa --}}
-                    <x-button.edit-btn :route="'admin.category.edit'" :id="$child->id" />
+                    <x-button.edit-btn :route="$edit" :id="$child->id" />
                     {{-- Xoá --}}
-                    <x-button.force-del-btn :route="'admin.category.delete'" :id="$child->id" />
+                    <x-button.force-del-btn :route="$delete" :id="$child->id" />
                 </div>
             </li>
 
         </div>
         @if (count($child->children))
-            @include('Admin.partials.category-tree', ['children' => $child->children])
+            @include('Admin.partials.category-tree', ['children' => $child->children, 'show' => $show, 'edit' => $edit, 'delete', $delete])
         @endif
     @endforeach
 </ul>

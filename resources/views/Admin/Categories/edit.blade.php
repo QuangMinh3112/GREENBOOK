@@ -21,11 +21,13 @@
                             <div class="col-6 mb-3">
                                 <label class="form-label">Danh mục cha</label>
                                 <select name="parent_id" class="form-select" aria-label="Default select example">
-                                    @include('Admin.partials.category-option')
+                                    @include('Admin.partials.category-option', [
+                                        'parent_id' => "$category->parent_id",
+                                    ])
+
                                 </select>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Miêu tả</label>
                             <textarea name="description" class="form-control" rows="5">{{ $category->description }}</textarea>

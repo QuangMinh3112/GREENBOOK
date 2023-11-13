@@ -24,6 +24,7 @@ Route::prefix('book')->controller(ApiBookController::class)->group(function () {
     Route::get('/', 'index'); //Show tất cả sách
     Route::get('/show/{id}', 'show'); // Show sách theo id
     Route::get('/search/{name}', 'searchByName'); //Tìm sách theo tên
+    Route::get('/search/{field}/{name}', 'searchByFiled');
     Route::get('/search/category/{id}', 'searchByCategory'); //Tìm kiếm theo category
     Route::post('/store', 'store'); //Thêm mới sách
     Route::put('/update/{id}', 'update'); //Cập nhật sách

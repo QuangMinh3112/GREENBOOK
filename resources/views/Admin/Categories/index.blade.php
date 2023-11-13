@@ -47,6 +47,9 @@
                                 @if (isset($data->children) && count($data->children))
                                     @include('Admin.partials.category-tree', [
                                         'children' => $data->children,
+                                        'show' => 'admin.category.show',
+                                        'edit' => 'admin.category.edit',
+                                        'delete' => 'admin.category.delete',
                                     ])
                                 @endif
                             @endforeach

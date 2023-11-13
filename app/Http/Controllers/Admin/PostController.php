@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CategoryPost;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,9 +12,18 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private $post;
+    private $category;
+    public function __construct(CategoryPost $category, Post $post)
+    {
+        $this->post = $post;
+        $this->category = $category;
+    }
     public function index()
     {
-        //
+        // $posts = Post::all();
+        $posts = $this->post->latest()->paginate(10);
+        return view('Admin.Post.index', compact('posts'));
     }
 
     /**
@@ -21,6 +32,8 @@ class PostController extends Controller
     public function create()
     {
         //
+        $categories = $this->category::tree();
+        return view('Admin.Post.create', compact('categories'));
     }
 
     /**
@@ -37,6 +50,8 @@ class PostController extends Controller
     public function show(string $id)
     {
         //
+        return view('Admin.Post.show');
+
     }
 
     /**
@@ -45,6 +60,8 @@ class PostController extends Controller
     public function edit(string $id)
     {
         //
+        return view('Admin.Post.edit');
+        
     }
 
     /**

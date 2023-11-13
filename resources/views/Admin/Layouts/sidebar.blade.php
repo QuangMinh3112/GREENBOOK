@@ -29,7 +29,8 @@
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.category-post.index') }}"><i
                     class="fa-solid fa-print me-2"></i>Danh mục bài đăng</a>
         </li>
-        <li class="nav-item"><a class="nav-link" href=""><i class="fa-solid fa-paste me-2"></i></i>Bài đăng</a>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.post.index') }}"><i
+                    class="fa-solid fa-paste me-2"></i></i>Bài đăng</a>
         </li>
 
 

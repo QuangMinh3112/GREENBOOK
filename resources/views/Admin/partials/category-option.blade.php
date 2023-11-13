@@ -1,7 +1,7 @@
 @php
     function printCategory($category, $prefix = '')
     {
-        echo '<option value="' . $category->id . '">' . $prefix . $category->name . '</option>';
+        echo '<option value="' . $category->id . '" >' . $prefix . $category->name . '</option>';
         if ($category->children) {
             foreach ($category->children as $child) {
                 printCategory($child, $prefix . '---');
@@ -10,7 +10,7 @@
     }
 @endphp
 
-<option selected value="">Chọn danh mục</option>
+<option value="">Chọn danh mục</option>
 @foreach ($categories as $category)
     @php
         printCategory($category, ' ');

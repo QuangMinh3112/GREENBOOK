@@ -43,17 +43,27 @@ class ApiBookController extends Controller
     }
 
     /**
-     * Find product as name.
+     * Find product as name
      */
-    public function searchByName($name)
+    // public function searchByName($name)
+    // {
+    //     $book = Book::where('name', 'like', "%" . $name . "%")->get();
+    //     if ($book) {
+    //         return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
+    //     } else {
+    //         return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+    //     }
+    // }
+    public function searchByFiled($field, $name)
     {
-        $book = Book::where('name', 'like', "%" . $name . "%")->get();
+        $book = Book::where($field, 'LIKE', '%' . $name . '%')->get();
         if ($book) {
             return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
         } else {
             return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
         }
     }
+
     public function searchByCategory($id)
     {
         $book = Book::where('category_id', $id)->get();
