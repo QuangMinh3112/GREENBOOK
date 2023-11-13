@@ -20,7 +20,7 @@
     </div>
     <div class="card mb-4 shadow">
         <div class="card-header bg-dark text-white">
-            <h2 class="mx-3 align-items-center">Chi tiết danh mục</h2>
+            <h2 class="mx-3 align-items-center">Chi tiết danh mục bài đăng</h2>
         </div>
         <div class="card-body">
             <div class="example">
@@ -28,7 +28,7 @@
                     <div class="p-3">
                         <table class="table table-hover table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="text-bold">
                                     <th class="w-50">Từ khoá</th>
                                     <th class="w-50">Giá trị</th>
                                 </tr>

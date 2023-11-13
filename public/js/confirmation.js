@@ -4,7 +4,7 @@ function confirmationSoft(ev) {
     swal({
         title: "Bạn có chắc đưa vào thùng rác không ?",
         icon: "warning",
-        buttons: true,
+        buttons: ["Hủy", "Đồng ý"],
         dangerMode: true,
     }).then((willCancel) => {
         if (willCancel) {
@@ -19,7 +19,7 @@ function confirmationForce(ev) {
         title: "Bạn đã chắc chưa ?",
         text: "Sau khi xoá sẽ không thể khôi phục",
         icon: "warning",
-        buttons: true,
+        buttons: ["Hủy", "Đồng ý"],
         dangerMode: true,
     }).then((willCancel) => {
         if (willCancel) {
@@ -27,3 +27,4 @@ function confirmationForce(ev) {
         }
     });
 }
+

@@ -16,7 +16,7 @@ class ApiBookController extends Controller
     public function index()
     {
         $books = Book::all();
-        return BookResource::collection($books);
+        return response()->json(['message' => 'Lấy ra tất cả sách thành công', 'data' => BookResource::collection($books)], 200);
     }
 
     /**
@@ -25,8 +25,7 @@ class ApiBookController extends Controller
     public function store(Request $request)
     {
         $book = Book::create($request->all());
-        return response()->json(['message' => 'Them moi thanh cong'], 200);
-        return new BookResource($book);
+        return response()->json(['message' => 'Them moi thanh cong', 'data' => new BookResource($book)], 200);
     }
 
     /**
@@ -40,6 +39,38 @@ class ApiBookController extends Controller
             return new BookResource($book);
         } else {
             return response()->json(['message' => 'Sach khong ton tai'], 404);
+        }
+    }
+
+    /**
+     * Find product as name
+     */
+    // public function searchByName($name)
+    // {
+    //     $book = Book::where('name', 'like', "%" . $name . "%")->get();
+    //     if ($book) {
+    //         return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
+    //     } else {
+    //         return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+    //     }
+    // }
+    public function searchByFiled($field, $name)
+    {
+        $book = Book::where($field, 'LIKE', '%' . $name . '%')->get();
+        if ($book) {
+            return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
+        } else {
+            return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+        }
+    }
+
+    public function searchByCategory($id)
+    {
+        $book = Book::where('category_id', $id)->get();
+        if ($book) {
+            return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
+        } else {
+            return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
         }
     }
 

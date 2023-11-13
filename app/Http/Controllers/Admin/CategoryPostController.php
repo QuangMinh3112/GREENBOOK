@@ -3,27 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
+use App\Models\CategoryPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class CategoryController extends Controller
+class CategoryPostController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     private $category;
-
-    public function __construct(Category $category)
+    public function __construct(CategoryPost $category)
     {
         $this->category = $category;
     }
-    public function index(Request $request)
+    public function index()
     {
-        $categories = $this->category->where('parent_id', null)->with('children')->get();
-        if ($request->post() && $request->search) {
-            $categories = Category::where('name', 'like', '%' . $request->search . '%')->paginate(10);
-        }
-        return view('Admin.Categories.index', compact('categories'));
+        $categoryPost = $this->category->where('parent_id', null)->with('children')->get();
+        return view('Admin.CategoryPosts.index', compact('categoryPost'));
     }
 
     /**
@@ -33,15 +31,14 @@ class CategoryController extends Controller
     {
         //
         $categories = $this->category::tree();
-        return view('Admin.Categories.create', compact('categories'));
+        return view('Admin.CategoryPosts.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
-        //
         if ($request->isMethod('POST')) {
             $newCategory = $this->category;
             $newCategory->name = $request->name;
@@ -51,7 +48,7 @@ class CategoryController extends Controller
             $newCategory->save();
             if ($newCategory->save()) {
                 Alert::success('Thêm danh mục thành công');
-                return redirect()->route('admin.category.index');
+                return redirect()->route('admin.category-post.index');
             } else {
                 Alert::error('Đã sảy ra một số vấn đề');
                 return back();
@@ -64,9 +61,8 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
         $category = $this->category->find($id);
-        return view('Admin.Categories.show', compact('category'));
+        return view('Admin.CategoryPosts.show', compact('category'));
     }
 
     /**
@@ -74,11 +70,10 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
         if ($id) {
             $category = $this->category::find($id);
             $categories = $this->category::tree();
-            return view('Admin.Categories.edit', compact('category', 'categories'));
+            return view('Admin.CategoryPosts.edit', compact('category', 'categories'));
         }
     }
 
@@ -87,7 +82,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         if ($id) {
             $updateCategory = $this->category::find($id);
             $updateCategory->name = $request->name;
@@ -97,7 +91,7 @@ class CategoryController extends Controller
             $updateCategory->save();
             if ($updateCategory->save()) {
                 Alert::success('Cập nhật danh mục thành công !!!');
-                return redirect()->route('admin.category.index');
+                return redirect()->route('admin.category-post.index');
             }
         }
     }

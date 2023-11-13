@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->mediumText('content');
             $table->string('image');
+            $table->enum('status', ['Công bố', 'Bản nháp']);
             $table->integer('user_id');
             $table->string('slug');
             $table->integer('category_id');

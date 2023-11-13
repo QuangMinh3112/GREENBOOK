@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('category_posts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->string('slug');
-            $table->integer('parent_id');
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->string('slug')->nullable();
+            $table->integer('parent_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

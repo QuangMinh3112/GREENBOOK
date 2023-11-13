@@ -127,6 +127,7 @@
                             <div class="col-5 m-1">
                                 <label class="form-label">Ảnh bìa</label>
                                 <input class="form-control" type="file" name="image">
+                                <img id="preview" src="#" alt="Preview Image" style="display:none;" />
                                 @error('image')
                                     <span class="text-danger fst-italic">{{ $message }}</span>
                                 @enderror
@@ -143,15 +144,5 @@
         </div>
     </div>
     </div>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                ckfinder: {
-                    uploadUrl: "{{ route('admin.book.upload', ['_token' => csrf_token()]) }}",
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
 @endsection
+

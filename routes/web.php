@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CategoryPostController;
+use App\Http\Controllers\Admin\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,13 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/table', function () {
-    return view('dataTable');
-});
-Route::get('/form', function () {
-    return view('form');
-});
 Route::prefix('admin')->group(function () {
+    // DANH MỤC SÁCH
     Route::prefix('category')->controller(CategoryController::class)->group(function () {
         Route::get('/', 'index')->name('admin.category.index');
         Route::post('/', 'index')->name('admin.category.search');
@@ -36,10 +33,8 @@ Route::prefix('admin')->group(function () {
         Route::get('edit/{id}', 'edit')->name('admin.category.edit');
         Route::post('update/{id}', 'update')->name('admin.category.update');
         Route::get('delete/{id}', 'delete')->name('admin.category.delete');
-        Route::get('archive', 'archive')->name('admin.category.archive');
-        Route::get('restore/{id}', 'restore')->name('admin.category.restore');
-        Route::get('destrpy/{id}', 'destroy')->name('admin.category.destroy');
     });
+    //  SÁCH
     Route::prefix('book')->controller(BookController::class)->group(function () {
         Route::get('/', 'index')->name('admin.book.index');
         Route::post('/', 'index')->name('admin.book.search');
@@ -52,8 +47,28 @@ Route::prefix('admin')->group(function () {
         Route::get('delete/{id}', 'delete')->name('admin.book.delete');
         Route::get('archive', 'archive')->name('admin.book.archive');
         Route::get('restore/{id}', 'restore')->name('admin.book.restore');
-        Route::get('destrpy/{id}', 'destroy')->name('admin.book.destroy');
+        Route::get('destroy/{id}', 'destroy')->name('admin.book.destroy');
     });
+    // DANH MỤC BÀI ĐĂNG
+    Route::prefix('category-post')->controller(CategoryPostController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.category-post.index');
+        Route::post('/', 'index')->name('admin.category-post.search');
+        Route::get('show/{id}', 'show')->name('admin.category-post.show');
+        Route::get('create', 'create')->name('admin.category-post.create');
+        Route::post('store', 'store')->name('admin.category-post.store');
+        Route::get('edit/{id}', 'edit')->name('admin.category-post.edit');
+        Route::post('update/{id}', 'update')->name('admin.category-post.update');
+        Route::get('delete/{id}', 'delete')->name('admin.category-post.delete');
+    });
+    // BÀI ĐĂNG
+    Route::prefix('post')->controller(PostController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.post.index');
+        Route::get('/show', 'show')->name('admin.post.show');
+        Route::get('/create', 'create')->name('admin.post.create');
+        Route::post('/store', 'store')->name('admin.post.store');
+
+    });
+    // NGƯỜI DÙNG
     Route::prefix('user')->controller(UsersController::class)->group(function () {
         Route::get('/', 'index')->name('admin.user.index');
         Route::get('/create', 'create')->name('admin.user.create');
@@ -64,9 +79,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/show/{id}', 'show')->name('admin.user.show');
         Route::get('archive', 'archive')->name('admin.user.archive');
         Route::get('restore/{id}', 'restore')->name('admin.user.restore');
-        Route::get('destrpy/{id}', 'destroy')->name('admin.user.destroy');
-        
-        
+        Route::get('destroy/{id}', 'destroy')->name('admin.user.destroy');
     });
 });
 

@@ -5,13 +5,13 @@
     <div class="col-8 mx-auto">
         <div class="card mb-4 shadow">
             <div class="card-header bg-dark text-white">
-                <h3>Chỉnh sửa danh mục</h3>
+                <h3>Chỉnh sửa danh mục bài đăng</h3>
             </div>
             <div class="card-body">
                 <div class="example"></div>
                 <div class="rounded-bottom">
                     <form class="p-3 active" id="preview-1000" method="POST"
-                        action="{{ route('admin.category.update', ['id' => $category->id]) }}">
+                        action="{{ route('admin.category-post.update', ['id' => $category->id]) }}">
                         @csrf
                         <div class="d-flex justify-content-between">
                             <div class="col-5 mb-3">
@@ -21,13 +21,11 @@
                             <div class="col-6 mb-3">
                                 <label class="form-label">Danh mục cha</label>
                                 <select name="parent_id" class="form-select" aria-label="Default select example">
-                                    @include('Admin.partials.category-option', [
-                                        'parent_id' => "$category->parent_id",
-                                    ])
-
+                                    @include('Admin.partials.category-option')
                                 </select>
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Miêu tả</label>
                             <textarea name="description" class="form-control" rows="5">{{ $category->description }}</textarea>

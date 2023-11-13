@@ -21,11 +21,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('book')->controller(ApiBookController::class)->group(function () {
-    Route::get('/', 'index');
-    Route::get('/{id}', 'show');
-    Route::post('/', 'store');
-    Route::put('/{id}', 'update');
-    Route::delete('/{id}', 'destroy');
+    Route::get('/', 'index'); //Show tất cả sách
+    Route::get('/show/{id}', 'show'); // Show sách theo id
+    Route::get('/search/{name}', 'searchByName'); //Tìm sách theo tên
+    Route::get('/search/{field}/{name}', 'searchByFiled');
+    Route::get('/search/category/{id}', 'searchByCategory'); //Tìm kiếm theo category
+    Route::post('/store', 'store'); //Thêm mới sách
+    Route::put('/update/{id}', 'update'); //Cập nhật sách
+    Route::delete('/destroy/{id}', 'destroy'); //Xoá sách
 });
 Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
     Route::get('/', 'index');

@@ -1,18 +1,18 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách sách')
+@section('title', 'Danh sách bài đăng')
 @extends('Admin.Layouts.layout')
 @section('content')
     <div class="row">
         <div class="col-4">
-            <div class="my-2">
-                <a href="{{ route('admin.book.create') }}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i></a>
+            <div class="my-2 d-flex">
+                <x-button.add-btn :route="'admin.post.create'" />
                 <a class="btn btn-outline-dark" href="{{ route('admin.book.archive') }}"><i
                         class="fa-solid fa-trash"></i></i></a>
             </div>
         </div>
         <div class="col-8">
             <div class="my-2">
-                <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.book.search') }}">
+                {{-- <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.book.search') }}">
                     @csrf
                     <select class="form-select" style="width: 25%" name="category_id">
                         @include('Admin.partials.category-option')
@@ -34,13 +34,13 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
+                </form> --}}
             </div>
         </div>
     </div>
     <div class="card mb-4 shadow">
         <div class="card-header bg-dark text-white">
-            <h2>Danh sách sách</h2>
+            <h2>Danh sách bài đăng</h2>
         </div>
         <div class="card-body">
             <div class="example">
@@ -50,35 +50,24 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th scope="col">Tên sách</th>
+                                    <th scope="col">Tên bài</th>
                                     <th scope="col">Danh mục</th>
-                                    <th scope="col">Giá sách</th>
                                     <th scope="col">Trạng thái</th>
                                     <th scope="col">Hình ảnh</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($books) > 0)
+                                @if (count($posts) > 0)
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($books as $data)
+                                    @foreach ($posts as $data)
                                         <tr>
                                             <th>{{ $i }}</th>
                                             <td>{{ $data->name }}</td>
                                             <td>{{ $data->getCategoryName() }}</td>
-                                            <td>{{ $data->price }} VNĐ</td>
-                                            <td>
-
-                                                <button
-                                                    class="
-                                                @if ($data->status == 1) btn btn-success
-                                                    @else
-                                                    btn btn-danger @endif
-                                            "
-                                                    disabled>{{ $data->getStatus() }}</button>
-                                            </td>
+                                            <td>{{ $data->status }}</td>
                                             <td><img src="{{ asset('storage/' . $data->image) }}" alt=""
                                                     height="100px">
                                             </td>
@@ -106,7 +95,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        {{ $books->links() }}
+                        {{ $posts->links() }}
                     </div>
                 </div>
             </div>
