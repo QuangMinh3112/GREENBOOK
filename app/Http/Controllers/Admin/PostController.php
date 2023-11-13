@@ -19,11 +19,15 @@ class PostController extends Controller
         $this->post = $post;
         $this->category = $category;
     }
-    public function index()
+    public function index(Request $request)
     {
-        // $posts = Post::all();
         $posts = $this->post->latest()->paginate(10);
-        return view('Admin.Post.index', compact('posts'));
+        $categories = $this->category::tree();
+        $query = $this->post::query();
+        if ($request->isMethod('POST')) {
+        }
+
+        return view('Admin.Post.index', compact('posts', 'categories'));
     }
 
     /**
@@ -41,7 +45,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -51,7 +55,6 @@ class PostController extends Controller
     {
         //
         return view('Admin.Post.show');
-
     }
 
     /**
@@ -61,7 +64,6 @@ class PostController extends Controller
     {
         //
         return view('Admin.Post.edit');
-        
     }
 
     /**

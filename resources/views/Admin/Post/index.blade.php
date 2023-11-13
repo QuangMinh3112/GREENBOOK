@@ -12,29 +12,22 @@
         </div>
         <div class="col-8">
             <div class="my-2">
-                {{-- <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.book.search') }}">
+                <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.book.search') }}">
                     @csrf
                     <select class="form-select" style="width: 25%" name="category_id">
                         @include('Admin.partials.category-option')
                     </select>
-                    <div class="mx-2 d-flex gap-2">
-                        <input type="number" name="start_price" class="form-control" placeholder="Giá tối thiểu ₫"
-                            value="{{ session('start_price') }}">
-                        <input type="number" name="end_price" class="form-control" placeholder="Giá tối đa ₫"
-                            value="{{ session('end_price') }}">
-                    </div>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>
-                        <option value="1" {{ session('status') == '1' ? 'selected' : '' }}>Active</option>
-                        <option value="0" {{ session('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                        <option value="Công bố" {{ session('status') == 'Công bố' ? 'selected' : '' }}>Công bố</option>
+                        <option value="Bản nháp" {{ session('status') == 'Bản nháp' ? 'selected' : '' }}>Bản nháp</option>
                     </select>
-                    <div class="mx-2">
+                    <div class="">
                         <input type="text" name="name" class="form-control" placeholder="Tên"
                             value="{{ session('name') }}">
                     </div>
-
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form> --}}
+                </form>
             </div>
         </div>
     </div>

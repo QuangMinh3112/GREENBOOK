@@ -66,7 +66,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/show', 'show')->name('admin.post.show');
         Route::get('/create', 'create')->name('admin.post.create');
         Route::post('/store', 'store')->name('admin.post.store');
-
     });
     // NGƯỜI DÙNG
     Route::prefix('user')->controller(UsersController::class)->group(function () {
