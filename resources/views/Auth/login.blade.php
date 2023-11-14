@@ -1,86 +1,66 @@
-@include('Admin.Layouts.head')
-<main>
-    <div class="container">
+<!doctype html>
+<html lang="en">
 
-        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+<head>
+    <title>Đăng nhập</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {{-- <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet"> --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-                        <div class="d-flex justify-content-center py-4">
-                            <a href="index.html" class="logo d-flex align-items-center w-auto">
-                                <img src="assets/img/logo.png" alt="">
-                                <span class="d-none d-lg-block">NiceAdmin</span>
-                            </a>
-                        </div><!-- End Logo -->
+    <link rel="stylesheet" href="{{ asset('auth/css/style.css') }}">
+</head>
 
-                        <div class="card mb-3">
-
-                            <div class="card-body">
-
-                                <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                    <p class="text-center small">Enter your username & password to login</p>
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <form class="row g-3 needs-validation" method="POST" action="{{ route('login.check') }}"
-                                    novalidate>
-                                    @csrf
-
-                                    <div class="col-12">
-                                        <label for="email" class="form-label">Email</label>
-                                        <div class="input-group has-validation">
-                                            <input type="text" name="email" class="form-control" id="email"
-                                                required>
-                                            <div class="invalid-feedback">Please enter your username.</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword"
-                                            required>
-                                        <div class="invalid-feedback">Please enter your password!</div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="remember"
-                                                value="true" id="rememberMe">
-                                            <label class="form-check-label" for="rememberMe">Remember me</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Login</button>
-                                    </div>
-                                    <div class="col-12">
-                                        <p class="small mb-0">Don't have account? <a href="pages-register.html">Create
-                                                an account</a></p>
-                                    </div>
-                                </form>
-
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">Đăng nhập</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="icon d-flex align-items-center justify-content-center mb-4">
+                            <span class="fa fa-user-o"></span>
+                        </div>
+                        <form action="#" class="login-form">
+                            <div class="form-group">
+                                <input type="text" class="form-control rounded-left" placeholder="Username" required>
                             </div>
-                        </div>
+                            <div class="form-group d-flex">
+                                <input type="password" class="form-control rounded-left" placeholder="Password"
+                                    required>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-50">
+                                    <label class="checkbox-wrap checkbox-primary">Nhớ mật khẩu
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="w-50 text-md-right">
+                                    <a href="#">Quên mật khẩu</a>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <a href="{{ route('auth.register') }}">Chưa có tài khoản ? Đăng ký ngay</a>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary rounded submit p-3 px-5">Đăng
+                                    nhập</button>
+                            </div>
 
-                        <div class="credits">
-                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                        </div>
-
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+</body>
 
-        </section>
-
-    </div>
-</main><!-- End #main -->
-
-
+</html>

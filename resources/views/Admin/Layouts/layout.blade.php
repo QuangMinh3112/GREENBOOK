@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <style>
         .btn {
             margin: 1px;
@@ -42,6 +42,7 @@
         .ck-editor__editable_inline {
             height: 700px;
         }
+
         label {
             font-weight: bold;
         }
@@ -74,15 +75,16 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('js/confirmation.js') }}"></script>
+    {{-- <script src="{{asset('js/ckeditor.js')}}"></script> --}}
     <script>
         ClassicEditor
             .create(document.querySelector('#editor'), {
                 ckfinder: {
-                    uploadUrl: "{{ route('admin.book.upload', ['_token' => csrf_token()]) }}",
+                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
                 }
             })
             .catch(error => {
-                console.error(error);
+                console.log(uploadUrl)
             });
     </script>
     @yield('script')

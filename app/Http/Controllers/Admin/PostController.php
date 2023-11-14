@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\CategoryPost;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
+
 
 class PostController extends Controller
 {
@@ -45,7 +48,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
+        if ($request->isMethod('POST')) {
+            if ($request->hasFile('image')) {
+                $img = uploadFile('posts', $request->file('image'));
+            }
+            $this->post->title = $request->title;
+            $this->post->slug = Str::slug($request->title);
+            $this->post->category_id = $request->category_id;
+            $this->post->status = $request->status;
+            $this->post->content = $request->content;
+            $this->post->image = $img;
+            $this->post->save();
+            if ($this->post->save()) {
+                Alert::success('Thêm bài đăng thành công');
+                return redirect()->route('admin.post.index');
+            }
+        }
     }
 
     /**
@@ -63,7 +82,9 @@ class PostController extends Controller
     public function edit(string $id)
     {
         //
-        return view('Admin.Post.edit');
+        $post = $this->post::find($id);
+        $categories = $this->category::tree();
+        return view('Admin.Post.edit', compact('post', 'categories'));
     }
 
     /**

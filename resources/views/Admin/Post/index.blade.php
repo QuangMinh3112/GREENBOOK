@@ -67,9 +67,9 @@
                                             <td>
                                                 <div class="d-flex">
                                                     <!-- Nút View -->
-                                                    <x-button.view-btn :route="'admin.book.show'" :id="$data->id" />
+                                                    <x-button.view-btn :route="'admin.post.show'" :id="$data->id" />
                                                     {{-- Sửa --}}
-                                                    <x-button.edit-btn :route="'admin.book.edit'" :id="$data->id" />
+                                                    <x-button.edit-btn :route="'admin.post.edit'" :id="$data->id" />
                                                     {{-- Xoá --}}
                                                     <x-button.soft-del-btn :route="'admin.book.delete'" :id="$data->id" />
                                                 </div>
