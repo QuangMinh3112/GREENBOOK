@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes; // add soft delete
 
 class Users extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $table='users';
-    protected $fillable=['name','address','phone_number','role','email','password'];
+    use HasFactory;
+    protected $table = 'users';
+    protected $fillable = ['name', 'address', 'phone_number', 'role', 'email', 'password'];
 }
-
-

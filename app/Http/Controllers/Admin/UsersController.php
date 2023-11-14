@@ -100,21 +100,4 @@ class UsersController extends Controller
         $users->save();
         return redirect()->route('admin.user.index')->with('user.update.success', 'Thành công cập nhật danh mục ' . $users->name);
     }
-    public function archive()
-    {
-        $archiveUser = $this->user->onlyTrashed()->paginate(10);
-        return view('Admin.User.archive', compact('archiveUser'));
-    }
-    public function restore(string $id)
-    {
-        $users = $this->user->withTrashed()->find($id);
-        $users->restore();
-        return back()->with('user.restore.success', 'Khôi phục danh mục thành công');
-    }
-    public function destroy(string $id)
-    {
-        $category = $this->category->withTrashed()->find($id);
-        $category->forceDelete();
-        return back()->with('user.delete.success', 'Xoá vĩnh viễn danh mục thành công');
-    }
 }

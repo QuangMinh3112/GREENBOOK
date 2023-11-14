@@ -3,92 +3,100 @@
 @extends('Admin.Layouts.layout')
 @section('content')
     <div class="row">
-        <div class="col-6">
-            <div class="my-2">
-                <a href="{{ route('admin.user.create') }}" class="btn btn-success">Thêm mới</a>
-                <a class="btn btn-outline-dark" href="{{ route('admin.user.archive') }}"><i class="bi bi-trash me-2"></i>Thùng rác</a>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="my-2">
-                {{-- <div class="alert alert-success" role="alert">
-                    Thêm sửa xoá thành công...
-                </div> --}}
+        <div class="col-12">
+            <div class="col-6 my-2 float-end">
+                <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.book.search') }}">
+                    @csrf
+                    <select class="form-select" style="width: 25%" name="status">
+                        <option selected disabled>Trạng thái</option>
+                        <option value="Công bố" {{ session('status') == 'Công bố' ? 'selected' : '' }}>Công bố</option>
+                        <option value="Bản nháp" {{ session('status') == 'Bản nháp' ? 'selected' : '' }}>Bản nháp</option>
+                    </select>
+                    <select class="form-select" style="width: 25%" name="status">
+                        <option selected disabled>Trạng thái</option>
+                        <option value="Công bố" {{ session('status') == 'Công bố' ? 'selected' : '' }}>Công bố</option>
+                        <option value="Bản nháp" {{ session('status') == 'Bản nháp' ? 'selected' : '' }}>Bản nháp</option>
+                    </select>
+                    <div class="">
+                        <input type="text" name="name" class="form-control" placeholder="Tên"
+                            value="{{ session('name') }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
             </div>
         </div>
     </div>
     <div class="card mb-4 shadow">
         <div class="card-header bg-dark text-white">
-            <h2>Table</h2>
+            <h2>Danh sách người dùng</h2>
         </div>
         <div class="card-body">
             <div class="example">
                 <div class="rounded-bottom">
                     <div class="p-3">
-                        <table class="table">
+                        <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th scope="col">Tên</th>
-                                    <th scope="col">address</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">email</th>
-                                    <th scope="col">role</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Quyền hạn</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Điểm mua hàng</th>
+                                    <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $data)
+                                @if (count($users) > 0)
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @foreach ($users as $data)
+                                        <tr>
+                                            <th>{{ $i }}</th>
+                                            <td>{{ $data->name }}</td>
+                                            <td>{{ $data->email }}</td>
+                                            <td>
+                                                @if ($data->role == 0)
+                                                    <button class="btn btn-primary" disabled>Khách hàng</button>
+                                                @elseif ($data->role == 1)
+                                                    <button class="btn btn-success" disabled>Quản trị</button>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($data->status == 1)
+                                                    <button class="btn btn-success" disabled>Hoạt động</button>
+                                                @elseif ($data->role == 1)
+                                                    <button class="btn btn-danger" disabled>Bị khoá</button>
+                                                @endif
+                                            </td>
+                                            <td>{{ $data->point }} điểm</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    {{-- Sửa --}}
+                                                    <x-button.edit-btn :route="'admin.user.edit'" :id="$data->id" />
+                                                    {{-- Xoá --}}
+                                                    <x-button.soft-del-btn :route="'admin.user.delete'" :id="$data->id" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $i++;
+                                        @endphp
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <th>{{ $data->id }}</th>
-                                        <td>{{ $data->name }}</td>
-                                        <td>{{ $data->address }}</td>
-                                        <td>{{ $data->phone_number }}</td>
-                                        <td>{{ $data->email }}</td>
-                                        <td>{{ $data->role }}</td>
-                                        <td>
-                                            <!-- Nút View -->
-                                            <form action="{{ route('admin.user.delete',['id'=>$data->id]) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button onclick="return confirm('Bạn có chắc muốn xoá tài khoản {{ $data->name }}')"  class="btn 
-                                            btn-danger"><i class="bi bi-trash">Xóa</i></button>
-                                                <a class="btn btn-primary" href="{{ route('admin.user.edit',['id'=>$data->id]) }}">Sửa<i class="bi 
-                                            bi-pencil-square"></i></a>
-                                            </form>
+                                        <td colspan="7" class="text-center">
+                                            Không có dữ liệu
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
-                        <div class="">
-                         
-                        </div>
+                        {{ $users->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

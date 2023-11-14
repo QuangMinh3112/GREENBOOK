@@ -1,56 +1,54 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <title>Đăng ký</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {{-- <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet"> --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="{{ asset('auth/css/style.css') }}">
-</head>
-
-<body>
-    <section class="ftco-section">
-        <div class="col-12 mx-auto">
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">Đăng ký</h2>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-5">
-                    <div class="login-wrap p-4 p-md-5 shadow-lg">
-                        <div class="icon d-flex align-items-center justify-content-center mb-4">
-                            <span class="fa fa-user-o"></span>
-                        </div>
-                        <form action="#" class="login-form">
-                            <div class="form-group col-12 d-flex justify">
-                                <input type="text" class="form-control rounded-left col-6" placeholder="Username">
-                                <input type="text" class="form-control rounded-left col-6" placeholder="Username">
-
-                            </div>
-                            <div class="form-group d-flex">
-                                <input type="password" class="form-control rounded-left" placeholder="Password">
-                            </div>
-                            <div class="form-group text-center">
-                                <a href="">Đã có tài khoản ? Đăng nhập ngay</a>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary rounded submit p-3 px-5">Đăng
-                                    nhập</button>
-                            </div>
-
-                        </form>
+@extends('Auth.layout')
+@section('title', $title)
+@section('content')
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <form class="login100-form validate-form" method="POST" action="{{ route('auth.registerProcess') }}">
+                    @csrf
+                    <span class="login100-form-title p-b-26">
+                        Đăng ký
+                    </span>
+                    <span class="login100-form-title p-b-48">
+                        <i class="zmdi zmdi-font"></i>
+                    </span>
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="name">
+                        <span class="focus-input100" data-placeholder="Họ và tên"></span>
                     </div>
-                </div>
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="phone_number">
+                        <span class="focus-input100" data-placeholder="Số điện thoại"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="email">
+                        <span class="focus-input100" data-placeholder="Email"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input">
+                        <span class="btn-show-pass">
+                            <i class="zmdi zmdi-eye"></i>
+                        </span>
+                        <input class="input100" type="password" name="password">
+                        <span class="focus-input100" data-placeholder="Mật khẩu"></span>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn">
+                                Đăng ký
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center p-t-115">
+                        <span class="txt1">
+                            Đã có tài khoản ?
+                        </span>
+                        <a class="txt2" href="{{ route('auth.login') }}">
+                            Đăng nhập ngay
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
-</body>
-
-</html>
+    </div>
+@endsection

@@ -71,22 +71,16 @@ Route::prefix('admin')->group(function () {
     // NGƯỜI DÙNG
     Route::prefix('user')->controller(UsersController::class)->group(function () {
         Route::get('/', 'index')->name('admin.user.index');
-        Route::get('/create', 'create')->name('admin.user.create');
-        Route::post('/store', 'store')->name('admin.user.store');
         Route::delete('/delete/{id}', 'delete')->name('admin.user.delete');
         Route::get('/edit/{id}', 'edit')->name('admin.user.edit');
         Route::post('/update/{id}', 'update')->name('admin.user.update');
         Route::get('/show/{id}', 'show')->name('admin.user.show');
-        Route::get('archive', 'archive')->name('admin.user.archive');
-        Route::get('restore/{id}', 'restore')->name('admin.user.restore');
-        Route::get('destroy/{id}', 'destroy')->name('admin.user.destroy');
     });
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
-
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::get('/login', 'loginPage')->name('auth.login');
-
+    Route::post('/login-process', 'loginProcess')->name('auth.loginProcess');
     Route::get('/register', 'registerPage')->name('auth.register');
-
+    Route::post('/register-process', 'registerProcess')->name('auth.registerProcess');
 });
