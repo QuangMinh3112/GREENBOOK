@@ -26,8 +26,15 @@ class AuthController extends Controller
         $title = "Đăng nhập";
         return view('Auth.login', compact('title'));
     }
-    public function loginProcess()
+    public function loginProcess(Request $request)
     {
+        $data = $request->only('email', 'password');
+        if (Auth::attempt($data)) {
+            return redirect('/');
+        } else {
+            Alert::info('Đăng nhập thất bại', 'Vui lòng kiểm tra lại Email hoặc mật khẩu');
+            return back();
+        }
     }
     public function registerPage()
     {
@@ -43,9 +50,19 @@ class AuthController extends Controller
             $this->user->phone_number = $request->phone_number;
             $this->user->save();
             if ($this->user->save()) {
-                Alert::success('Thêm sách thành công');
+                Alert::success('Đăng ký thành công');
                 return redirect()->route('auth.login');
             }
         }
+    }
+    public function logOut()
+    {
+        Auth::logout();
+        return back();
+    }
+    public function profile()
+    {
+        $user = $this->user::find(Auth::user()->id);
+        
     }
 }

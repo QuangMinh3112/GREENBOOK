@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCategoryController;
 use Illuminate\Http\Request;
@@ -37,3 +38,21 @@ Route::prefix('category')->controller(ApiCategoryController::class)->group(funct
     Route::put('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
 });
+
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::get('/check', [ApiAuthController::class, 'checkLogin'])->middleware('auth:api');
+Route::get('/logout', [ApiAuthController::class, 'logOut'])->middleware('auth:api');
+Route::get('/profile', [ApiAuthController::class, 'profile'])->middleware('auth:api');
+// Route::post('/register', [ApiAuthController::class, 'register']);
+
+
+
+
+// Route::prefix('auth')->middleware('auth:api')->controller(ApiAuthController::class)->group(function () {
+//     Route::post('/login', 'login');
+//     Route::post('/register', 'register');
+//     Route::get('/profile', 'profile');
+//     Route::get('/check', 'checkLogin');
+//     Route::get('/logout', 'logOut');
+// });
