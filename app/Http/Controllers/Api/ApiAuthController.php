@@ -6,60 +6,64 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiAuthController extends Controller
 {
-    private $user;
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
     public function register(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $this->user->name = $request->name;
-            $this->user->email = $request->email;
-            $this->user->phone_number = $request->phone_number;
-            $this->user->password = Hash::make($request->name);
-            $this->user->save();
-            if ($this->user->save()) {
-                return response()->json(['message' => 'Đăng ký thành công'], 200);
-            }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
+
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+        return response()->json(['message' => 'Registration successful'], 200);
     }
     public function login(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $data = $request->only('email', 'password');
-            if (Auth::attempt($data)) {
-                $user = Auth::user();
-                $accessToken = $user->createToken('authToken')->accessToken;
-                return response()->json(['user' => $user, 'access_token' => $accessToken], 200);
-            } else {
-                return response()->json(['message' => 'Tài khoản không tồn tại'], 401);
-            }
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['msg' => 'Lỗi chưa login được', 'error' => $validator->errors()], 401);
+        }
+
+        $user = $request->only('email', 'password');
+
+        if (Auth::attempt($user)) {
+            $accessToken = auth()->user()->createToken('MyAppToken')->accessToken;
+
+            return response()->json(['access_token' => $accessToken, 'message' => 'Login successful'], 200);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-    public function checkLogin()
+    public function showProfile()
     {
-        // $user = Auth::user();
-        if (Auth::check()) {
-            return response()->json(['authenticated' => true, 'message' => 'Đã đăng nhập']);
-        } else {
-            return response()->json(['authenticated' => false, 'message' => 'Chưa đăng nhập']);
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(["message" => "User not found"], 404);
         }
+        return response()->json(["user" => $user], 200);
     }
     public function logOut()
     {
-        $user = Auth::user();
-        $user->revoke();
-        return response()->json(['message' => 'Đã đăng xuất']);
-    }
-    public function profile()
-    {
-        $user = Auth::user();
-        return response()->json(['message' => 'Đã lấy ra thông tin user', 'data' => $user]);
+        auth()->user()->token()->revoke();
+        return response()->json([
+            "message" => "User Logout"
+        ], 200);
     }
 }
