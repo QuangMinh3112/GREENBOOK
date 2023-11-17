@@ -10,10 +10,10 @@
                     <span class="login100-form-title p-b-26">
                         Đăng nhập
                     </span> 
-                   
-                   
-                   
-                   
+
+                       @if (session('success'))
+                            <div class="alert alert-primary mt-3" role="alert">{{ session('success') }}</div>
+                        @endif
             
                     <span class="login100-form-title p-b-48">
                         <i class="zmdi zmdi-font"></i>

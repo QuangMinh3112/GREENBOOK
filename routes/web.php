@@ -71,7 +71,7 @@ Route::prefix('admin')->group(function () {
     // NGƯỜI DÙNG
     Route::prefix('user')->controller(UsersController::class)->group(function () {
         Route::get('/', 'index')->name('admin.user.index');
-        Route::delete('/delete/{id}', 'delete')->name('admin.user.delete');
+        Route::get('/delete/{id}', 'delete')->name('admin.user.delete');
         Route::get('/edit/{id}', 'edit')->name('admin.user.edit');
         Route::post('/update/{id}', 'update')->name('admin.user.update');
         Route::get('/show/{id}', 'show')->name('admin.user.show');

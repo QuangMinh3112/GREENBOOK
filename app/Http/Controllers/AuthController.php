@@ -57,7 +57,7 @@ class AuthController extends Controller
             $this->user->phone_number = $request->phone_number;
             $this->user->save();
             if ($this->user->save()) {
-                Alert::success('Thêm sách thành công');
+                Alert::success('Đăng ký tk thành công');
                 return redirect()->route('auth.login')->with('success','Đăng ký thành công');
             }
         }
