@@ -30,6 +30,10 @@ class Book extends Model
         'sale',
         'number_of_pages',
     ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function getCategoryName()
     {

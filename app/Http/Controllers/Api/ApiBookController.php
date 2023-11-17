@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ApiBookController extends Controller
@@ -15,10 +16,9 @@ class ApiBookController extends Controller
 
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with('category')->get();
         return response()->json(['message' => 'Lấy ra tất cả sách thành công', 'data' => BookResource::collection($books)], 200);
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -35,25 +35,17 @@ class ApiBookController extends Controller
     {
         //
         $book = Book::find($id);
+        $category = Category::find($book->id);
         if ($book) {
-            return new BookResource($book);
+            return new BookResource($book, $category);
         } else {
             return response()->json(['message' => 'Sach khong ton tai'], 404);
         }
     }
 
     /**
-     * Find product as name
+     * Find product as field
      */
-    // public function searchByName($name)
-    // {
-    //     $book = Book::where('name', 'like', "%" . $name . "%")->get();
-    //     if ($book) {
-    //         return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
-    //     } else {
-    //         return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
-    //     }
-    // }
     public function searchByFiled($field, $name)
     {
         $book = Book::where($field, 'LIKE', '%' . $name . '%')->get();

@@ -15,7 +15,7 @@ class ApiCategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::all();
+$categories = Category::tree();
         return CategoryResource::collection($categories);
     }
 
