@@ -78,6 +78,11 @@ Route::prefix('admin')->group(function () {
     });
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
+
+Route::get('/success', function () {
+    return view('Admin.dashbroad');
+})->name('success');    
+
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::get('/login', 'loginPage')->name('auth.login');
     Route::post('/login-process', 'loginProcess')->name('auth.loginProcess');
