@@ -20,7 +20,11 @@ class ApiAuthController extends Controller
             'password' => bcrypt($request->input('password')),
             'address' => $request->input('address'),
         ]);
-        return response()->json(['message' => 'Đăng ký thành công'], 200);
+        if ($user) {
+            return response()->json(['message' => 'Đăng ký thành công'], 201);
+        } else {
+            return response()->json(['errors' => $errors], 422);
+        }
     }
     public function login(Request $request)
     {
@@ -28,13 +32,10 @@ class ApiAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         if ($validator->fails()) {
             return response()->json(['msg' => 'Vui lòng kiểm tra lại tài khoản mật khẩu', 'error' => $validator->errors()], 401);
         }
-
         $user = $request->only('email', 'password');
-
         if (Auth::attempt($user)) {
             $infomation = Auth::user();
             $accessToken = auth()->user()->createToken('MyAppToken')->accessToken;
@@ -52,10 +53,6 @@ class ApiAuthController extends Controller
         }
         return response()->json(["user" => $user], 200);
     }
-    // public function updateProfile()
-    // {
-
-    // }
     public function logOut()
     {
         auth()->user()->token()->revoke();

@@ -28,14 +28,15 @@ Route::prefix('book')->controller(ApiBookController::class)->group(function () {
     Route::delete('/destroy/{id}', 'destroy'); //Xoá sách
 });
 Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index'); //Lấy toàn bộ danh mục sách
     Route::get('/{id}', 'show');
     Route::post('/', 'store');
     Route::put('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
 });
-
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);
-Route::get('/show-profile', [ApiAuthController::class, 'showProfile'])->middleware("auth:api");
-Route::get('/logout', [ApiAuthController::class, 'logOut'])->middleware("auth:api");
+Route::middleware("auth:api")->group(function () {
+    Route::get('/show-profile', [ApiAuthController::class, 'showProfile']);
+    Route::get('/logout', [ApiAuthController::class, 'logOut']);
+});

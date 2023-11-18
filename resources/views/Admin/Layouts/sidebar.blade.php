@@ -32,6 +32,9 @@
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.post.index') }}"><i
                     class="fa-solid fa-paste me-2"></i></i>Bài đăng</a>
         </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('admin.coupon.index') }}"><i
+                    class="fa-solid fa-money-bill me-2"></i></i>Mã giảm giá</a>
+        </li>
 
 
         {{-- MENU BOTTOM --}}

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('book_id');
-            $table->tinyInteger('quantity');
+            $table->tinyInteger('quantity')->default(1);
             $table->dateTime('added_date');
             $table->timestamps();
         });

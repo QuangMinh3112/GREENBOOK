@@ -15,7 +15,6 @@
                 <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.book.search') }}">
                     @csrf
                     <select class="form-select" style="width: 25%" name="category_id">
-                        @include('Admin.partials.category-option')
                     </select>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>
@@ -43,35 +42,31 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th scope="col">Tên bài</th>
-                                    <th scope="col">Danh mục</th>
+                                    <th scope="col">CODE</th>
+                                    <th scope="col">Giảm giá</th>
                                     <th scope="col">Trạng thái</th>
-                                    <th scope="col">Hình ảnh</th>
+                                    <th scope="col">Hết hạn</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($posts) > 0)
+                                @if (count($coupons) > 0)
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($posts as $data)
+                                    @foreach ($coupons as $data)
                                         <tr>
                                             <th>{{ $i }}</th>
-                                            <td>{{ $data->title }}</td>
-                                            <td>{{ $data->getCategoryName() }}</td>
+                                            <td>{{ $data->code }}</td>
+                                            <td>{{ $data->discount }}{{ $data->getCouponValue() }}</td>
                                             <td>{{ $data->status }}</td>
-                                            <td><img src="{{ asset('storage/' . $data->image) }}" alt=""
-                                                    height="100px">
-                                            </td>
+                                            <td>{{ $data->end_time }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <!-- Nút View -->
-                                                    <x-button.view-btn :route="'admin.post.show'" :id="$data->id" />
                                                     {{-- Sửa --}}
-                                                    <x-button.edit-btn :route="'admin.post.edit'" :id="$data->id" />
+                                                    <x-button.edit-btn :route="'admin.coupon.edit'" :id="$data->id" />
                                                     {{-- Xoá --}}
-                                                    <x-button.soft-del-btn :route="'admin.book.delete'" :id="$data->id" />
+                                                    <x-button.force-del-btn :route="'admin.coupon.destroy'" :id="$data->id" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -88,7 +83,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        {{ $posts->links() }}
+                        {{ $coupons->links() }}
                     </div>
                 </div>
             </div>

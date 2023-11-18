@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CategoryPost;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
@@ -73,9 +74,9 @@ class PostController extends Controller
     public function show(string $id)
     {
         //
-        return view('Admin.Post.show');
+        $post = $this->post::find($id);
+        return view('Admin.Post.show', compact('post'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -93,6 +94,28 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        dd($request);
+        $post = $this->post::find($id);
+        if ($request->isMethod('POST')) {
+            $img = $post::where('id', $id)->select('img')->first()->img;
+            if ($request->hasFile('img')) {
+                $oldIMG = Storage::delete('/public/' . $img);
+                if ($oldIMG) {
+                    $img = uploadFile('product_img', $request->file('img'));
+                }
+            }
+            $this->post->title = $request->title;
+            $this->post->slug = Str::slug($request->title);
+            $this->post->category_id = $request->category_id;
+            $this->post->status = $request->status;
+            $this->post->content = $request->content;
+            $this->post->image = $img;
+            $this->post->save();
+            if ($this->post->save()) {
+                Alert::success('Thêm bài đăng thành công');
+                return redirect()->route('admin.post.index');
+            }
+        }
     }
 
     /**
