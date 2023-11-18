@@ -47,11 +47,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($users) > 0)
+                                @if (count($User) > 0)
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($users as $data)
+                                    @foreach ($User as $data)
                                         <tr>
                                             <th>{{ $i }}</th>
                                             <td>{{ $data->name }}</td>
@@ -93,7 +93,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        {{ $users->links() }}
+                        {{ $User->links() }}
                     </div>
                 </div>
             </div>

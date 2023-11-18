@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 
 
 
-class UserController extends Controller
+class UsersController extends Controller
 
 {
     private $User;
@@ -25,13 +25,13 @@ class UserController extends Controller
     public function index()
     {
         $User = $this->User->paginate(10);
-        return view('Admin.User.index', compact('User'));
+        return view('Admin.Users.index', compact('User'));
     }
 
     public function create()
     {
         //
-        return view('Admin.User.create');
+        return view('Admin.Users.create');
     }
     public function store(CreateUserRequest $request)
     {
@@ -47,7 +47,7 @@ class UserController extends Controller
 
             $User->save();
             if ($User->save()) {
-                return redirect()->route('admin.User.index')->with('User.add.success', 'Thêm danh mục thành công
+                return redirect()->route('admin.user.index')->with('user.add.success', 'Thêm danh mục thành công
 !!!');
             }
         }
@@ -56,7 +56,7 @@ class UserController extends Controller
     {
         $User = User::findOrFail($id);
         $User->delete();
-        return redirect()->route('admin.User.index')->with('User.destroy.success', 'Thành công xoá danh mục');
+        return redirect()->route('admin.user.index')->with('user.destroy.success', 'Thành công xoá danh mục');
     }
     /**
      * Show the form for creating a new resource.
@@ -83,7 +83,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $User = User::findOrFail($id);
-        return view('Admin.User.edit', [
+        return view('Admin.Users.edit', [
             'title' => "Cập nhật thông tin danh mục",
             'User' => $User
         ]);
@@ -95,9 +95,11 @@ class UserController extends Controller
         $User->avatar = 'fhkagfhasgh';
         $User->address = $request->address;
         $User->phone_number = $request->phone_number;
+        $User->role = $request->role;
+        $User->status = $request->status;
         $User->email = $request->email;
         $User->password = Hash::make($request->password);
         $User->save();
-        return redirect()->route('admin.User.index')->with('User.update.success', 'Thành công cập nhật danh mục ' . $User->name);
+        return redirect()->route('admin.user.index')->with('user.update.success','Thành công cập nhật danh mục '. $User->name);
     }
 }

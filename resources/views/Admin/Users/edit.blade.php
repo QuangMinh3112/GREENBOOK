@@ -11,41 +11,60 @@
         <div class="card-body">
             <div class="example"></div>
             <div class="rounded-bottom">
-                <form class="p-3 active" id="preview-1000" method="POST" action="{{ route('admin.user.update',['id'=>$users->id]) }}">
+                <form class="p-3 active" id="preview-1000" method="POST" action="{{ route('admin.user.update',['id'=>$User->id]) }}">
                     @csrf
                     <div class="d-flex justify-content-between">
                         <div class="col-5 mb-3">
                             <label class="form-label">Tên Khách Hàng</label>
-                            <input class="form-control" type="text" name="name" value="{{ $users->name }}">
+                            <input class="form-control" type="text" name="name" value="{{ $User->name }}">
                             @error('name')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-6 mb-3">
-                            <label class="form-label">Địa chỉ</label>
-                            <input class="form-control" type="text" name="address" value="{{ $users->address }}">
+                        <div class="col-5 mb-3">
+                            <input class="form-control" type="text" name="phone_number" value="{{ $User->phone_number }}" hidden>
+                            @error('phone_number')
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-5 mb-3">
+                            <input class="form-control" type="text" name="address" value="{{ $User->address }}" 
+                        hidden>
                             @error('address')
-                            <span class="text-danger fst-italic">{{ $message }}</span>
-                            @enderror   
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
+                    <div class=" mb-3">
+                        <label class="form-label">Quyền hạng</label>
+                        <select name="role" class="form-select" aria-label="Default select example">
+                            <option value="0">Khách hàng</option>
+                            <option value="1">Admin</option>
+                        </select>
+                        @error('role')
+                        <span class="text-danger fst-italic">{{ $message }}</span>
+                        @enderror   
+                    </div>
                     <div class="mb-3">
-                        <label class="form-label">phone_number</label>
-                        <input name="phone_number" class="form-control" rows="5" value="{{ $users->phone_number }}">
-                        @error('phone_number')
+                        <label class="form-label">Trạng thái</label>
+                        <select name="status" class="form-select" aria-label="Default select example">
+                            <option value="0">Bị hạn chế</option>
+                            <option value="1">Hoạt động</option>
+                        </select>
+                        @error('status')
                             <span class="text-danger fst-italic">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">email </label>
-                        <input name="email" class="form-control" rows="5" value="{{ $users->email }}">
+                        <input name="email" class="form-control" rows="5" value="{{ $User->email }}">
                         @error('email')
                             <span class="text-danger fst-italic">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">password</label>
-                        <input name="password" class="form-control" rows="5" value="{{ $users->password }}">
+                        <input name="password" class="form-control" rows="5" value="{{ $User->password }}">
                         @error('password')
                             <span class="text-danger fst-italic">{{ $message }}</span>
                         @enderror
