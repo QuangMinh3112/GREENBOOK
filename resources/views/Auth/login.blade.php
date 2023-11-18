@@ -1,11 +1,10 @@
-
 @extends('Auth.layout')
 @section('title', $title)
 @section('content')
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form"  method="POST"  action="{{ route('auth.loginProcess') }}">
+                <form class="login100-form validate-form" method="POST" action="{{ route('auth.loginProcess') }}">
                     @csrf
                     <span class="login100-form-title p-b-26">
                         Đăng nhập
@@ -20,10 +19,9 @@
                     </span>
 
                     <div class="wrap-input100 validate-input">
-                        <input class="input100" type="text" name="email">
+                        <input class="input100" type="text" name="email" value="{{ old('email') }}">
                         <span class="focus-input100" data-placeholder="Email"></span>
                     </div>
-
                     <div class="wrap-input100 validate-input">
                         <span class="btn-show-pass">
                             <i class="zmdi zmdi-eye"></i>

@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CategoryPostController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::prefix('admin')->group(function () {
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
     // DANH MỤC SÁCH
     Route::prefix('category')->controller(CategoryController::class)->group(function () {
         Route::get('/', 'index')->name('admin.category.index');
@@ -63,10 +65,21 @@ Route::prefix('admin')->group(function () {
     // BÀI ĐĂNG
     Route::prefix('post')->controller(PostController::class)->group(function () {
         Route::get('/', 'index')->name('admin.post.index');
-        Route::get('/show', 'show')->name('admin.post.show');
+        Route::get('/show/{id}', 'show')->name('admin.post.show');
         Route::get('/create', 'create')->name('admin.post.create');
         Route::post('/store', 'store')->name('admin.post.store');
         Route::get('/edit/{id}', 'edit')->name('admin.post.edit');
+        Route::post('/update/{id}', 'edit')->name('admin.post.update');
+    });
+    // COUPON
+    Route::prefix('coupon')->controller(CouponController::class)->group(function () {
+        Route::get('/', 'index')->name('admin.coupon.index');
+        Route::get('/show/{id}', 'show')->name('admin.coupon.show');
+        Route::get('/create', 'create')->name('admin.coupon.create');
+        Route::post('/store', 'store')->name('admin.coupon.store');
+        Route::get('/edit/{id}', 'edit')->name('admin.coupon.edit');
+        Route::post('/update/{id}', 'update')->name('admin.coupon.update');
+        Route::get('/destroy/{id}', 'destroy')->name('admin.coupon.destroy');
     });
     // NGƯỜI DÙNG
     Route::prefix('user')->controller(UsersController::class)->group(function () {
@@ -78,14 +91,14 @@ Route::prefix('admin')->group(function () {
     });
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
-
-Route::get('/success', function () {
-    return view('Admin.dashbroad');
-})->name('success');    
-
-Route::prefix('auth')->controller(AuthController::class)->group(function () {
+Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin')->group(function () {
     Route::get('/login', 'loginPage')->name('auth.login');
     Route::post('/login-process', 'loginProcess')->name('auth.loginProcess');
     Route::get('/register', 'registerPage')->name('auth.register');
     Route::post('/register-process', 'registerProcess')->name('auth.registerProcess');
+    Route::get('/logout', 'logOut')->name('auth.logout');
+});
+
+Route::prefix('/')->controller(ClientController::class)->group(function () {
+    Route::get('/', 'index')->name('client.home');
 });

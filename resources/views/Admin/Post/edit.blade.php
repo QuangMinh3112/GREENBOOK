@@ -10,8 +10,18 @@
             <div class="card-body">
                 <div class="example"></div>
                 <div class="rounded-bottom">
-                    <form class="p-3" method="POST" action="{{ route('admin.post.store') }}" enctype="multipart/form-data">
+                    <form class="p-3" method="POST" action="{{ route('admin.post.update', ['id' => $post->id]) }}"
+                        enctype="multipart/form-data">
                         @csrf
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label class="form-label">Tiêu đề</label>
@@ -60,7 +70,7 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
-                            <x-button.submit-btn :name="'Thêm mới'" />
+                            <x-button.submit-btn :name="'Cập nhật'" />
                             <x-button.previous-btn />
                         </div>
                     </form>

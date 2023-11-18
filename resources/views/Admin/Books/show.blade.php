@@ -111,7 +111,7 @@
         <div class="card-header bg-dark text-white">
             <h2 class="mx-3 align-items-center">Mô tả sách</h2>
         </div>
-        <div class="card-body ">
+        <div class="card-body">
             {!! html_entity_decode($book->description) !!}
         </div>
     </div>

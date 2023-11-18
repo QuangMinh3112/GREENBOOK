@@ -26,20 +26,15 @@ class AuthController extends Controller
         $title = "Đăng nhập";
         return view('Auth.login', compact('title'));
     }
-    public function loginProcess(Request $request   )
+    public function loginProcess(Request $request)
     {
-       if(Auth::attempt([
-           'email'=>$request->email,
-           'password'=>$request->password
-       ])){
-           return redirect('success')->with('success','Đăng nhập thành công');
-       }else{
-           return redirect('/login')->withErrors([
-               'error' => 'Tài khoản và mật khẩu không chính xác',
-           ]);
-       }
-
-
+        $data = $request->only('email', 'password');
+        if (Auth::attempt($data)) {
+            return redirect('/');
+        } else {
+            Alert::info('Đăng nhập thất bại', 'Vui lòng kiểm tra lại Email hoặc mật khẩu');
+            return back();
+        }
     }
     public function registerPage()
     {
@@ -57,9 +52,19 @@ class AuthController extends Controller
             $this->user->phone_number = $request->phone_number;
             $this->user->save();
             if ($this->user->save()) {
-                Alert::success('Đăng ký tk thành công');
-                return redirect()->route('auth.login')->with('success','Đăng ký thành công');
+                Alert::success('Đăng ký thành công');
+                return redirect()->route('auth.login');
             }
         }
+    }
+    public function logOut()
+    {
+        Auth::logout();
+        return back();
+    }
+    public function profile()
+    {
+        $user = $this->user::find(Auth::user()->id);
+        
     }
 }

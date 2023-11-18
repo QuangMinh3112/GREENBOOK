@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Paginator::useBootstrap();
-        Schema::defaultStringLength(191); // add: default varchar(191)
+        Schema::defaultStringLength(191);
     }
 }

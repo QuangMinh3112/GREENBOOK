@@ -22,6 +22,7 @@
 </head>
 
 <body style="font-family: 'Montserrat', sans-serif;">
+    @include('sweetalert::alert')
     @yield('content')
     <div id="dropDownSelect1"></div>
     <script src="{{ asset('auth/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
