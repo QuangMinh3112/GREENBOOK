@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', [ApiBookController::class, 'test']);
+
 Route::prefix('book')->controller(ApiBookController::class)->group(function () {
     Route::get('/', 'index'); //Show tất cả sách
     Route::get('/show/{id}', 'show'); // Show sách theo id

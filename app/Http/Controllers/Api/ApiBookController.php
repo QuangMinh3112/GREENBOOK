@@ -13,7 +13,10 @@ class ApiBookController extends Controller
     /**
      * Display a listing of the resource.
      */
-
+    public function test()
+    {
+        return view('welcome');
+    }
     public function index()
     {
         $books = Book::with('category')->get();
