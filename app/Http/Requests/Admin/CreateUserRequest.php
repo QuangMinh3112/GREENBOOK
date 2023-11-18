@@ -22,21 +22,29 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"=>"required",
-            "phone_number"=>"required",
+            "name"=>"required|min:5|max:10",
+            "phone_number"=>"required|numeric|min:9",
             "address"=>"required",
-            "email"=>"required",
-            "password"=>"required",
+            "email"=>"required|email",
+            "password"=>"required|min:8|",
         ];
     }
     public function messages()
 {
     return [
         "name.required"=>"Không được để trống tên người dùng",
-        "phone_number.required"=>"Không được để sdt",
-        "address.required"=>"Không được để address",
+        "name.min"=>"Tên người dùng bắt buộc phải trên 5 kí tự",
+        "name.max"=>"Tên người dùng bắt buộc phải dưới 10 kí tự",
+
+        "phone_number.required"=>"Không được để trống số điện thoại",
+        "phone_number.min"=>"Số điện thoại bắt buộc phải trên 9 kí tự",
+        "phone_number.numeric"=>"Số điện thoại bắt buộc phải là dạng số",
+
         "email.required"=>"Không được để email",
-        "password.required"=>"Không được để password",
+        "email.email"=>"Email không đúng",
+
+        "password.required"=>"Không được để password trống",
+        "password.min"=>"Pass tối thiểu phải trên 8 kí tự",
         
     ];
 }

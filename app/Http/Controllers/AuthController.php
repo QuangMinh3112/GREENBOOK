@@ -46,6 +46,8 @@ class AuthController extends Controller
         if ($request->isMethod('POST')); {
             $this->user->name = $request->name;
             $this->user->email = $request->email;
+            $this->user->address = $request->address;
+            $this->user->avatar = "dvfhjdshfgsd";
             $this->user->password = Hash::make($request->password);
             $this->user->phone_number = $request->phone_number;
             $this->user->save();

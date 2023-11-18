@@ -21,6 +21,10 @@
                         <span class="focus-input100" data-placeholder="Số điện thoại"></span>
                     </div>
                     <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="address">
+                        <span class="focus-input100" data-placeholder="address"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input">
                         <input class="input100" type="text" name="email">
                         <span class="focus-input100" data-placeholder="Email"></span>
                     </div>
