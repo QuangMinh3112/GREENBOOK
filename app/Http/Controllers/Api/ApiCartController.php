@@ -27,7 +27,6 @@ class ApiCartController extends Controller
             'user_id' => Auth::id(),
             'book_id' => $id,
             'quantity' => 1,
-            'added_date' =>
         ]);
     }
 }
