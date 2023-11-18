@@ -8,9 +8,9 @@
                 <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.book.search') }}">
                     @csrf
                     <select class="form-select" style="width: 25%" name="status">
-                        <option selected disabled>Trạng thái</option>
-                        <option value="Công bố" {{ session('status') == 'Công bố' ? 'selected' : '' }}>Công bố</option>
-                        <option value="Bản nháp" {{ session('status') == 'Bản nháp' ? 'selected' : '' }}>Bản nháp</option>
+                        <option selected disabled>Quyền hạn</option>
+                        <option value="Công bố" {{ session('role') == '1' ? 'selected' : '' }}>Admin</option>
+                        <option value="Bản nháp" {{ session('role') == '0' ? 'selected' : '' }}>Khách hàng</option>
                     </select>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>
