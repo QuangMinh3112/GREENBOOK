@@ -88,7 +88,7 @@ class ApiCartController extends Controller
         } else {
             $total = 0;
             if ($request->input('coupon')) {
-                $coupon = Coupon::where('code', $request->input('coupon'))->first();
+                $coupon = Coupon::where('code', 'LIKE', '%' . $request->input('coupon') . '%')->first();
             } else {
                 $coupon = null;
             }
@@ -119,7 +119,7 @@ class ApiCartController extends Controller
                 if ($coupon->value === 'number') {
                     $order->total = $total - $coupon->discount;
                 } else {
-                    $order->total = $total * ($coupon->discount / 100);
+                    $order->total = $total - ($total * ($coupon->discount / 100));
                 }
             } else {
                 $order->total = $total;

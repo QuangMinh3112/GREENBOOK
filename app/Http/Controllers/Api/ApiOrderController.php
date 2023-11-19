@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ApiOrderController extends Controller
 {
-    //
     protected $order;
     public function __construct(Order $order)
     {
@@ -19,7 +18,7 @@ class ApiOrderController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $order = $this->order::where('email', $user->email)->first();
+        $order = $this->order::where('email', $user->email)->get();
         if ($order) {
             return response()->json(['message' => 'Đã lấy đơn hàng', 'data' => $order], 200);
         } else {

@@ -17,7 +17,7 @@ class Order extends Model
         'payment',
         'status',
         'total',
-        'coupon_id',
+        'code',
         'user_id'
     ];
     public function getPaymentAttribute($value)

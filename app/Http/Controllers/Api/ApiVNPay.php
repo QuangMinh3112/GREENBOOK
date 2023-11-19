@@ -13,7 +13,7 @@ class ApiVNPay extends Controller
     {
         $order = Order::find($order_id);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "https://localhost/vnpay_php/vnpay_return.php";
+        $vnp_Returnurl = "http://127.0.0.1:8000/api/order";
         $vnp_TmnCode = "23R8KWXT"; //Mã website tại VNPAY
         $vnp_HashSecret = "IXUUHLENJNDRPWPAODGJXJHBMXCWOMHL"; //Chuỗi bí mật
 

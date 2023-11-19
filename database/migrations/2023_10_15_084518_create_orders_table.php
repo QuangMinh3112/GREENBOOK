@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('payment', ['COD', 'Paid'])->default('COD');
             $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed'])->default('pending');
             $table->integer('total');
-            $table->integer('coupon_id')->nullable();
+            $table->integer('coupon')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });
