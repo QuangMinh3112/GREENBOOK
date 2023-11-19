@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+
+use App\Http\Requests\CategoryPostRequest;
 use App\Models\CategoryPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -37,7 +39,7 @@ class CategoryPostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryPostRequest $request)
     {
         if ($request->isMethod('POST')) {
             $newCategory = $this->category;
