@@ -16,8 +16,9 @@ return new class extends Migration
             $table->integer('order_id');
             $table->integer('book_id');
             $table->integer('quantity');
-            $table->integer('unit_price');
-            $table->integer('total_price');
+            $table->string('book_name');
+            $table->string('book_image');
+            $table->string('book_price');
             $table->timestamps();
         });
     }

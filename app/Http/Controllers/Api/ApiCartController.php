@@ -7,6 +7,9 @@ use App\Http\Resources\CartResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Coupon;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Auth;
 
 class ApiCartController extends Controller
@@ -34,7 +37,7 @@ class ApiCartController extends Controller
         $data = $request->all();
         $user_id = $data['user_id'];
         $book_id = $data['book_id'];
-        $cartItem = Cart::where('user_id', $user_id)->where('book_id', $book_id);
+        $cartItem = Cart::where('user_id', $user_id)->where('book_id', $book_id)->first();
 
         if ($cartItem) {
             $cartItem->increment('quantity', $request->input('quantity'));
@@ -42,7 +45,6 @@ class ApiCartController extends Controller
         } else {
             $this->cart->create($data);
         }
-
         return response()->json(['message' => 'Tạo thành công'], 200);
     }
     public function update(Request $request, $id)
@@ -75,6 +77,57 @@ class ApiCartController extends Controller
         } else {
             $carts->each()->delete();
             return response()->json(['message' => 'Xoá toàn bộ sản phẩm trong giỏ hàng thành công'], 200);
+        }
+    }
+    public function createOrder(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $carts = $this->cart::where('user_id', $user_id)->get();
+        if ($carts->isEmpty()) {
+            return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
+        } else {
+            $total = 0;
+            if ($request->input('coupon')) {
+                $coupon = Coupon::where('code', $request->input('coupon'))->first();
+            } else {
+                $coupon = null;
+            }
+            $order = Order::create([
+                'status' => 'pending',
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone_number' => $request->input('phone_number'),
+                'address' => $request->input('address'),
+                'payment' => $request->input('payment'),
+                'total' => 0,
+                'coupon' => $coupon,
+                'user_id' => $user_id,
+            ]);
+            foreach ($carts as $cart) {
+                $book = $this->book::find($cart->book_id);
+                OrderDetail::create([
+                    'order_id' =>  $order->id,
+                    'book_id' => $cart->book_id,
+                    'quantity' => $cart->quantity,
+                    'book_name' => $book->name,
+                    'book_image' => $book->image,
+                    'book_price' => $book->price,
+                ]);
+                $total += ($cart->quantity * $book->price);
+            }
+            if ($coupon != null) {
+                if ($coupon->value === 'number') {
+                    $order->total = $total - $coupon->discount;
+                } else {
+                    $order->total = $total * ($coupon->discount / 100);
+                }
+            } else {
+                $order->total = $total;
+            }
+            $order->save();
+
+            $this->cart::where('user_id', $user_id)->delete();
+            return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
         }
     }
 }

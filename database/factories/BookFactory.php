@@ -21,7 +21,7 @@ class BookFactory extends Factory
             'name' => $this->faker->name(),
             'image' => $this->faker->imageUrl(),
             'detail_image' => $this->faker->numberBetween(1, 20),
-            'price' => $this->faker->numberBetween(50000, 100000),
+            'price' => $this->faker->numberBetween(50, 100) * 1000,
             'author' => $this->faker->name(),
             'category_id' => $this->faker->numberBetween(1, 10),
             'description' => $this->faker->paragraph(10),
