@@ -84,6 +84,7 @@ Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
     // NGƯỜI DÙNG
     Route::prefix('user')->controller(UsersController::class)->group(function () {
         Route::get('/', 'index')->name('admin.user.index');
+        Route::post('/', 'index')->name('admin.user.search');
         Route::get('/delete/{id}', 'delete')->name('admin.user.delete');
         Route::get('/edit/{id}', 'edit')->name('admin.user.edit');
         Route::post('/update/{id}', 'update')->name('admin.user.update');

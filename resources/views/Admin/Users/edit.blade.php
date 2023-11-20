@@ -1,12 +1,12 @@
 {{-- MẪU --}}
-@section('title', 'Form')
+@section('title', 'Chi tiết User')
 @extends('Admin.Layouts.layout')
 @section('content')
 <h1>Quản lý Users</h1>
 <div class="col-8 mx-auto">
     <div class="card mb-4 shadow">
         <div class="card-header bg-dark text-white">
-            <h3>Thêm User</h3>
+            <h3>Chi tiết User</h3>
         </div>
         <div class="card-body">
             <div class="example"></div>
@@ -62,13 +62,6 @@
                             <span class="text-danger fst-italic">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">password</label>
-                        <input name="password" class="form-control" rows="5" value="{{ $User->password }}">
-                        @error('password')
-                            <span class="text-danger fst-italic">{{ $message }}</span>
-                        @enderror
-                    </div>  
                     <hr>
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-outline-success">

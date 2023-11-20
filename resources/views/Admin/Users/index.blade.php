@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12">
             <div class="col-6 my-2 float-end">
-                <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.book.search') }}">
+                <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.user.search') }}">
                     @csrf
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Quyền hạn</option>

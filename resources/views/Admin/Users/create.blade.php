@@ -1,5 +1,5 @@
 {{-- MẪU --}}
-@section('title', 'Form')
+@section('title', 'The')
 @extends('Admin.Layouts.layout')
 @section('content')
 <h1>Quản lý Users</h1>
