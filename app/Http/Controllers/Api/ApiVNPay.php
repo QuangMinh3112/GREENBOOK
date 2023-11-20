@@ -78,6 +78,8 @@ class ApiVNPay extends Controller
             header('Location: ' . $vnp_Url);
             die();
         } else {
+            $order->payment === 'Paid';
+            $order->save();
             return response()->json(["data" => $returnData, "order" => $order]);
         }
     }

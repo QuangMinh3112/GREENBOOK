@@ -39,7 +39,6 @@ class ApiAuthController extends Controller
         if (Auth::attempt($user)) {
             $infomation = Auth::user();
             $accessToken = auth()->user()->createToken('MyAppToken')->accessToken;
-
             return response()->json(['access_token' => $accessToken, 'message' => 'Đăng nhập thành công', 'data' => $infomation], 200);
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);

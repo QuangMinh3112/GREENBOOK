@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
+use App\Http\Controllers\Api\ApiCouponController;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiVNPay;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ Route::prefix('book')->controller(ApiBookController::class)->group(function () {
     Route::get('/', 'index'); //Show tất cả sách
     Route::get('/show/{id}', 'show'); // Show sách theo id
     Route::get('/search/{field}/{name}', 'searchByFiled'); //Tìm kiếm theo trường
-    Route::get('/search/category/{id}', 'searchByCategory'); //Tìm kiếm theo category
+    Route::get('/category-search/{id}', 'searchByCategory'); //Tìm kiếm theo category
 });
 Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
     Route::get('/', 'index'); //Lấy toàn bộ danh mục sách
@@ -45,6 +46,10 @@ Route::middleware("auth:api")->group(function () {
         Route::delete('/destroy/{id_cart}', 'removeCart'); // Xoá sản phẩm khỏi giỏ hàng
         Route::delete('/destroy-all/{user_id}', 'removeAll'); // Xoá toàn bộ sản phẩm khỏi giỏ hàng
         Route::post('/cart-order', 'createOrder'); // Tạo đơn hàng
+    });
+    Route::prefix('coupon')->controller(ApiCouponController::class)->group(function()
+    {
+        Route::get('/', 'getFreeCoupon');
     });
     Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
         Route::get('/', 'index');

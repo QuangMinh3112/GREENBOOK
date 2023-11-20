@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+// use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -50,11 +51,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     public function getStatus()
-{
-    if ($this->status == 1) {
-        return "Hoạt động" ;
-    } else {
-        return "Hạn chế" ;
+    {
+        if ($this->status == 1) {
+            return "Hoạt động";
+        } else {
+            return "Hạn chế";
+        }
     }
-}
 }
