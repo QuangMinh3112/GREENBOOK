@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone_number');
+            $table->string('address');
+            $table->enum('payment', ['COD', 'Paid'])->default('COD');
+            $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed'])->default('pending');
+            $table->integer('total');
+            $table->integer('coupon')->nullable();
             $table->integer('user_id');
-            $table->dateTime('order_date');
-            $table->integer('total_amout');
-            $table->text('shipping_address');
-            $table->tinyInteger('paid_status');
-            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
+use App\Http\Controllers\Api\ApiOrderController;
+use App\Http\Controllers\Api\ApiVNPay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,17 +32,23 @@ Route::prefix('category')->controller(ApiCategoryController::class)->group(funct
     Route::get('/', 'index'); //Lấy toàn bộ danh mục sách
     Route::get('/{id}', 'show'); // Lấy 1 danh mục
 });
-Route::post('/login', [ApiAuthController::class, 'login']);
-Route::post('/register', [ApiAuthController::class, 'register']);
+Route::post('/login', [ApiAuthController::class, 'login']); //Đăng nhập
+Route::post('/register', [ApiAuthController::class, 'register']); // Đăng ký
 Route::middleware("auth:api")->group(function () {
-    Route::get('/show-profile', [ApiAuthController::class, 'showProfile']);
-    Route::get('/logout', [ApiAuthController::class, 'logOut']);
+    Route::get('/show-profile', [ApiAuthController::class, 'showProfile']); // Xem profile cá nhân
+    Route::get('/logout', [ApiAuthController::class, 'logOut']); // Đăng xuất
 
     Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
-        Route::get('/{user_id}', 'index');
-        Route::post('/add-new', 'addToCart');
-        Route::put('/update/{id}', 'update');
-        Route::delete('/destroy/{id_cart}', 'removeCart');
-        Route::delete('/destroy-all/{user_id}', 'removeAll');
+        Route::get('/{user_id}', 'index'); // Xem giỏ hàng
+        Route::post('/add-new', 'addToCart'); //Thêm mới vào giỏ hàng
+        Route::put('/update/{id}', 'update'); //Cập nhật giỏ hàng
+        Route::delete('/destroy/{id_cart}', 'removeCart'); // Xoá sản phẩm khỏi giỏ hàng
+        Route::delete('/destroy-all/{user_id}', 'removeAll'); // Xoá toàn bộ sản phẩm khỏi giỏ hàng
+        Route::post('/cart-order', 'createOrder'); // Tạo đơn hàng
     });
+    Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/order-detail/{order_id}', 'orderDetail');
+    });
+    Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán online
 });
