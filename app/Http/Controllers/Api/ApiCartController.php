@@ -23,33 +23,40 @@ class ApiCartController extends Controller
         $this->book = $book;
     }
 
-    public function index($user_id)
+    public function index()
     {
-        $carts = $this->cart->where('user_id', $user_id)->with(['book', 'user'])->latest('id')->get();
+        $user = Auth()->user();
+        $user_id = Auth()->user()->id;
+        $carts = $this->cart->where('user_id', $user_id)->with(['book'])->latest('id')->get();
         if (count($carts) > 0) {
-            return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => CartResource::collection($carts)], 200);
+            return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => CartResource::collection($carts), 'user' => $user], 200);
         } else {
             return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 200);
         }
     }
-    public function addToCart(Request $request)
+    public function addToCart(Request $request, $book_id)
     {
         $data = $request->all();
-        $user_id = $data['user_id'];
-        $book_id = $data['book_id'];
+        $user_id = Auth()->user()->id;
+        $book_id = $book_id;
         $cartItem = Cart::where('user_id', $user_id)->where('book_id', $book_id)->first();
-
         if ($cartItem) {
-            $cartItem->increment('quantity', $request->input('quantity'));
+            $cartItem->quantity++;
             $cartItem->save();
         } else {
-            $this->cart->create($data);
+            $this->cart->create([
+                'user_id' => $user_id,
+                'book_id' => $book_id,
+                'quantity' => 1,
+                'added_date' => now()
+            ]);
         }
         return response()->json(['message' => 'Tạo thành công'], 200);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request, $book_id)
     {
-        $cart = $this->cart::find($id);
+        $user_id = Auth()->user()->id;
+        $cart = $this->cart->where('book_id', $book_id)->where('user_id', $user_id)->first();
         if (!$cart) {
             return response()->json(['message' => 'Không tìm thấy sản phẩm']);
         } else {
@@ -102,6 +109,7 @@ class ApiCartController extends Controller
                 'total' => 0,
                 'coupon' => $coupon,
                 'user_id' => $user_id,
+                'added_date' => now(),
             ]);
             foreach ($carts as $cart) {
                 $book = $this->book::find($cart->book_id);

@@ -23,31 +23,49 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', [ApiBookController::class, 'test']);
 
 Route::prefix('book')->controller(ApiBookController::class)->group(function () {
-    Route::get('/', 'index'); //Show tất cả sách
-    Route::get('/show/{id}', 'show'); // Show sách theo id
-    Route::get('/search/{field}/{name}', 'searchByFiled'); //Tìm kiếm theo trường
-    Route::get('/search/category/{id}', 'searchByCategory'); //Tìm kiếm theo category
+    //Show tất cả sách
+    Route::get('/', 'index');
+    // Show sách theo id
+    Route::get('/show/{id}', 'show');
+    //Tìm kiếm theo trường
+    Route::get('/search/{field}/{name}', 'searchByFiled');
+    //Tìm kiếm theo category
+    Route::get('/search/category/{id}', 'searchByCategory');
 });
 Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
-    Route::get('/', 'index'); //Lấy toàn bộ danh mục sách
-    Route::get('/{id}', 'show'); // Lấy 1 danh mục
+    //Lấy toàn bộ danh mục sách
+    Route::get('/', 'index');
+    // Lấy 1 danh mục
+    Route::get('/{id}', 'show');
 });
-Route::post('/login', [ApiAuthController::class, 'login']); //Đăng nhập
-Route::post('/register', [ApiAuthController::class, 'register']); // Đăng ký
+//Đăng nhập
+Route::post('/login', [ApiAuthController::class, 'login']);
+// Đăng ký
+Route::post('/register', [ApiAuthController::class, 'register']);
 Route::middleware("auth:api")->group(function () {
-    Route::get('/show-profile', [ApiAuthController::class, 'showProfile']); // Xem profile cá nhân
-    Route::get('/logout', [ApiAuthController::class, 'logOut']); // Đăng xuất
+    // Xem profile cá nhân
+    Route::get('/show-profile', [ApiAuthController::class, 'showProfile']);
+    // Đăng xuất
+    Route::get('/logout', [ApiAuthController::class, 'logOut']);
 
     Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
-        Route::get('/{user_id}', 'index'); // Xem giỏ hàng
-        Route::post('/add-new', 'addToCart'); //Thêm mới vào giỏ hàng
-        Route::put('/update/{id}', 'update'); //Cập nhật giỏ hàng
-        Route::delete('/destroy/{id_cart}', 'removeCart'); // Xoá sản phẩm khỏi giỏ hàng
-        Route::delete('/destroy-all/{user_id}', 'removeAll'); // Xoá toàn bộ sản phẩm khỏi giỏ hàng
-        Route::post('/cart-order', 'createOrder'); // Tạo đơn hàng
+        // Xem giỏ hàng
+        Route::get('/', 'index');
+        //Thêm mới vào giỏ hàng
+        Route::post('/add-new/{book_id}', 'addToCart');
+        //Cập nhật giỏ hàng
+        Route::put('/update/{book_id}', 'update');
+        // Xoá sản phẩm khỏi giỏ hàng
+        Route::delete('/destroy/{book_id}', 'removeCart');
+        // Xoá toàn bộ sản phẩm khỏi giỏ hàng
+        Route::delete('/destroy-all/{user_id}', 'removeAll');
+        // Tạo đơn hàng từ giỏ hàng
+        Route::post('/create-order', 'createOrder');
     });
     Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
+        // Xem đơn hàng
         Route::get('/', 'index');
+        //Xem chi tiết đơn hàng
         Route::get('/order-detail/{order_id}', 'orderDetail');
     });
     Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán online
