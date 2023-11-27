@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
+use App\Http\Controllers\Api\ApiCouponController;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiVNPay;
 use Illuminate\Http\Request;
@@ -61,6 +62,10 @@ Route::middleware("auth:api")->group(function () {
         Route::delete('/destroy-all/{user_id}', 'removeAll');
         // Tạo đơn hàng từ giỏ hàng
         Route::post('/create-order', 'createOrder');
+    });
+    Route::prefix('coupon')->controller(ApiCouponController::class)->group(function()
+    {
+        Route::get('/', 'getFreeCoupon');
     });
     Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
         // Xem đơn hàng

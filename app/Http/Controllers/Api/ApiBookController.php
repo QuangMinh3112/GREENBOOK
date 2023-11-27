@@ -19,7 +19,7 @@ class ApiBookController extends Controller
     }
     public function index()
     {
-        $books = Book::with('category')->get();
+        $books = Book::with('category')->where('status', 1)->latest()->paginate(10);
         return response()->json(['message' => 'Lấy ra tất cả sách thành công', 'data' => BookResource::collection($books)], 200);
     }
     /**
@@ -61,7 +61,7 @@ class ApiBookController extends Controller
 
     public function searchByCategory($id)
     {
-        $book = Book::where('category_id', $id)->get();
+        $book = Book::with('category')->where('category_id', $id)->get();
         if ($book) {
             return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
         } else {

@@ -5,12 +5,12 @@
     <div class="row">
         <div class="col-12">
             <div class="col-6 my-2 float-end">
-                <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.book.search') }}">
+                <form class="d-flex justify-content-end gap-2" method="POST" action="{{ route('admin.user.search') }}">
                     @csrf
                     <select class="form-select" style="width: 25%" name="status">
-                        <option selected disabled>Trạng thái</option>
-                        <option value="Công bố" {{ session('status') == 'Công bố' ? 'selected' : '' }}>Công bố</option>
-                        <option value="Bản nháp" {{ session('status') == 'Bản nháp' ? 'selected' : '' }}>Bản nháp</option>
+                        <option selected disabled>Quyền hạn</option>
+                        <option value="Công bố" {{ session('role') == '1' ? 'selected' : '' }}>Admin</option>
+                        <option value="Bản nháp" {{ session('role') == '0' ? 'selected' : '' }}>Khách hàng</option>
                     </select>
                     <select class="form-select" style="width: 25%" name="status">
                         <option selected disabled>Trạng thái</option>
@@ -47,11 +47,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($users) > 0)
+                                @if (count($User) > 0)
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($users as $data)
+                                    @foreach ($User as $data)
                                         <tr>
                                             <th>{{ $i }}</th>
                                             <td>{{ $data->name }}</td>
@@ -93,7 +93,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        {{ $users->links() }}
+                        {{ $User->links() }}
                     </div>
                 </div>
             </div>

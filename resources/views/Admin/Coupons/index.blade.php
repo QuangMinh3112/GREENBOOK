@@ -5,9 +5,7 @@
     <div class="row">
         <div class="col-4">
             <div class="my-2 d-flex">
-                <x-button.add-btn :route="'admin.post.create'" />
-                <a class="btn btn-outline-dark" href="{{ route('admin.book.archive') }}"><i
-                        class="fa-solid fa-trash"></i></i></a>
+                <x-button.add-btn :route="'admin.coupon.create'" />
             </div>
         </div>
         <div class="col-8">
