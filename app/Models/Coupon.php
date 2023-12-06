@@ -26,4 +26,9 @@ class Coupon extends Model
             return "VNĐ";
         }
     }
+
+    public function qualified($userPoint)
+    {
+        return $userPoint >= $this->point_required;
+    }
 }

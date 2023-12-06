@@ -40,6 +40,7 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
+                                    <th scope="col">Tên</th>
                                     <th scope="col">CODE</th>
                                     <th scope="col">Giảm giá</th>
                                     <th scope="col">Trạng thái</th>
@@ -55,6 +56,7 @@
                                     @foreach ($coupons as $data)
                                         <tr>
                                             <th>{{ $i }}</th>
+                                            <td>{{ $data->name }}</td>
                                             <td>{{ $data->code }}</td>
                                             <td>{{ $data->discount }}{{ $data->getCouponValue() }}</td>
                                             <td>{{ $data->status }}</td>

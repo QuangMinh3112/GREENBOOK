@@ -30,6 +30,7 @@ return new class extends Migration
             $table->tinyInteger('status')->nullable();
             $table->tinyInteger('sale')->nullable();
             $table->integer('number_of_pages')->nullable();
+            $table->integer('view')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

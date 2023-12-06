@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
-            $table->string('discount')->nullable();
+            $table->integer('discount')->nullable();
             $table->enum('value', ['number', 'percent'])->nullable();
-            $table->enum('status', ['Public', 'Private'])->nullable();
+            $table->enum('status', ['public', 'private'])->nullable();
             $table->dateTime('end_time')->nullable();
+            $table->integer('point_required')->default(100);
             $table->text('description')->nullable();
             $table->timestamps();
         });
