@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CategoryPostController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Api\ApiMomo;
+use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
     // DANH MỤC SÁCH
     Route::prefix('category')->controller(CategoryController::class)->group(function () {
@@ -99,7 +98,8 @@ Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin
     Route::post('/register-process', 'registerProcess')->name('auth.registerProcess');
     Route::get('/logout', 'logOut')->name('auth.logout');
 });
-
 Route::prefix('/')->controller(ClientController::class)->group(function () {
     Route::get('/', 'index')->name('client.home');
 });
+Route::get('/vnpay-response', [ApiVNPay::class, 'returnCallBack'])->name('response.vnpay');
+Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
