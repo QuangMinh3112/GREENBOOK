@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
 use App\Http\Controllers\Api\ApiCouponController;
+use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Api\StripePaymentController;
@@ -77,7 +78,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             //Xem chi tiết đơn hàng
             Route::get('/order-detail/{order_id}', 'orderDetail');
         });
-        Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán online
-        Route::post('stripe/{order_id}', [StripePaymentController::class, 'stripePayment']);
+        Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
+        Route::post('stripe/{order_id}', [StripePaymentController::class, 'stripePayment']); // Thanh toán stripe (đang lỗi)
+        Route::post('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment');
     });
 });

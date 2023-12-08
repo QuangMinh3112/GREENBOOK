@@ -11,6 +11,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ApiCartController extends Controller
 {

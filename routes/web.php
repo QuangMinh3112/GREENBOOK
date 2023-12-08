@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CategoryPostController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Api\ApiMomo;
+use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
@@ -99,3 +101,5 @@ Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin
 Route::prefix('/')->controller(ClientController::class)->group(function () {
     Route::get('/', 'index')->name('client.home');
 });
+Route::get('/vnpay-response', [ApiVNPay::class, 'returnCallBack'])->name('response.vnpay');
+Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
