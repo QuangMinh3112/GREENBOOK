@@ -61,7 +61,6 @@ class ApiMomo extends Controller
                 'extraData' => $extraData,
                 'requestType' => $requestType
             );
-            // echo $serectkey;die;
             $rawHash = "partnerCode=" . $partnerCode . "&accessKey=" . $accessKey . "&requestId=" . $requestId . "&bankCode=" . $bankCode . "&amount=" . $amount . "&orderId=" . $orderid . "&orderInfo=" . $orderInfo . "&returnUrl=" . $returnUrl . "&notifyUrl=" . $notifyurl . "&extraData=" . $extraData . "&requestType=" . $requestType;
             $signature = hash_hmac("sha256", $rawHash, $secretKey);
 
@@ -80,11 +79,9 @@ class ApiMomo extends Controller
                 'signature' => $signature
             );
             $result = $this->execPostRequest($endpoint, json_encode($data));
-            $jsonResult = json_decode($result, true);  // decode json
+            $jsonResult = json_decode($result, true);
             $url = $jsonResult['payUrl'];
             return response()->json(['url' => $url], 200);
-            // error_log(print_r($jsonResult, true));
-            // header('Location: ' . $jsonResult['payUrl']);
         }
     }
     public function fallBack()

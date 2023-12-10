@@ -35,6 +35,7 @@ class BookFactory extends Factory
             'status' => $this->faker->numberBetween(0, 1),
             'sale' => $this->faker->numberBetween(0, 1),
             'number_of_pages' => $this->faker->numberBetween(100, 300),
+            'view' => $this->faker->numberBetween(10, 1000),
         ];
     }
 }

@@ -13,42 +13,35 @@ class ApiBookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function test()
-    {
-        return view('welcome');
-    }
+    // SHOW TẤT CẢ SÁCH
     public function index()
     {
         $books = Book::with('category')->where('status', 1)->latest()->paginate(10);
-        return response()->json(['message' => 'Lấy ra tất cả sách thành công', 'data' => BookResource::collection($books)], 200);
+        return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)], 200);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $book = Book::create($request->all());
-        return response()->json(['message' => 'Them moi thanh cong', 'data' => new BookResource($book)], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
         $book = Book::find($id);
-        $category = Category::find($book->id);
         if ($book) {
-            return new BookResource($book, $category);
+            $book->view += 1;
+            $book->save();
+            $category = Category::find($book->id);
+            return response()->json(['message' => 'Success', 'data' => new BookResource($book, $category)], 200);
         } else {
-            return response()->json(['message' => 'Sach khong ton tai'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
-
+    // TOP 10 SÁCH XEM NHIỀU NHẤT
+    public function topBook()
+    {
+        $book = Book::orderByDesc('view')->take(10)->get();
+        return response()->json(['message' => 'Success', 'data' => $book]);
+    }
     /**
      * Find product as field
      */
+    // TÌM THEO TRƯỜNG
     public function searchByFiled($field, $name)
     {
         $book = Book::where($field, 'LIKE', '%' . $name . '%')->get();
@@ -58,7 +51,7 @@ class ApiBookController extends Controller
             return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
         }
     }
-
+    // TÌM THEO CATEGORY
     public function searchByCategory($id)
     {
         $book = Book::with('category')->where('category_id', $id)->get();
@@ -66,36 +59,6 @@ class ApiBookController extends Controller
             return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
         } else {
             return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-        $book = Book::find($id);
-        if ($book) {
-            $book->update($request->all());
-            return response()->json(['message' => 'Cap nhat thanh cong'], 200);
-        } else {
-            return response()->json(['message' => 'Sach khong ton tai'], 404);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-        $book = Book::find($id);
-        if ($book) {
-            $book->delete();
-            return response()->json(['message' => 'Xoa thanh cong'], 200);
-        } else {
-            return response()->json(['message' => 'Sach khong ton tai'], 404);
         }
     }
 }

@@ -24,13 +24,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', [ApiBookController::class, 'test']);
 
 
 Route::middleware(AlwaysAcceptJson::class)->group(function () {
     Route::prefix('book')->controller(ApiBookController::class)->group(function () {
         //Show tất cả sách
         Route::get('/', 'index');
+        // Show top 10 sách nhiều lượt xem nhất
+        Route::get('/top-book', 'topBook');
         // Show sách theo id
         Route::get('/show/{id}', 'show');
         //Tìm kiếm theo trường
@@ -39,20 +40,29 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::get('/search/category/{id}', 'searchByCategory');
     });
     Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
-        //Lấy toàn bộ danh mục sách
+        //Lấy toàn bộ danh mục sách theo sơ đồ cây
         Route::get('/', 'index');
-        // Lấy 1 danh mục
+        // Show sách theo danh mục
         Route::get('/{id}', 'show');
     });
     //Đăng nhập
     Route::post('/login', [ApiAuthController::class, 'login']);
     // Đăng ký
     Route::post('/register', [ApiAuthController::class, 'register']);
+    // Quên mật khẩu
+    Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
+    // Đặt lại mật khẩu
+    Route::post('/reset-password', [ApiAuthController::class, 'resetPassword']);
+
     Route::middleware("auth:api")->group(function () {
         // Xem profile cá nhân
         Route::get('/show-profile', [ApiAuthController::class, 'showProfile']);
         // Đăng xuất
         Route::get('/logout', [ApiAuthController::class, 'logOut']);
+        // Gửi mã xác minh tài khoản
+        Route::get('/send-otp', [ApiAuthController::class, 'sendOtpVertify']);
+        // Xác minh tài khoản
+        Route::post('/vertify-otp', [ApiAuthController::class, 'otpVertify']);
 
         Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
             // Xem giỏ hàng
@@ -80,6 +90,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         });
         Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
         Route::post('stripe/{order_id}', [StripePaymentController::class, 'stripePayment']); // Thanh toán stripe (đang lỗi)
-        Route::post('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment');
+        Route::post('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
     });
 });

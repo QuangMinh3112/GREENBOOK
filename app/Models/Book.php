@@ -29,6 +29,7 @@ class Book extends Model
         'status',
         'sale',
         'number_of_pages',
+        'view'
     ];
     public function category()
     {
