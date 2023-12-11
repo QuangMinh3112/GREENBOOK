@@ -22,6 +22,7 @@ class ApiCartController extends Controller
     {
         $this->cart = $cart;
         $this->book = $book;
+        $this->middleware('auth.api');
     }
 
     public function index()
@@ -89,54 +90,58 @@ class ApiCartController extends Controller
     }
     public function createOrder(Request $request)
     {
-        $user_id = Auth::user()->id;
-        $carts = $this->cart::where('user_id', $user_id)->get();
-        if ($carts->isEmpty()) {
-            return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
+        if (Auth::user()->is_vertify != 1) {
+            return response()->json(['message' => 'Bạn cần phải xác minh tài khoản trước khi đặt hàng']);
         } else {
-            $total = 0;
-            if ($request->input('coupon')) {
-                $coupon = Coupon::where('code', 'LIKE', '%' . $request->input('coupon') . '%')->first();
+            $user_id = Auth::user()->id;
+            $carts = $this->cart::where('user_id', $user_id)->get();
+            if ($carts->isEmpty()) {
+                return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
             } else {
-                $coupon = null;
-            }
-            $order = Order::create([
-                'status' => 'pending',
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'phone_number' => $request->input('phone_number'),
-                'address' => $request->input('address'),
-                'payment' => $request->input('payment'),
-                'total' => 0,
-                'coupon' => $coupon,
-                'user_id' => $user_id,
-                'added_date' => now(),
-            ]);
-            foreach ($carts as $cart) {
-                $book = $this->book::find($cart->book_id);
-                OrderDetail::create([
-                    'order_id' =>  $order->id,
-                    'book_id' => $cart->book_id,
-                    'quantity' => $cart->quantity,
-                    'book_name' => $book->name,
-                    'book_image' => $book->image,
-                    'book_price' => $book->price,
-                ]);
-                $total += ($cart->quantity * $book->price);
-            }
-            if ($coupon != null) {
-                if ($coupon->value === 'number') {
-                    $order->total = $total - $coupon->discount;
+                $total = 0;
+                if ($request->input('coupon')) {
+                    $coupon = Coupon::where('code', 'LIKE', '%' . $request->input('coupon') . '%')->first();
                 } else {
-                    $order->total = $total - ($total * ($coupon->discount / 100));
+                    $coupon = null;
                 }
-            } else {
-                $order->total = $total;
-            }
-            $order->save();
+                $order = Order::create([
+                    'status' => 'pending',
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'phone_number' => $request->input('phone_number'),
+                    'address' => $request->input('address'),
+                    'payment' => $request->input('payment'),
+                    'total' => 0,
+                    'coupon' => $coupon,
+                    'user_id' => $user_id,
+                    'added_date' => now(),
+                ]);
+                foreach ($carts as $cart) {
+                    $book = $this->book::find($cart->book_id);
+                    OrderDetail::create([
+                        'order_id' =>  $order->id,
+                        'book_id' => $cart->book_id,
+                        'quantity' => $cart->quantity,
+                        'book_name' => $book->name,
+                        'book_image' => $book->image,
+                        'book_price' => $book->price,
+                    ]);
+                    $total += ($cart->quantity * $book->price);
+                }
+                if ($coupon != null) {
+                    if ($coupon->value === 'number') {
+                        $order->total = $total - $coupon->discount;
+                    } else {
+                        $order->total = $total - ($total * ($coupon->discount / 100));
+                    }
+                } else {
+                    $order->total = $total;
+                }
+                $order->save();
 
-            $this->cart::where('user_id', $user_id)->delete();
-            return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
+                $this->cart::where('user_id', $user_id)->delete();
+                return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
+            }
         }
     }
 }

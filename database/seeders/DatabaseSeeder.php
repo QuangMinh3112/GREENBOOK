@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(30)->create();
         \App\Models\Book::factory(30)->create();
         \App\Models\Category::factory(10)->create();
+        \App\Models\CategoryPost::factory(10)->create();
+        \App\Models\Post::factory(30)->create();
         DB::table('users')->insert([
             'name' => 'admin',
             'avatar' => '',

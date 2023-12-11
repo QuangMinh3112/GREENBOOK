@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
@@ -8,6 +7,13 @@ use App\Http\Controllers\Api\ApiCouponController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiVNPay;
+use App\Http\Controllers\Api\Auth\ApiEditProfileController;
+use App\Http\Controllers\Api\Auth\ApiLoginController;
+use App\Http\Controllers\Api\Auth\ApiLogoutController;
+use App\Http\Controllers\Api\Auth\ApiRegisterController;
+use App\Http\Controllers\Api\Auth\ApiResetPassword;
+use App\Http\Controllers\Api\Auth\ApiShowProfileController;
+use App\Http\Controllers\Api\Auth\ApiVerificationController;
 use App\Http\Controllers\Api\StripePaymentController;
 use App\Http\Middleware\AlwaysAcceptJson;
 use Illuminate\Http\Request;
@@ -34,10 +40,14 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::get('/top-book', 'topBook');
         // Show sách theo id
         Route::get('/show/{id}', 'show');
+        // Show sách có liên quan
+        Route::get('/related-book/{book_id}', 'relatedBook');
         //Tìm kiếm theo trường
         Route::get('/search/{field}/{name}', 'searchByFiled');
         //Tìm kiếm theo category
-        Route::get('/search/category/{id}', 'searchByCategory');
+        // Route::get('/search/category/{id}', 'searchByCategory');
+        // Lọc theo giá
+        Route::get('/filter-price', 'filterPrice');
     });
     Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
         //Lấy toàn bộ danh mục sách theo sơ đồ cây
@@ -46,23 +56,25 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::get('/{id}', 'show');
     });
     //Đăng nhập
-    Route::post('/login', [ApiAuthController::class, 'login']);
+    Route::post('/login', [ApiLoginController::class, 'login']);
     // Đăng ký
-    Route::post('/register', [ApiAuthController::class, 'register']);
+    Route::post('/register', [ApiRegisterController::class, 'register']);
     // Quên mật khẩu
-    Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
+    Route::post('/forgot-password', [ApiResetPassword::class, 'forgotPassword']);
     // Đặt lại mật khẩu
-    Route::post('/reset-password', [ApiAuthController::class, 'resetPassword']);
+    Route::post('/reset-password', [ApiResetPassword::class, 'resetPassword']);
 
     Route::middleware("auth:api")->group(function () {
         // Xem profile cá nhân
-        Route::get('/show-profile', [ApiAuthController::class, 'showProfile']);
+        Route::get('/show-profile', [ApiShowProfileController::class, 'showProfile']);
         // Đăng xuất
-        Route::get('/logout', [ApiAuthController::class, 'logOut']);
+        Route::get('/logout', [ApiLogoutController::class, 'logOut']);
         // Gửi mã xác minh tài khoản
-        Route::get('/send-otp', [ApiAuthController::class, 'sendOtpVertify']);
+        Route::get('/send-otp', [ApiVerificationController::class, 'sendOtpVertify']);
         // Xác minh tài khoản
-        Route::post('/vertify-otp', [ApiAuthController::class, 'otpVertify']);
+        Route::post('/vertify-otp', [ApiVerificationController::class, 'otpVertify']);
+        // Cập nhật hồ sơ
+        Route::post('/update-profile', [ApiEditProfileController::class, 'updateProfile']);
 
         Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
             // Xem giỏ hàng
