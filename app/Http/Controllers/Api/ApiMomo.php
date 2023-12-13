@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
 class ApiMomo extends Controller
@@ -38,12 +39,12 @@ class ApiMomo extends Controller
             $secretKey = "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa";
             $orderInfo = "Thanh toán qua MoMo";
             $amount = strval($order->total);
-            $orderId = $order->order_code;
+            $orderId = strval($order->order_id);
             $returnUrl = "http://127.0.0.1:8000/momo-response";
             $notifyurl = "http://localhost:8000/atm/ipn_momo.php";
             // Lưu ý: link notifyUrl không phải là dạng localhost
             $bankCode = "SML";
-            $orderid = $order->order_code;
+            $orderid = strval($order->id);
             $requestId = time() . "";
             $requestType = "payWithMoMoATM";
             $extraData = "";
@@ -63,7 +64,6 @@ class ApiMomo extends Controller
             );
             $rawHash = "partnerCode=" . $partnerCode . "&accessKey=" . $accessKey . "&requestId=" . $requestId . "&bankCode=" . $bankCode . "&amount=" . $amount . "&orderId=" . $orderid . "&orderInfo=" . $orderInfo . "&returnUrl=" . $returnUrl . "&notifyUrl=" . $notifyurl . "&extraData=" . $extraData . "&requestType=" . $requestType;
             $signature = hash_hmac("sha256", $rawHash, $secretKey);
-
             $data =  array(
                 'partnerCode' => $partnerCode,
                 'accessKey' => $accessKey,
@@ -81,7 +81,11 @@ class ApiMomo extends Controller
             $result = $this->execPostRequest($endpoint, json_encode($data));
             $jsonResult = json_decode($result, true);
             $url = $jsonResult['payUrl'];
-            return response()->json(['url' => $url], 200);
+            if ($url) {
+                return response()->json(['url' => $url], 200);
+            } else {
+                return response()->json(['message' => 'Error'], 404);
+            }
         }
     }
     public function fallBack()
@@ -93,7 +97,7 @@ class ApiMomo extends Controller
             $partnerCode = request("partnerCode");
             $accessKey = request("accessKey");
             $orderId = request("orderId");
-            $order = Order::where("order_code", "like", "%" . $orderId . "%")->first();
+            $order = Order::find($orderId);
             $localMessage = request("localMessage");
             $message = request("message");
             $transId = request("transId");
@@ -118,12 +122,11 @@ class ApiMomo extends Controller
             echo "<script>console.log('Debug huhu Objects: " . $secretKey . "' );</script>";
             echo "<script>console.log('Debug huhu Objects: " . $partnerSignature . "' );</script>";
 
-
             if ($m2signature == $partnerSignature) {
                 if ($errorCode == '0') {
                     $result = 'Success';
-                    $order->payment == "Paid";
-                    $order->save();
+                    $order->update(['payment' => 'Paid']);
+                    $orderDetail = OrderDetail::where('order_id', 'like', '%' . $order->id . '%')->get();
                 } else {
                     $result = '<div class="alert alert-danger"><strong>Payment status: </strong>' . $message . '/' . $localMessage . '</div>';
                 }
@@ -131,6 +134,6 @@ class ApiMomo extends Controller
                 $result = '<div class="alert alert-danger">This transaction could be hacked, please check your signature and returned signature</div>';
             }
         }
-        return view('Client.Payment.momo', compact('partnerCode', 'accessKey', 'orderId', 'localMessage', 'message', 'transId', 'orderInfo', 'amount', 'errorCode', 'responseTime', 'requestId', 'extraData', 'payType', 'orderType', 'm2signature', 'result', 'secretKey', 'rawHash', 'partnerSignature'));
+        return view('Client.Payment.momo', compact('partnerCode', 'accessKey', 'orderId', 'localMessage', 'message', 'transId', 'orderInfo', 'amount', 'errorCode', 'responseTime', 'requestId', 'extraData', 'payType', 'orderType', 'm2signature', 'result', 'secretKey', 'rawHash', 'partnerSignature', 'orderDetail'));
     }
 }

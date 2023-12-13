@@ -46,7 +46,7 @@ class ApiVerificationController extends Controller
             $user->is_vertify = true;
             $user->email_verified_at = now();
             $user->save();
-            return response()->json(['message' => 'Tài khoản đã được xác minh'], 200);
+            return response()->json(['message' => 'Xác minh thành công'], 200);
         } else {
             return response()->json(['message' => 'Mã OTP không hợp lệ'], 400);
         }

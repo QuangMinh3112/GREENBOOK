@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiBookController;
 use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
 use App\Http\Controllers\Api\ApiCouponController;
+use App\Http\Controllers\Api\ApiFavoriteBookController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiVNPay;
@@ -75,7 +76,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::post('/vertify-otp', [ApiVerificationController::class, 'otpVertify']);
         // Cập nhật hồ sơ
         Route::post('/update-profile', [ApiEditProfileController::class, 'updateProfile']);
-
+        // GIỎ HÀNG
         Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
             // Xem giỏ hàng
             Route::get('/', 'index');
@@ -86,9 +87,18 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             // Xoá sản phẩm khỏi giỏ hàng
             Route::delete('/destroy/{book_id}', 'removeCart');
             // Xoá toàn bộ sản phẩm khỏi giỏ hàng
-            Route::delete('/destroy-all/{user_id}', 'removeAll');
+            Route::delete('/destroy-all', 'removeAll');
             // Tạo đơn hàng từ giỏ hàng
             Route::post('/create-order', 'createOrder');
+        });
+        // SẢN PHẨM YÊU THÍCH
+        Route::prefix('favorite-book')->controller(ApiFavoriteBookController::class)->group(function () {
+            // Xem sản phẩm yêu thích
+            Route::get('/', 'showFavorite');
+            // Thêm sản phẩm yêu thích
+            Route::post('/add/{book_id}', 'addFavorite');
+            // Xoá sản phẩm yêu thích
+            Route::get('/remove/{book_id}', 'removeFavorite');
         });
         // Lất tất cả coupon public
         Route::prefix('coupon')->controller(ApiCouponController::class)->group(function () {
@@ -101,7 +111,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             Route::get('/order-detail/{order_id}', 'orderDetail');
         });
         Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
-        Route::post('stripe/{order_id}', [StripePaymentController::class, 'stripePayment']); // Thanh toán stripe (đang lỗi)
         Route::post('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
     });
 });
