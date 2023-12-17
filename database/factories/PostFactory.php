@@ -20,10 +20,10 @@ class PostFactory extends Factory
             //
             'title' => $this->faker->name(),
             'content' => $this->faker->paragraph(10),
-            'image' => $this->faker->imageUrl(),
             'status' => $this->faker->randomElement(['Công bố', 'Bản nháp']),
             'slug' => $this->faker->slug(5),
             'category_id' => $this->faker->numberBetween(1, 10),
+            'view' => $this->faker->numberBetween(100, 1000),
         ];
     }
 }

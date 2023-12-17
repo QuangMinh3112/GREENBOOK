@@ -20,4 +20,12 @@ class Post extends Model
             return "Rỗng";
         }
     }
+    public function category()
+    {
+        return $this->belongsTo(CategoryPost::class);
+    }
+    public function getImageAttribute($post)
+    {
+        return asset('storage/' . $post);
+    }
 }

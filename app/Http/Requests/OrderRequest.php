@@ -23,8 +23,19 @@ class OrderRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required|min:5|max:255',
-            ''
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
+            'address' => 'required|string',
+            'coupon' => 'nullable|string',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên không được bỏ trống.',
+            'phone_number.required' => 'Số điện thoại không được bỏ trống.',
+            'address.required' => 'Địa chỉ không được bỏ trống.',
+            'coupon.string' => 'Mã giảm giá phải là một chuỗi.',
         ];
     }
 }

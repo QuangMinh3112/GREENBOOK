@@ -14,7 +14,14 @@ class ApiLogoutController extends Controller
     }
     public function logOut()
     {
-        auth()->user()->token()->revoke();
+        $user = auth()->user();
+        $accessToken = $user->token();
+
+        // Kiểm tra xem access token có hợp lệ không
+        if ($accessToken->expires_at > now()) {
+            $accessToken->revoke();
+        }
+
         return response()->json([
             "message" => "User Logout"
         ], 200);

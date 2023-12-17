@@ -134,6 +134,6 @@ class ApiMomo extends Controller
                 $result = '<div class="alert alert-danger">This transaction could be hacked, please check your signature and returned signature</div>';
             }
         }
-        return view('Client.Payment.momo', compact('partnerCode', 'accessKey', 'orderId', 'localMessage', 'message', 'transId', 'orderInfo', 'amount', 'errorCode', 'responseTime', 'requestId', 'extraData', 'payType', 'orderType', 'm2signature', 'result', 'secretKey', 'rawHash', 'partnerSignature', 'orderDetail'));
+        return view('Client.Payment.momo', compact('partnerCode', 'accessKey', 'orderId', 'localMessage', 'message', 'transId', 'orderInfo', 'amount', 'errorCode', 'responseTime', 'requestId', 'extraData', 'payType', 'orderType', 'm2signature', 'result', 'secretKey', 'rawHash', 'partnerSignature', 'orderDetail', 'order'));
     }
 }

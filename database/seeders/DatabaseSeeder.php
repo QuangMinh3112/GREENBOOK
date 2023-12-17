@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Book::factory(100)->create();
         \App\Models\Category::factory(100)->create();
         \App\Models\CategoryPost::factory(10)->create();
-        \App\Models\Post::factory(30)->create();
+        \App\Models\Post::factory(100)->create();
         DB::table('users')->insert([
             'name' => 'admin',
             'avatar' => '',
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '',
             'role' => 1,
             'is_vertify' => 1,
-            'email' => 'minh@gmail.com',
+            'email' => 'minhvqph27791@fpt.edu.vn',
             'password' => Hash::make('123123'),
         ]);
         DB::table('coupons')->insert([

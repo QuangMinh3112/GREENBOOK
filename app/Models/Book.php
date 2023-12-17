@@ -53,4 +53,8 @@ class Book extends Model
             return "Active";
         }
     }
+    public function getImageAttribute($book)
+    {
+        return asset('storage/' . $book);
+    }
 }

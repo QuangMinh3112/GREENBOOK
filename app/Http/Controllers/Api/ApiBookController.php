@@ -16,14 +16,14 @@ class ApiBookController extends Controller
     // SHOW TẤT CẢ SÁCH
     public function index()
     {
-        $books = Book::with('category')->where('status', 1)->latest()->paginate(10);
+        $books = Book::with('category')->where('status', 1)->paginate(10);
         return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)], 200);
     }
     public function show(string $id)
     {
         //
         $book = Book::find($id);
-        if ($book) {
+        if ($book && $book->status == 1) {
             $book->view += 1;
             $book->save();
             $category = Category::find($book->id);
@@ -35,8 +35,8 @@ class ApiBookController extends Controller
     // TOP 10 SÁCH XEM NHIỀU NHẤT
     public function topBook()
     {
-        $book = Book::orderByDesc('view')->where('status', 1)->take(10)->get();
-        return response()->json(['message' => 'Success', 'data' => BookResource::collection($book)]);
+        $books = Book::orderByDesc('view')->where('status', 1)->take(10)->get();
+        return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)]);
     }
     /**
      * Find product as field
@@ -74,16 +74,6 @@ class ApiBookController extends Controller
             }
         }
     }
-    // TÌM THEO CATEGORY
-    // public function searchByCategory($id)
-    // {
-    //     $book = Book::with('category')->where('category_id', $id)->get();
-    //     if ($book) {
-    //         return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => BookResource::collection($book)], 200);
-    //     } else {
-    //         return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
-    //     }
-    // }
     // LỌC THEO GIÁ
     public function filterPrice(Request $request)
     {
