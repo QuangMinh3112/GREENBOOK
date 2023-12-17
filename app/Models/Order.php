@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
     protected $table = 'orders';
     protected $fillable = [
         'order_code',
@@ -46,8 +47,9 @@ class Order extends Model
     public static function boot()
     {
         parent::boot();
-        static::creating(function ($order_code) {
-            $order_code->order_code = 'DONHANG-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+            $model->order_code = 'DONHANG-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
         });
     }
 }

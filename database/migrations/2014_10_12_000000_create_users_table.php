@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('point')->default(100);
             $table->string('password');
+            $table->boolean('is_vertify')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

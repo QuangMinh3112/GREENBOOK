@@ -13,89 +13,86 @@ class ApiBookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function test()
-    {
-        return view('welcome');
-    }
+    // SHOW TẤT CẢ SÁCH
     public function index()
     {
-        $books = Book::with('category')->where('status', 1)->latest()->paginate(10);
-        return response()->json(['message' => 'Lấy ra tất cả sách thành công', 'data' => BookResource::collection($books)], 200);
+        $books = Book::with('category')->where('status', 1)->paginate(10);
+        return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)], 200);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $book = Book::create($request->all());
-        return response()->json(['message' => 'Them moi thanh cong', 'data' => new BookResource($book)], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
         $book = Book::find($id);
-        $category = Category::find($book->id);
-        if ($book) {
-            return new BookResource($book, $category);
+        if ($book && $book->status == 1) {
+            $book->view += 1;
+            $book->save();
+            $category = Category::find($book->id);
+            return response()->json(['message' => 'Success', 'data' => new BookResource($book, $category)], 200);
         } else {
-            return response()->json(['message' => 'Sach khong ton tai'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
-
+    // TOP 10 SÁCH XEM NHIỀU NHẤT
+    public function topBook()
+    {
+        $books = Book::orderByDesc('view')->where('status', 1)->take(10)->get();
+        return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)]);
+    }
     /**
      * Find product as field
      */
+    // SẢN PHẨM LIÊN QUAN
+    public function relatedBook($bookId)
+    {
+        $currentBook = Book::find($bookId);
+        if (!$currentBook) {
+            return response()->json(['message' => 'Không tìm thấy sách có liên quan'], 404);
+        }
+        $relatedBook = Book::where('id', '!=', $currentBook->id)->where('category_id', $currentBook->category_id)->where('status', 1)->with('category')->latest()->paginate(5);
+        if ($relatedBook) {
+            return response()->json(['message' => 'Success', 'data' => BookResource::collection($relatedBook)], 200);
+        } else if ($relatedBook->isEmty()) {
+            return response()->json(['message' => 'Không tìm thấy sách có liên quan'], 404);
+        }
+    }
+    // TÌM THEO TRƯỜNG
     public function searchByFiled($field, $name)
     {
-        $book = Book::where($field, 'LIKE', '%' . $name . '%')->get();
-        if ($book) {
-            return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
+        if ($field === "category_id") {
+            $book = Book::where('category_id', $name)->where('status', 1)->get();
+            if ($book) {
+                return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => BookResource::collection($book)], 200);
+            } else {
+                return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+            }
         } else {
-            return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+            $book = Book::where($field, 'LIKE', '%' . $name . '%')->where('status', 1)->get();
+            if ($book) {
+                return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => BookResource::collection($book)], 200);
+            } else {
+                return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+            }
         }
     }
-
-    public function searchByCategory($id)
+    // LỌC THEO GIÁ
+    public function filterPrice(Request $request)
     {
-        $book = Book::with('category')->where('category_id', $id)->get();
-        if ($book) {
-            return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => new BookResource($book)], 200);
-        } else {
-            return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        $query = Book::query();
+
+        if ($minPrice) {
+            $query->where('price', '>=', $minPrice);
         }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-        $book = Book::find($id);
-        if ($book) {
-            $book->update($request->all());
-            return response()->json(['message' => 'Cap nhat thanh cong'], 200);
-        } else {
-            return response()->json(['message' => 'Sach khong ton tai'], 404);
+        if ($maxPrice) {
+            $query->where('price', '<=', $maxPrice);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-        $book = Book::find($id);
-        if ($book) {
-            $book->delete();
-            return response()->json(['message' => 'Xoa thanh cong'], 200);
+        $book = $query->where('status', 1)->latest()->paginate(10);
+        if ($book->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
         } else {
-            return response()->json(['message' => 'Sach khong ton tai'], 404);
+            return response()->json(['message' => 'Success', 'data' => BookResource::collection($book)]);
         }
     }
 }

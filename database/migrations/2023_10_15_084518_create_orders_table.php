@@ -12,24 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('order_code')->uniqid();
             $table->string('name');
-            $table->string('email');
             $table->string('phone_number');
             $table->string('address');
             $table->enum('payment', ['COD', 'Paid'])->default('COD');
-            $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed', 'cancel'])->default('pending');
             $table->integer('total');
             $table->integer('coupon')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('orders');

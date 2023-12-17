@@ -15,8 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::factory(30)->create();
-        \App\Models\Book::factory(30)->create();
-        \App\Models\Category::factory(10)->create();
+        \App\Models\Book::factory(100)->create();
+        \App\Models\Category::factory(100)->create();
+        \App\Models\CategoryPost::factory(10)->create();
+        \App\Models\Post::factory(100)->create();
         DB::table('users')->insert([
             'name' => 'admin',
             'avatar' => '',
@@ -25,6 +27,16 @@ class DatabaseSeeder extends Seeder
             'role' => 1,
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456789'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'test',
+            'avatar' => '',
+            'address' => '',
+            'phone_number' => '',
+            'role' => 1,
+            'is_vertify' => 1,
+            'email' => 'minhvqph27791@fpt.edu.vn',
+            'password' => Hash::make('123123'),
         ]);
         DB::table('coupons')->insert([
             'name' => 'Mã giảm giá người mới',

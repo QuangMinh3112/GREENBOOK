@@ -29,6 +29,7 @@ class Book extends Model
         'status',
         'sale',
         'number_of_pages',
+        'view'
     ];
     public function category()
     {
@@ -51,5 +52,9 @@ class Book extends Model
         } else {
             return "Active";
         }
+    }
+    public function getImageAttribute($book)
+    {
+        return asset('storage/' . $book);
     }
 }

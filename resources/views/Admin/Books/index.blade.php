@@ -79,7 +79,7 @@
                                             "
                                                     disabled>{{ $data->getStatus() }}</button>
                                             </td>
-                                            <td><img src="{{ asset('storage/' . $data->image) }}" alt=""
+                                            <td><img src="{{ $data->image }}" alt=""
                                                     height="100px">
                                             </td>
                                             <td>

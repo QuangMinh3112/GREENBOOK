@@ -20,7 +20,7 @@ class ApiVNPay extends Controller
             $vnp_TmnCode = "23R8KWXT"; //Mã website tại VNPAY
             $vnp_HashSecret = "IXUUHLENJNDRPWPAODGJXJHBMXCWOMHL"; //Chuỗi bí mật
 
-            $vnp_TxnRef = $order->id;
+            $vnp_TxnRef = $order->order_code;
             $vnp_OrderInfo = "Thanh toán đơn hàng";
             $vnp_OrderType = "billpayment";
             $vnp_Amount = $order->total * 100;

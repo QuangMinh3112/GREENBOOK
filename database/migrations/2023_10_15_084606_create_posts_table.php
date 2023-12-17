@@ -12,10 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->mediumText('content');
-            $table->string('image');
+            $table->string('image')->default('posts/post.png');
             $table->enum('status', ['Công bố', 'Bản nháp']);
             $table->integer('user_id')->nullable();
             $table->string('slug');
+            $table->integer('view')->default(0);
             $table->integer('category_id');
             $table->softDeletes();
             $table->timestamps();

@@ -22,9 +22,14 @@ class ApiCouponController extends Controller
     public function getFreeCoupon()
     {
         $coupons = Coupon::where('status', 'LIKE', '%Public%')->latest()->get();
-        // $qualifiedCoupon = $coupons->filter(function($coupon) use ($this->user->point){
-        //     return $coupon->qualified($this->user->point);
-        // });
-        return response()->json(['message' => 'Success', 'data' => CouponResource::collection($coupons), 200]);
+
+        $qualifiedCoupons = $coupons->filter(function ($coupon) {
+            return $coupon->qualified(auth()->user()->point);
+        });
+
+        return response()->json([
+            'message' => 'Success',
+            'data' => CouponResource::collection($qualifiedCoupons),
+        ], 200);
     }
 }
