@@ -1,14 +1,8 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách sách')
-@extends('Admin.Layouts.layout')
+@extends('Layout.layout')
 @section('content')
     <div class="row">
         <div class="col-4">
-            <div class="my-2">
-                <a href="{{ route('admin.book.create') }}" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i></a>
-                <a class="btn btn-outline-dark" href="{{ route('admin.book.archive') }}"><i
-                        class="fa-solid fa-trash"></i></i></a>
-            </div>
         </div>
         <div class="col-8">
             <div class="my-2">
@@ -39,8 +33,8 @@
         </div>
     </div>
     <div class="card mb-4 shadow">
-        <div class="card-header bg-dark text-white">
-            <h2>Danh sách sách</h2>
+        <div class="card-header py-3 bg-green">
+            <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>
         </div>
         <div class="card-body">
             <div class="example">
@@ -79,8 +73,7 @@
                                             "
                                                     disabled>{{ $data->getStatus() }}</button>
                                             </td>
-                                            <td><img src="{{ $data->image }}" alt=""
-                                                    height="100px">
+                                            <td><img src="{{ $data->image }}" alt="" height="100px">
                                             </td>
                                             <td>
                                                 <div class="d-flex">

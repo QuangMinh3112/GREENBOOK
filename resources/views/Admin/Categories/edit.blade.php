@@ -1,8 +1,7 @@
 {{-- MẪU --}}
-@section('title', 'Cập nhập danh mục')
-@extends('Admin.Layouts.layout')
+@extends('Layout.layout')
 @section('content')
-    <div class="col-8 mx-auto">
+    <div class="row" id="render">
         <div class="card mb-4 shadow">
             <div class="card-header bg-dark text-white">
                 <h3>Chỉnh sửa danh mục</h3>

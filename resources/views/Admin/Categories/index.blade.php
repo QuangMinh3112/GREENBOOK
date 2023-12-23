@@ -1,14 +1,8 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách danh mục sách')
-@extends('Admin.Layouts.layout')
+@extends('Layout.layout')
 @section('content')
-    <div class="row">
-        <div class="col-6">
-            <div class="my-2 d-flex">
-                <x-button.add-btn :route="'admin.category.create'" />
-            </div>
-        </div>
-        <div class="col-6">
+    <div class="row" id="render">
+        {{-- <div class="">
             <div class="my-2">
                 <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.category.search') }}">
                     @csrf
@@ -18,16 +12,16 @@
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="card mb-4 shadow">
-        <div class="card-header bg-dark text-white">
-            <h2 class="mx-3 align-items-center">Danh sách danh mục</h2>
+        <div class="card-header py-3 bg-green">
+            <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>
         </div>
         <div class="card-body">
             <div class="example">
                 <div class="rounded-bottom">
-                    <div class="p-3">
+                    <div class="">
                         <ul>
                             @foreach ($categories as $data)
                                 <li
@@ -60,6 +54,5 @@
         </div>
     </div>
 @endsection
-
 @section('script')
 @endsection

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Client\ClientController;
+use App\Livewire\ProductPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/test-start', function () {
+    return view('Layout.layout');
+});
 
 Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
     // DANH MỤC SÁCH
@@ -103,3 +108,5 @@ Route::prefix('/')->controller(ClientController::class)->group(function () {
 });
 Route::get('/vnpay-response', [ApiVNPay::class, 'returnCallBack'])->name('response.vnpay');
 Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
+
+Route::get('/test-product', ProductPage::class);

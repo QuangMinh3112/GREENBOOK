@@ -1,6 +1,5 @@
 {{-- MẪU --}}
-@section('title', 'Cập nhật sách')
-@extends('Admin.Layouts.layout')
+@extends('Layout.layout')
 @section('content')
     <div class="col-8 mx-auto w-100">
         <div class="card mb-4 shadow">

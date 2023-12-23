@@ -1,11 +1,10 @@
 {{-- MẪU --}}
-@section('title', 'Thêm danh mục mới')
-@extends('Admin.Layouts.layout')
+@extends('Layout.layout')
 @section('content')
-    <div class="col-8 mx-auto">
+    <div class="" id="render">
         <div class="card mb-4 shadow">
-            <div class="card-header bg-dark text-white">
-                <h3>Thêm danh mục mới</h3>
+            <div class="card-header py-3 bg-green">
+                <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>
             </div>
             <div class="card-body">
                 <div class="example"></div>
@@ -43,6 +42,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection

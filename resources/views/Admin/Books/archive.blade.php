@@ -1,6 +1,5 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách lưu trữ')
-@extends('Admin.Layouts.layout')
+@extends('Layouts.layout')
 @section('content')
     <div class="row">
         <div class="col-6">

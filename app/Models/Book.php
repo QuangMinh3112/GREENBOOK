@@ -57,4 +57,21 @@ class Book extends Model
     {
         return asset('storage/' . $book);
     }
+    public function scopeNameSearch($query, $value)
+    {
+        $query->where('name', 'like', '%' . $value . '%');
+    }
+    public function scopeAuthorSearch($query, $value)
+    {
+        $query->where('author', 'like', '%' . $value . '%');
+    }
+    public function scopeMinPrice($query, $value)
+    {
+        $query->where('price', '>=', $value);
+    }
+
+    public function scopeMaxPrice($query, $value)
+    {
+        $query->where('price', '<=', $value);
+    }
 }

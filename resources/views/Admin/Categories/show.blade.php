@@ -1,8 +1,7 @@
 {{-- MẪU --}}
-@section('title', 'Danh sách danh mục')
-@extends('Admin.Layouts.layout')
+@extends('Layout.layout')
 @section('content')
-    <div class="row">
+    <div class="row" id="render">
         <div class="col-6">
             <div class="my-2 d-flex">
                 <x-button.add-btn :route="'admin.category.create'" />
