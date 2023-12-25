@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Client\ClientController;
-use App\Livewire\ProductPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,29 +30,18 @@ Route::get('/test-start', function () {
 
 Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
     // DANH MỤC SÁCH
-    Route::prefix('category')->controller(CategoryController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.category.index');
-        Route::post('/', 'index')->name('admin.category.search');
-        Route::get('show/{id}', 'show')->name('admin.category.show');
-        Route::get('create', 'create')->name('admin.category.create');
-        Route::post('store', 'store')->name('admin.category.store');
-        Route::get('edit/{id}', 'edit')->name('admin.category.edit');
-        Route::post('update/{id}', 'update')->name('admin.category.update');
-        Route::get('delete/{id}', 'delete')->name('admin.category.delete');
+    Route::prefix('category')->group(function () {
+        Route::get('/', App\Livewire\Category\Index::class)->name('category.index');
+        Route::get('/create-category', App\Livewire\Category\Create::class)->name('category.create');
+        Route::get('/edit-category/{id}', App\Livewire\Category\Edit::class)->name('category.edit');
+        Route::get('/show-category/{id}', App\Livewire\Category\Show::class)->name('category.show');
     });
     //  SÁCH
-    Route::prefix('book')->controller(BookController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.book.index');
-        Route::post('/', 'index')->name('admin.book.search');
-        Route::get('show/{id}', 'show')->name('admin.book.show');
-        Route::get('create', 'create')->name('admin.book.create');
-        Route::post('store', 'store')->name('admin.book.store');
-        Route::get('edit/{id}', 'edit')->name('admin.book.edit');
-        Route::post('update/{id}', 'update')->name('admin.book.update');
-        Route::get('delete/{id}', 'delete')->name('admin.book.delete');
-        Route::get('archive', 'archive')->name('admin.book.archive');
-        Route::get('restore/{id}', 'restore')->name('admin.book.restore');
-        Route::get('destroy/{id}', 'destroy')->name('admin.book.destroy');
+    Route::prefix('book')->group(function () {
+        Route::get('/', App\Livewire\Product\Index::class)->name('product.index');
+        Route::get('/create-product', App\Livewire\Product\Create::class)->name('product.create');
+        Route::get('/show-product/{id}', App\Livewire\Product\Show::class)->name('product.show');
+        Route::get('/edit-product/{id}', App\Livewire\Product\Edit::class)->name('product.edit');
     });
     // DANH MỤC BÀI ĐĂNG
     Route::prefix('category-post')->controller(CategoryPostController::class)->group(function () {
@@ -97,7 +85,7 @@ Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
 Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin')->group(function () {
-    Route::get('/login', 'loginPage')->name('auth.login');
+    Route::get('/login', 'loginPage')->name('login');
     Route::post('/login-process', 'loginProcess')->name('auth.loginProcess');
     Route::get('/register', 'registerPage')->name('auth.register');
     Route::post('/register-process', 'registerProcess')->name('auth.registerProcess');
@@ -108,5 +96,3 @@ Route::prefix('/')->controller(ClientController::class)->group(function () {
 });
 Route::get('/vnpay-response', [ApiVNPay::class, 'returnCallBack'])->name('response.vnpay');
 Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
-
-Route::get('/test-product', ProductPage::class);

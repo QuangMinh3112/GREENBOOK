@@ -35,8 +35,8 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item spa_route" href="{{ route('admin.book.index') }}">Danh sách</a>
-                <a class="collapse-item spa_route" href="{{ route('admin.book.create') }}">Thêm mới</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('product.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('product.create') }}">Thêm mới</a>
             </div>
         </div>
     </li>
@@ -66,8 +66,10 @@
         </a>
         <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item spa_route" href="{{ route('admin.category.index') }}">Danh sách</a>
-                <a class="collapse-item spa_route" href="{{ route('admin.category.create') }}">Thêm mới</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('category.index') }}">Danh
+                    sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('category.create') }}">Thêm
+                    mới</a>
             </div>
         </div>
     </li>
@@ -150,11 +152,6 @@
     </li>
 
     <hr class="sidebar-divider d-none d-md-block">
-
-
-
-
-
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

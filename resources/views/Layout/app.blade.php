@@ -28,20 +28,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script> --}}
     <!-- Option 1: Include in HTML -->
     <style>
         .bg-green {
             background-color: #265149;
         }
+
+        .op-low {
+            opacity: 50%;
+        }
+
+        .ck-editor__editable {
+            min-height: 500px;
+        }
+
+        label {
+            font-weight: bolder;
+        }
     </style>
-    @livewireStyles
 </head>
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
+
 
         <!-- Sidebar -->
         @include('Layout.sidebar')
@@ -135,19 +148,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script src="{{ asset('js/confirmation.js') }}"></script>
-    <script>
+    {{-- <script wire:ignore>
         ClassicEditor
             .create(document.querySelector('#editor'), {
                 ckfinder: {
                     uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
                 }
             })
+            .on('change', function(event) {
+                Livewire.emit.set('description', event.editor.getData());
+            })
             .catch(error => {
-                console.log(uploadUrl)
+                console.error(error);
             });
     </script>
+    <script wire:ignore>
+        window.livewire.on('descriptionUpdated', function(data) {
+            console.log('Livewire event received:', data);
+        });
+    </script>
+
     <script>
         CKEDITOR.stylesSet.add('custom_styles', [{
             name: 'Image in Card',
@@ -158,8 +180,8 @@
         }, ]);
 
         CKEDITOR.config.stylesSet = 'custom_styles';
-    </script>
-    @livewireScripts
+    </script> --}}
+    @stack('script')
 </body>
 
 </html>

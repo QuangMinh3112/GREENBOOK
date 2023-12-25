@@ -1,19 +1,6 @@
 {{-- MẪU --}}
 @extends('Layout.layout')
 @section('content')
-    <div class="row" id="render">
-        {{-- <div class="">
-            <div class="my-2">
-                <form class="d-flex justify-content-end" method="POST" action="{{ route('admin.category.search') }}">
-                    @csrf
-                    <div class="mx-2">
-                        <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo tên">
-                    </div>
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
-            </div>
-        </div> --}}
-    </div>
     <div class="card mb-4 shadow">
         <div class="card-header py-3 bg-green">
             <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>

@@ -88,7 +88,7 @@ class ApiBookController extends Controller
         if ($maxPrice) {
             $query->where('price', '<=', $maxPrice);
         }
-        $book = $query->where('status', 1)->latest()->paginate(10);
+        $book = $query->where('status', 1)->with('category')->latest()->paginate(10);
         if ($book->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
         } else {

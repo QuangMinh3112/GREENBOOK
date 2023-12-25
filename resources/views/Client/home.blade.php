@@ -34,8 +34,8 @@
                 </ul>
                 @guest
                     <div class="gap-3">
-                        <a href="{{ route('auth.register') }}" class="btn btn-primary">Đăng ký</a>
-                        <a href="{{ route('auth.login') }}" class="btn btn-primary">Đăng Nhập</a>
+                        <a href="" class="btn btn-primary">Đăng ký</a>
+                        <a href="" class="btn btn-primary">Đăng Nhập</a>
                     </div>
                 @endguest
                 @auth
@@ -49,7 +49,7 @@
                             @if (Auth::user()->role == 1)
                                 <li><a class="dropdown-item" href="#">Quản trị</a></li>
                             @endif
-                            <li><a class="dropdown-item" href="{{ route('auth.logout') }}">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="">Đăng xuất</a></li>
                         </ul>
                     </li>
                 @endauth

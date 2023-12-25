@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('price')->nullable();
             $table->string('author')->nullable();
             $table->integer('category_id')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->text('short_description')->nullable();
             $table->string('slug')->nullable();
             $table->string('published_company')->nullable();

@@ -41,9 +41,9 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ":api",
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            // \App\Http\Middleware\CheckApiAuth::class,
+            \App\Http\Middleware\CheckApiAuth::class,
             // \App\Http\Middleware\AlwaysAcceptJson::class,
         ],
     ];
@@ -69,8 +69,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckLogin' => \App\Http\Middleware\CheckLogin::class,
         'CheckAdmin' => \App\Http\Middleware\CheckAdmin::class,
-        'auth.api' => \App\Http\Middleware\CheckApiAuth::class,
-        'auth.check' => \App\Http\Middleware\AuthCheck::class,
+        'checkLogin' => \App\Http\Middleware\CheckApiAuth::class,
         'check.book.status' => \App\Http\Middleware\CheckBookStatus::class,
     ];
 }

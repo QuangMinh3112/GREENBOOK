@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Product;
 
-use App\Models\Book;
-use App\Models\Category;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use App\Models\Category;
+use App\Models\Book;
 
 #[Layout('Layout.app')]
 #[Title('Sản phẩm')]
-class ProductPage extends Component
+class Index extends Component
 {
     use WithPagination;
     public $page = 5;
@@ -21,15 +19,15 @@ class ProductPage extends Component
     public $author;
     public $category_id;
     public $sortOrder = "";
-    public $is_activate = 1;
-
+    public $isActivate = 1;
+    public $isOpen = 0;
     public function render()
     {
         sleep(1);
-        return view('livewire.product-page', [
+        return view('livewire.product.index', [
             'products' => Book::nameSearch($this->name)
                 ->authorSearch($this->author)
-                ->where('status', $this->is_activate)
+                ->where('status', $this->isActivate)
                 ->when($this->sortOrder !== "", function ($query) {
                     $query->orderBy('price', $this->sortOrder);
                 })
@@ -39,5 +37,19 @@ class ProductPage extends Component
                 ->paginate($this->page),
             'categories' => Category::tree(),
         ]);
+    }
+    public function deActivate($id)
+    {
+        Book::find($id)->update([
+            'status' => 0,
+        ]);
+        request()->session()->flash('success', 'Cập nhật thành công');
+    }
+    public function test($id)
+    {
+        Book::find($id)->update([
+            'status' => 1,
+        ]);
+        request()->session()->flash('success', 'Cập nhật thành công');
     }
 }

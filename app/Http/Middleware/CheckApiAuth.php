@@ -18,8 +18,7 @@ class CheckApiAuth
     {
         if (Auth::guard('api')->check()) {
             return $next($request);
-        } else {
-            return response()->json(['message' => 'Please login or register'], 401);
         }
+        return response()->json(['message' => 'Unauthenticated.'], 401);
     }
 }
