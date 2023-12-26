@@ -24,51 +24,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
+Route::get('/test-start', function () {
+    return view('Layout.layout');
+});
+
+Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
     // DANH MỤC SÁCH
-    Route::prefix('category')->controller(CategoryController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.category.index');
-        Route::post('/', 'index')->name('admin.category.search');
-        Route::get('show/{id}', 'show')->name('admin.category.show');
-        Route::get('create', 'create')->name('admin.category.create');
-        Route::post('store', 'store')->name('admin.category.store');
-        Route::get('edit/{id}', 'edit')->name('admin.category.edit');
-        Route::post('update/{id}', 'update')->name('admin.category.update');
-        Route::get('delete/{id}', 'delete')->name('admin.category.delete');
+    Route::prefix('category')->group(function () {
+        Route::get('/', App\Livewire\Category\Index::class)->name('category.index');
+        Route::get('/create-category', App\Livewire\Category\Create::class)->name('category.create');
+        Route::get('/edit-category/{id}', App\Livewire\Category\Edit::class)->name('category.edit');
+        Route::get('/show-category/{id}', App\Livewire\Category\Show::class)->name('category.show');
     });
     //  SÁCH
-    Route::prefix('book')->controller(BookController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.book.index');
-        Route::post('/', 'index')->name('admin.book.search');
-        Route::get('show/{id}', 'show')->name('admin.book.show');
-        Route::get('create', 'create')->name('admin.book.create');
-        Route::post('store', 'store')->name('admin.book.store');
-        Route::get('edit/{id}', 'edit')->name('admin.book.edit');
-        Route::post('update/{id}', 'update')->name('admin.book.update');
-        Route::get('delete/{id}', 'delete')->name('admin.book.delete');
-        Route::get('archive', 'archive')->name('admin.book.archive');
-        Route::get('restore/{id}', 'restore')->name('admin.book.restore');
-        Route::get('destroy/{id}', 'destroy')->name('admin.book.destroy');
+    Route::prefix('book')->group(function () {
+        Route::get('/', App\Livewire\Product\Index::class)->name('product.index');
+        Route::get('/create-product', App\Livewire\Product\Create::class)->name('product.create');
+        Route::get('/show-product/{id}', App\Livewire\Product\Show::class)->name('product.show');
+        Route::get('/edit-product/{id}', App\Livewire\Product\Edit::class)->name('product.edit');
     });
     // DANH MỤC BÀI ĐĂNG
-    Route::prefix('category-post')->controller(CategoryPostController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.category-post.index');
-        Route::post('/', 'index')->name('admin.category-post.search');
-        Route::get('show/{id}', 'show')->name('admin.category-post.show');
-        Route::get('create', 'create')->name('admin.category-post.create');
-        Route::post('store', 'store')->name('admin.category-post.store');
-        Route::get('edit/{id}', 'edit')->name('admin.category-post.edit');
-        Route::post('update/{id}', 'update')->name('admin.category-post.update');
-        Route::get('delete/{id}', 'delete')->name('admin.category-post.delete');
+    Route::prefix('category-post')->group(function () {
+        Route::get('/', App\Livewire\CategoryPost\Index::class)->name('category-post.index');
+        Route::get('/create-category-post', App\Livewire\CategoryPost\Create::class)->name('category-post.create');
+        Route::get('/show-category-post/{id}', App\Livewire\CategoryPost\Show::class)->name('category-post.show');
+        Route::get('/edit-category-post/{id}', App\Livewire\CategoryPost\Edit::class)->name('category-post.edit');
     });
     // BÀI ĐĂNG
-    Route::prefix('post')->controller(PostController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.post.index');
-        Route::get('/show/{id}', 'show')->name('admin.post.show');
-        Route::get('/create', 'create')->name('admin.post.create');
-        Route::post('/store', 'store')->name('admin.post.store');
-        Route::get('/edit/{id}', 'edit')->name('admin.post.edit');
-        Route::post('/update/{id}', 'edit')->name('admin.post.update');
+    Route::prefix('post')->group(function () {
+        Route::get('/', App\Livewire\Post\Index::class)->name('post.index');
+        Route::get('/create-post', App\Livewire\Post\Create::class)->name('post.create');
+        Route::get('/show-post/{id}', App\Livewire\Post\Show::class)->name('post.show');
+        Route::get('/edit-post/{id}', App\Livewire\Post\Edit::class)->name('post.edit');
     });
     // COUPON
     Route::prefix('coupon')->controller(CouponController::class)->group(function () {
@@ -81,25 +68,26 @@ Route::prefix('admin')->middleware('auth', 'CheckAdmin')->group(function () {
         Route::get('/destroy/{id}', 'destroy')->name('admin.coupon.destroy');
     });
     // NGƯỜI DÙNG
-    Route::prefix('user')->controller(UsersController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.user.index');
-        Route::post('/', 'index')->name('admin.user.search');
-        Route::get('/delete/{id}', 'delete')->name('admin.user.delete');
-        Route::get('/edit/{id}', 'edit')->name('admin.user.edit');
-        Route::post('/update/{id}', 'update')->name('admin.user.update');
-        Route::get('/show/{id}', 'show')->name('admin.user.show');
+    Route::prefix('user')->group(function () {
+        Route::get('/', App\Livewire\User\Index::class)->name('user.index');
+        Route::get('/create-user', App\Livewire\User\Create::class)->name('user.create');
+        Route::get('/show-user/{id}', App\Livewire\User\Show::class)->name('user.show');
+        Route::get('/edit-user/{id}', App\Livewire\User\Edit::class)->name('user.edit');
     });
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
 Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin')->group(function () {
-    Route::get('/login', 'loginPage')->name('auth.login');
-    Route::post('/login-process', 'loginProcess')->name('auth.loginProcess');
-    Route::get('/register', 'registerPage')->name('auth.register');
-    Route::post('/register-process', 'registerProcess')->name('auth.registerProcess');
-    Route::get('/logout', 'logOut')->name('auth.logout');
+    Route::get('/login', 'loginPage')->name('login');
+    Route::post('/login-process', 'loginProcess')->name('loginProcess');
+    Route::get('/register', 'registerPage')->name('register');
+    Route::post('/register-process', 'registerProcess')->name('registerProcess');
+    Route::get('/logout', 'logOut')->name('logout');
 });
 Route::prefix('/')->controller(ClientController::class)->group(function () {
     Route::get('/', 'index')->name('client.home');
 });
-Route::get('/vnpay-response', [ApiVNPay::class, 'returnCallBack'])->name('response.vnpay');
 Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
+
+Route::get('403-error', function () {
+    return view('Error.403');
+})->name('error.403');

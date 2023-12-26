@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->mediumText('content');
+            $table->longText('content');
             $table->string('image')->default('posts/post.png');
             $table->enum('status', ['Công bố', 'Bản nháp']);
             $table->integer('user_id')->nullable();

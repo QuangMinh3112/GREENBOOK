@@ -4,16 +4,16 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="POST" action="{{ route('auth.loginProcess') }}">
+                <form class="login100-form validate-form" method="POST" action="{{ route('loginProcess') }}">
                     @csrf
                     <span class="login100-form-title p-b-26">
                         Đăng nhập
-                    </span> 
+                    </span>
 
                        @if (session('success'))
                             <div class="alert alert-primary mt-3" role="alert">{{ session('success') }}</div>
                         @endif
-            
+
                     <span class="login100-form-title p-b-48">
                         <i class="zmdi zmdi-font"></i>
                     </span>
@@ -42,8 +42,7 @@
                         <span class="txt1">
                             Chưa có tài khoản ?
                         </span>
-
-                        <a class="txt2" href="{{ route('auth.register') }}">
+                        <a class="txt2" href="{{ route('register') }}">
                             Đăng kí ngay
                         </a>
                     </div>

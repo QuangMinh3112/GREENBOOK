@@ -12,7 +12,7 @@ class ApiEditProfileController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('auth.api');
+        $this->middleware('auth:api');
     }
     public function updateProfile(Request $request)
     {
@@ -31,9 +31,6 @@ class ApiEditProfileController extends Controller
         }
 
         $userData = [];
-        if ($request->filled('password')) {
-            $userData['password'] = bcrypt($request->input('password'));
-        }
         if ($request->filled('name')) {
             $userData['name'] = bcrypt($request->input('name'));
         }
@@ -42,9 +39,6 @@ class ApiEditProfileController extends Controller
         }
         if ($request->filled('email')) {
             $userData['email'] = bcrypt($request->input('email'));
-        }
-        if ($request->filled('password')) {
-            $userData['password'] = bcrypt($request->input('password'));
         }
         if ($request->filled('password')) {
             $userData['password'] = bcrypt($request->input('password'));

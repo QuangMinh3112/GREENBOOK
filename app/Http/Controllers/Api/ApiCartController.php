@@ -25,7 +25,7 @@ class ApiCartController extends Controller
     {
         $this->cart = $cart;
         $this->book = $book;
-        $this->middleware('auth.api');
+        $this->middleware('auth:api');
         $this->middleware('check.book.status')->only(['addToCart']);
     }
 
@@ -105,7 +105,7 @@ class ApiCartController extends Controller
         } else {
             $user_id = Auth::user()->id;
             $carts = $this->cart::where('user_id', $user_id)->get();
-            if ($carts->isEmpty()) {
+            if (count($carts) == 0) {
                 return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
             } else {
                 $total = 0;

@@ -17,9 +17,8 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role != 1) {
-            Alert::error('Bạn không có quyền truy cập');
-            return redirect('/');
+        if (Auth::user()->role == 0) {
+            return redirect()->route('error.403');
         }
         return $next($request);
     }

@@ -23,39 +23,12 @@ class BookController extends Controller
         $this->book = $book;
         $this->category = $category;
     }
-    public function index(Request $request)
+    public function index()
     {
-        //
+        $title = 'Danh sách sản phẩm';
         $books = $this->book->latest()->paginate(10);
         $categories = $this->category::tree();
-        $query = Book::query();
-        if ($request->isMethod('POST')) {
-            $category_id = $request->category_id;
-            $start_price = $request->start_price;
-            $end_price = $request->end_price;
-            $status = $request->status;
-            $name = $request->name;
-            $query = Book::query();
-            if ($category_id) {
-                $query->where('category_id', $category_id);
-            }
-            if ($start_price && $end_price) {
-                $query->whereBetween('price', [$start_price, $end_price]);
-            }
-            if ($status) {
-                $query->where('status', $status);
-            }
-            if ($name) {
-                $query->where('name', 'like', '%' . $name . '%');
-            }
-            $books = $query->latest()->paginate(10);
-            $request->session()->flash('category_id', $request->input('category_id'));
-            $request->session()->flash('start_price', $request->input('start_price'));
-            $request->session()->flash('end_price', $request->input('end_price'));
-            $request->session()->flash('status', $request->input('status'));
-            $request->session()->flash('name', $request->input('name'));
-        }
-        return view('Admin.Books.index', compact('books', 'categories'));
+        return view('Admin.Books.index', compact('books', 'categories', 'title'));
     }
 
     /**
@@ -64,8 +37,9 @@ class BookController extends Controller
     public function create()
     {
         //
+        $title = 'Thêm sản phẩm';
         $categories = $this->category::tree();
-        return view('Admin.Books.create', compact('categories'));
+        return view('Admin.Books.create', compact('categories', 'title'));
     }
 
     /**
@@ -109,9 +83,10 @@ class BookController extends Controller
     public function show(string $id)
     {
         //
+        $title = "Chi tiết sản phẩm";
         $book = $this->book::find($id);
         if ($book) {
-            return view('Admin.Books.show', compact('book'));
+            return view('Admin.Books.show', compact('book', 'title'));
         }
     }
 
@@ -120,10 +95,11 @@ class BookController extends Controller
      */
     public function edit(string $id)
     {
+        $title = "Chỉnh sửa sản phẩm";
         if ($id) {
             $categories = $this->category::tree();
             $book = $this->book->find($id);
-            return view('Admin.Books.edit', compact('book', 'categories'));
+            return view('Admin.Books.edit', compact('book', 'categories', 'title'));
         }
     }
 
@@ -186,8 +162,9 @@ class BookController extends Controller
     }
     public function archive()
     {
+        $title = "Sản phẩm đã xoá";
         $books = $this->book->onlyTrashed()->paginate(10);
-        return view('Admin.Books.archive', compact('books'));
+        return view('Admin.Books.archive', compact('books', 'title'));
     }
     public function restore(string $id)
     {

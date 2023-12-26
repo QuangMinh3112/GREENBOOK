@@ -57,4 +57,12 @@ class Book extends Model
     {
         return asset('storage/' . $book);
     }
+    public function scopeNameSearch($query, $value)
+    {
+        $query->where('name', 'like', '%' . $value . '%');
+    }
+    public function scopeAuthorSearch($query, $value)
+    {
+        $query->where('author', 'like', '%' . $value . '%');
+    }
 }

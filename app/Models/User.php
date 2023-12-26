@@ -50,12 +50,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function getStatus()
+    public function scopeNameSearch($query, $value)
     {
-        if ($this->status == 1) {
-            return "Hoạt động";
-        } else {
-            return "Hạn chế";
-        }
+        $query->where('name', 'like', '%' . $value . '%');
+    }
+    public function scopeEmailSearch($query, $value)
+    {
+        $query->where('email', 'like', '%' . $value . '%');
     }
 }

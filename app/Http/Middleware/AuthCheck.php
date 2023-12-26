@@ -16,8 +16,8 @@ class AuthCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return response()->json(['message' => 'Người dùng chưa đăng nhập'], 401);
+        if ($request->user()) {
+            return response()->json(['message' => 'Bạn không có quyền thực hiện'], 401);
         }
         return $next($request);
     }

@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 class ApiShowProfileController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('checkAuthLogin');
+    }
+
     public function showProfile()
     {
         $user = Auth::user();

@@ -4,7 +4,7 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="POST" action="{{ route('auth.registerProcess') }}">
+                <form class="login100-form validate-form" method="POST" action="{{ route('registerProcess') }}">
                     @csrf
                     <span class="login100-form-title p-b-26">
                         Đăng ký
@@ -47,7 +47,7 @@
                         <span class="txt1">
                             Đã có tài khoản ?
                         </span>
-                        <a class="txt2" href="{{ route('auth.login') }}">
+                        <a class="txt2" href="{{ route('login') }}">
                             Đăng nhập ngay
                         </a>
                     </div>

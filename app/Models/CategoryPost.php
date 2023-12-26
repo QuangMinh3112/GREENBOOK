@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryPost extends Model
 {
     use HasFactory;
+    protected $table = "category_posts";
+    protected $fillable = [
+        "name",
+        "description",
+        "slug",
+        "parent_id"
+    ];
     public function parentCategory()
     {
         return $this->belongsTo(CategoryPost::class, 'parent_id');

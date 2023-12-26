@@ -33,7 +33,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('/unauthenticated', function () {
+    return response()->json(['message' => 'Không thể xác minh'], 403);
+});
 
 Route::middleware(AlwaysAcceptJson::class)->group(function () {
     Route::prefix('book')->controller(ApiBookController::class)->group(function () {
@@ -46,7 +48,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         // Show sách có liên quan
         Route::get('/related-book/{book_id}', 'relatedBook');
         //Tìm kiếm theo trường
-        Route::get('/search/{field}/{name}', 'searchByFiled');
+        Route::get('/search', 'searchByField');
         // Lọc theo giá
         Route::get('/filter-price', 'filterPrice');
     });
@@ -68,7 +70,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         // Hiển thị bài đăng theo id
         Route::get('/show/{id}', 'show');
         // Tìm bài đăng theo trường
-        Route::get('/search/{field}/{name}', 'searchByFiled');
+        Route::get('/search', 'searchByFiled');
         // Tìm bài đăng có liên quan
         Route::get('/related-post/{post_id}', 'relatedPost');
         // Top bài đăng xem nhiều nhất
@@ -83,7 +85,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
     // Đặt lại mật khẩu
     Route::post('/reset-password', [ApiResetPassword::class, 'resetPassword']);
 
-    Route::middleware("auth:api")->group(function () {
+    Route::middleware(['auth:api'])->group(function () {
         // Xem profile cá nhân
         Route::get('/show-profile', [ApiShowProfileController::class, 'showProfile']);
         // Đăng xuất
@@ -99,13 +101,13 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             // Xem giỏ hàng
             Route::get('/', 'index');
             //Thêm mới vào giỏ hàng
-            Route::post('/add-new/{book_id}', 'addToCart');
+            Route::post('/add/{book_id}', 'addToCart');
             //Cập nhật giỏ hàng
             Route::put('/update/{book_id}', 'update');
             // Xoá sản phẩm khỏi giỏ hàng
-            Route::delete('/destroy/{book_id}', 'removeCart');
+            Route::delete('/remove/{book_id}', 'removeCart');
             // Xoá toàn bộ sản phẩm khỏi giỏ hàng
-            Route::delete('/destroy-all', 'removeAll');
+            Route::delete('/remove-all', 'removeAll');
             // Tạo đơn hàng từ giỏ hàng
             Route::post('/create-order', 'createOrder');
         });

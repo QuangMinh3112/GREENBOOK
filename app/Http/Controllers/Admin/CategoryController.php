@@ -19,11 +19,12 @@ class CategoryController extends Controller
     }
     public function index(Request $request)
     {
-        $categories = $this->category->where('parent_id', null)->with('children')->get();
+        $categories = $this->category->where('parent_id', null)->with('children')->paginate(5);
+        $title = "Danh mục sản phẩm";
         if ($request->post() && $request->search) {
             $categories = Category::where('name', 'like', '%' . $request->search . '%')->paginate(10);
         }
-        return view('Admin.Categories.index', compact('categories'));
+        return view('Admin.Categories.index', compact('categories', 'title'));
     }
 
     /**
@@ -32,8 +33,9 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        $title = 'Thêm danh mục';
         $categories = $this->category::tree();
-        return view('Admin.Categories.create', compact('categories'));
+        return view('Admin.Categories.create', compact('categories', 'title'));
     }
 
     /**
@@ -65,8 +67,9 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         //
+        $title = 'Chi tiết danh mục';
         $category = $this->category->find($id);
-        return view('Admin.Categories.show', compact('category'));
+        return view('Admin.Categories.show', compact('category', 'title'));
     }
 
     /**
@@ -75,10 +78,11 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         //
+        $title = 'Chỉnh sửa danh mục';
         if ($id) {
             $category = $this->category::find($id);
             $categories = $this->category::tree();
-            return view('Admin.Categories.edit', compact('category', 'categories'));
+            return view('Admin.Categories.edit', compact('category', 'categories', 'title'));
         }
     }
 
