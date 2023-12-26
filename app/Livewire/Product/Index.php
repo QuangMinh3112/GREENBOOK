@@ -45,7 +45,7 @@ class Index extends Component
         ]);
         request()->session()->flash('success', 'Cập nhật thành công');
     }
-    public function test($id)
+    public function activate($id)
     {
         Book::find($id)->update([
             'status' => 1,

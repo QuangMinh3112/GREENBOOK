@@ -48,7 +48,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         // Show sách có liên quan
         Route::get('/related-book/{book_id}', 'relatedBook');
         //Tìm kiếm theo trường
-        Route::get('/search/{field}/{name}', 'searchByFiled');
+        Route::get('/search', 'searchByField');
         // Lọc theo giá
         Route::get('/filter-price', 'filterPrice');
     });
@@ -70,7 +70,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         // Hiển thị bài đăng theo id
         Route::get('/show/{id}', 'show');
         // Tìm bài đăng theo trường
-        Route::get('/search/{field}/{name}', 'searchByFiled');
+        Route::get('/search', 'searchByFiled');
         // Tìm bài đăng có liên quan
         Route::get('/related-post/{post_id}', 'relatedPost');
         // Top bài đăng xem nhiều nhất

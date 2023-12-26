@@ -39,7 +39,7 @@
                             @endif
                         </div>
 
-                        <a class="btn btn-warning" wire:navigate href="{{ route('category.index') }}">Quay lại</a>
+                        <a class="btn btn-warning" wire:navigate href="{{ route('category-post.index') }}">Quay lại</a>
                     </div>
                 </form>
             </div>

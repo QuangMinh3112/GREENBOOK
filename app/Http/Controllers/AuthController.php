@@ -30,7 +30,7 @@ class AuthController extends Controller
     {
         $data = $request->only('email', 'password');
         if (Auth::attempt($data)) {
-            return redirect('/');
+            return redirect()->route('product.index');
         } else {
             Alert::info('Đăng nhập thất bại', 'Vui lòng kiểm tra lại Email hoặc mật khẩu');
             return back();
@@ -60,11 +60,6 @@ class AuthController extends Controller
     public function logOut()
     {
         Auth::logout();
-        return back();
-    }
-    public function profile()
-    {
-        $user = $this->user::find(Auth::user()->id);
-        
+        return redirect()->route('login');
     }
 }

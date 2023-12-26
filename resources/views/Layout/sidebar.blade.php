@@ -91,17 +91,25 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="login.html">Danh sách</a>
-                <a class="collapse-item" href="register.html">Thêm mới</a>
+                <a wire:navigate class="collapse-item" href="{{ route('post.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item" href="{{ route('post.create') }}">Thêm mới</a>
             </div>
         </div>
     </li>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-tasks"></i>
-            <span>Danh mục</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#six" aria-expanded="true"
+            aria-controls="six">
+            <i class="fas fa-fw fa-newspaper-o"></i>
+            <span>Danh mục bài đăng</span>
+        </a>
+        <div id="six" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item" href="{{ route('category-post.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item" href="{{ route('category-post.create') }}">Thêm mới</a>
+            </div>
+        </div>
     </li>
 
     <!-- Divider -->
@@ -112,9 +120,19 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Danh sách</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
+            aria-expanded="true" aria-controls="collapseFive">
+            <i class="fas fa fa-users"></i>
+            <span>Người dùng</span>
+        </a>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('user.index') }}">Danh
+                    sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('user.create') }}">Thêm
+                    mới</a>
+            </div>
+        </div>
     </li>
 
     <hr class="sidebar-divider d-none d-md-block">

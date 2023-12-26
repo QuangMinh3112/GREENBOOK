@@ -1,12 +1,12 @@
 <div class="">
     <div class="card mb-4 shadow">
         <div class="card-header py-3 bg-green">
-            <h6 class="m-0 font-weight-bold text-white">Chỉnh sửa danh mục</h6>
+            <h6 class="m-0 font-weight-bold text-white">Thêm mới danh mục</h6>
         </div>
         <div class="card-body">
             <div class="example"></div>
             <div class="rounded-bottom">
-                <form class="p-3 active" wire:submit.prevent="update">
+                <form class="p-3 active" wire:submit.prevent="addNew">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -33,13 +33,14 @@
                     <hr>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <button class="btn btn-primary" type="submit">Cập nhật</button>
+                            <button class="btn btn-success" type="submit">Thêm mới</button>
                             @if (session('success'))
                                 <span class="text-success">{{ session('success') }}</span>
                             @endif
                         </div>
 
-                        <a class="btn btn-warning" wire:navigate href="{{ route('category.index') }}">Quay lại</a>
+                        {{-- <button class="btn btn-warning">Quay lại</button> --}}
+                        <a class="btn btn-warning" wire:navigate href="{{ route('category-post.index') }}">Quay lại</a>
                     </div>
                 </form>
             </div>

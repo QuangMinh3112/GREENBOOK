@@ -49,7 +49,7 @@
                             @if (Auth::user()->role == 1)
                                 <li><a class="dropdown-item" href="#">Quản trị</a></li>
                             @endif
-                            <li><a class="dropdown-item" href="">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/auth/logout">Đăng xuất</a></li>
                         </ul>
                     </li>
                 @endauth

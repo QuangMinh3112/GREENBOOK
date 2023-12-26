@@ -65,13 +65,4 @@ class Book extends Model
     {
         $query->where('author', 'like', '%' . $value . '%');
     }
-    public function scopeMinPrice($query, $value)
-    {
-        $query->where('price', '>=', $value);
-    }
-
-    public function scopeMaxPrice($query, $value)
-    {
-        $query->where('price', '<=', $value);
-    }
 }

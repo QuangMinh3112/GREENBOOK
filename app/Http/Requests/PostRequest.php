@@ -30,7 +30,7 @@ class PostRequest extends FormRequest
     public function messages()
     {
         return [
-            
+
             'title.required' => 'Bắt buộc phải điền tên',
             'title.min' => 'Tối thiểu 5 kí tự',
             'title.max' => 'Tối đa 55 kí tự',

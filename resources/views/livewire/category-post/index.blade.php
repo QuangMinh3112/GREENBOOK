@@ -1,6 +1,6 @@
 <div class="card mb-4 shadow">
     <div class="card-header py-3 bg-green">
-        <h6 class="m-0 font-weight-bold text-white">Danh sách danh mục</h6>
+        <h6 class="m-0 font-weight-bold text-white">Danh sách danh mục bài đăng</h6>
     </div>
     <div class="card-body">
         <div class="example">
@@ -21,10 +21,10 @@
                                 </div>
                                 <div class="d-flex">
                                     <!-- Nút View -->
-                                    <a wire:navigate href="{{ route('category.show', $data->id) }}"
+                                    <a wire:navigate href="{{ route('category-post.show', $data->id) }}"
                                         class="mx-2 text-secondary"><i class="fa-solid fa-eye"></i></a>
                                     {{-- Sửa --}}
-                                    <a wire:navigate href="{{ route('category.edit', $data->id) }}"
+                                    <a wire:navigate href="{{ route('category-post.edit', $data->id) }}"
                                         class="mx-2 text-success"><i class="fa-solid fa-pen-to-square"></i></a>
                                     {{-- Xoá --}}
                                     <a href="" class="mx-2 text-danger"
@@ -36,8 +36,8 @@
                             @if (isset($data->children) && count($data->children))
                                 @include('Admin.partials.category-tree', [
                                     'children' => $data->children,
-                                    'edit' => 'category.edit',
-                                    'show' => 'category.show',
+                                    'edit' => 'category-post.edit',
+                                    'show' => 'category-post.show',
                                 ])
                             @endif
                         @endforeach
