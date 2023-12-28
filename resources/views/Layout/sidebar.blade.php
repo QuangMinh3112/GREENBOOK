@@ -174,6 +174,20 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#eight"
+            aria-expanded="true" aria-controls="eight">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Phí ship</span>
+        </a>
+        <div id="eight" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('ship-fee.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('ship-fee.create') }}">Thêm mới</a>
+            </div>
+        </div>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

@@ -5,11 +5,14 @@ use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
 use App\Http\Controllers\Api\ApiCategoryPostController;
 use App\Http\Controllers\Api\ApiCouponController;
+use App\Http\Controllers\Api\ApiDistrict;
 use App\Http\Controllers\Api\ApiFavoriteBookController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiPostController;
+use App\Http\Controllers\Api\ApiProvince;
 use App\Http\Controllers\Api\ApiVNPay;
+use App\Http\Controllers\Api\ApiWard;
 use App\Http\Controllers\Api\Auth\ApiEditProfileController;
 use App\Http\Controllers\Api\Auth\ApiLoginController;
 use App\Http\Controllers\Api\Auth\ApiLogoutController;
@@ -38,6 +41,13 @@ Route::get('/unauthenticated', function () {
 });
 
 Route::middleware(AlwaysAcceptJson::class)->group(function () {
+    // Lấy tất cả thành phố/tỉnh
+    Route::get('provinces', [ApiProvince::class, 'index']);
+    // Lấy tất cả quận/xã
+    Route::get('districts/{id}', [ApiDistrict::class, 'findDistrict']);
+    // Lấy tất cả huyện
+    Route::get('wards/{id}', [ApiWard::class, 'findWard']);
+
     Route::prefix('book')->controller(ApiBookController::class)->group(function () {
         //Show tất cả sách
         Route::get('/', 'index');
@@ -139,6 +149,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             Route::put('/cancel-order/{order_id}', 'cancelOrder');
         });
         Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
+        Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
     });
 });
-Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo

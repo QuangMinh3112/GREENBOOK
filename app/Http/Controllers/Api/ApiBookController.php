@@ -85,7 +85,7 @@ class ApiBookController extends Controller
         }
         if ($sortPrice !== '') {
             $query->orderBy('price', $sortPrice);
-    }
+        }
         if ($sortDate !== '') {
             if ($sortDate === 'new') {
                 $query->latest('created_at');
