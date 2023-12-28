@@ -137,16 +137,21 @@
 
     <hr class="sidebar-divider d-none d-md-block">
 
-    <div class="sidebar-heading">
-        Quản lý mã giảm giá
-    </div>
-
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#seven"
+            aria-expanded="true" aria-controls="seven">
             <i class="fas fa-fw fa-barcode"></i>
-            <span>Danh sách</span></a>
+            <span>Quản lý mã giảm giá</span>
+        </a>
+        <div id="seven" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('coupon.index') }}">Danh
+                    sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('coupon.create') }}">Thêm
+                    mới</a>
+            </div>
+        </div>
     </li>
-
     <hr class="sidebar-divider">
 
     <!-- Heading -->
@@ -174,6 +179,5 @@
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
-
     <!-- Sidebar Message -->
 </ul>

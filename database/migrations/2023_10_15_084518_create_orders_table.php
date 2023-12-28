@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone_number');
             $table->string('address');
-            $table->enum('payment', ['COD', 'Paid'])->default('COD');
+            $table->enum('payment', ['COD', 'Paid', 'Waiting'])->nullable()->default("Waiting");
             $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed', 'cancel'])->default('pending');
             $table->integer('total');
             $table->integer('coupon')->nullable();

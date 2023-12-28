@@ -2,14 +2,7 @@
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\BookController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CategoryPostController;
-use App\Http\Controllers\Admin\CouponController;
-use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Api\ApiMomo;
-use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,14 +51,10 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/edit-post/{id}', App\Livewire\Post\Edit::class)->name('post.edit');
     });
     // COUPON
-    Route::prefix('coupon')->controller(CouponController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.coupon.index');
-        Route::get('/show/{id}', 'show')->name('admin.coupon.show');
-        Route::get('/create', 'create')->name('admin.coupon.create');
-        Route::post('/store', 'store')->name('admin.coupon.store');
-        Route::get('/edit/{id}', 'edit')->name('admin.coupon.edit');
-        Route::post('/update/{id}', 'update')->name('admin.coupon.update');
-        Route::get('/destroy/{id}', 'destroy')->name('admin.coupon.destroy');
+    Route::prefix('coupon')->group(function () {
+        Route::get('/', App\Livewire\Coupon\Index::class)->name('coupon.index');
+        Route::get('/create-coupon', App\Livewire\Coupon\Create::class)->name('coupon.create');
+        Route::get('/edit-coupon/{id}', App\Livewire\Coupon\Edit::class)->name('coupon.edit');
     });
     // NGƯỜI DÙNG
     Route::prefix('user')->group(function () {

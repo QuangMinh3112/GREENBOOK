@@ -51,14 +51,13 @@ class ApiFavoriteBookController extends Controller
             return response()->json(['message' => 'Lỗi khi thêm sản phẩm yêu thích'], 404);
         }
     }
-    public function removeFavorite($book_id)
+    public function removeFavorite($id_favorite)
     {
         $user = Auth::user();
         if ($user) {
             $favoriteBook = FavoriteBook::where('user_id', $user->id)
-                ->where('book_id', $book_id)
+                ->where('id', $id_favorite)
                 ->first();
-
             if ($favoriteBook) {
                 $favoriteBook->delete();
                 return response()->json(['message' => 'Xoá sản phẩm yêu thích thành công'], 200);

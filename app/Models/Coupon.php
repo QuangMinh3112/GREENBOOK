@@ -10,17 +10,22 @@ class Coupon extends Model
     use HasFactory;
     protected $table = 'coupons';
     protected $fillable = [
+        'name',
         'code',
-        'status',
-        'discount',
         'value',
-        'end_time',
-        'description'
+        'type',
+        'quantity',
+        'start_date',
+        'end_date',
+        'point_required',
+        'used_count',
+        'price_required',
+        'status'
     ];
 
     public function getCouponValue(): string
     {
-        if ($this->value === "percent") {
+        if ($this->type === "percent") {
             return "%";
         } else {
             return "VNĐ";
