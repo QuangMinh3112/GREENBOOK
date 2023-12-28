@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Str;
 
 
 class ApiLoginController extends Controller
@@ -35,5 +38,49 @@ class ApiLoginController extends Controller
         } else {
             return response()->json(['error' => 'Vui lòng kiểm tra lại email hoặc mật khẩu'], 401);
         }
+    }
+    public function redirectGoogle()
+    {
+        return Socialite::driver('google')->stateless()->redirect();
+    }
+    public function handleGoogleCallback()
+    {
+        $socialiteUser = Socialite::driver('google')->stateless()->user();
+
+        $user = User::where('email', $socialiteUser->email)->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $socialiteUser->name,
+                'email' => $socialiteUser->email,
+                'password' => bcrypt(Str::random(16)),
+            ]);
+        }
+
+        $token = $user->createToken('Socialite Token')->accessToken;
+
+        return response()->json(['access_token' => $token, 'user' => $user]);
+    }
+    public function redirectFacebook()
+    {
+        return Socialite::driver('facebook')->stateless()->redirect();
+    }
+    public function handleFacebookCallback()
+    {
+        $socialiteUser = Socialite::driver('facebook')->stateless()->user();
+
+        $user = User::where('email', $socialiteUser->email)->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $socialiteUser->name,
+                'email' => $socialiteUser->email,
+                'password' => bcrypt(Str::random(16)),
+            ]);
+        }
+
+        $token = $user->createToken('Socialite Token')->accessToken;
+
+        return response()->json(['access_token' => $token]);
     }
 }

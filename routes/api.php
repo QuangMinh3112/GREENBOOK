@@ -5,11 +5,14 @@ use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
 use App\Http\Controllers\Api\ApiCategoryPostController;
 use App\Http\Controllers\Api\ApiCouponController;
+use App\Http\Controllers\Api\ApiDistrict;
 use App\Http\Controllers\Api\ApiFavoriteBookController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiPostController;
+use App\Http\Controllers\Api\ApiProvince;
 use App\Http\Controllers\Api\ApiVNPay;
+use App\Http\Controllers\Api\ApiWard;
 use App\Http\Controllers\Api\Auth\ApiEditProfileController;
 use App\Http\Controllers\Api\Auth\ApiLoginController;
 use App\Http\Controllers\Api\Auth\ApiLogoutController;
@@ -38,6 +41,13 @@ Route::get('/unauthenticated', function () {
 });
 
 Route::middleware(AlwaysAcceptJson::class)->group(function () {
+    // Lấy tất cả thành phố/tỉnh
+    Route::get('provinces', [ApiProvince::class, 'index']);
+    // Lấy tất cả quận/xã
+    Route::get('districts/{id}', [ApiDistrict::class, 'findDistrict']);
+    // Lấy tất cả huyện
+    Route::get('wards/{id}', [ApiWard::class, 'findWard']);
+
     Route::prefix('book')->controller(ApiBookController::class)->group(function () {
         //Show tất cả sách
         Route::get('/', 'index');
@@ -47,10 +57,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::get('/show/{id}', 'show');
         // Show sách có liên quan
         Route::get('/related-book/{book_id}', 'relatedBook');
-        //Tìm kiếm theo trường
-        Route::get('/search', 'searchByField');
-        // Lọc theo giá
-        Route::get('/filter-price', 'filterPrice');
+        //Tìm kiếm theo trường, sắp sếp và lọc
+        Route::get('search-and-filter', 'search');
     });
     Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
         //Lấy toàn bộ danh mục sách theo sơ đồ cây
@@ -80,6 +88,12 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
     Route::post('/login', [ApiLoginController::class, 'login']);
     // Đăng ký
     Route::post('/register', [ApiRegisterController::class, 'register']);
+    // Đăng nhập GOOGLE
+    Route::get('/login/google', [ApiLoginController::class, 'redirectGoogle'])->middleware('web');
+    Route::get('/login/google/callback', [ApiLoginController::class, 'handleGoogleCallback'])->middleware('web');
+    // Đăng nhập FACEBOOK
+    Route::get('/login/facebook', [ApiLoginController::class, 'redirectFacebook'])->middleware('web');
+    Route::get('/login/facebook/callback', [ApiLoginController::class, 'handleFacebookCallback'])->middleware('web');
     // Quên mật khẩu
     Route::post('/forgot-password', [ApiResetPassword::class, 'forgotPassword']);
     // Đặt lại mật khẩu
@@ -118,7 +132,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             // Thêm sản phẩm yêu thích
             Route::post('/add/{book_id}', 'addFavorite');
             // Xoá sản phẩm yêu thích
-            Route::delete('/remove/{book_id}', 'removeFavorite');
+            Route::delete('/remove/{id_favorite}', 'removeFavorite');
         });
         // Lất tất cả coupon public
         Route::prefix('coupon')->controller(ApiCouponController::class)->group(function () {
@@ -135,6 +149,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             Route::put('/cancel-order/{order_id}', 'cancelOrder');
         });
         Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
-        Route::post('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
+        Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
     });
 });

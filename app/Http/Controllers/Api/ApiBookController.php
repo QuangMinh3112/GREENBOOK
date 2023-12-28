@@ -55,43 +55,50 @@ class ApiBookController extends Controller
             return response()->json(['message' => 'Không tìm thấy sách có liên quan'], 404);
         }
     }
-    // TÌM THEO TRƯỜNG
-    public function searchByField(Request $request)
+    // TÌM THEO TRƯỜNG & LỌC GIÁ
+    public function search(Request $request)
     {
-        $field = $request->field;
-        $name = $request->name;
-        if ($field === "category_id") {
-            $books = Book::where('category_id', $name)->where('status', 1)->get();
-        } else {
-            $books = Book::where($field, 'LIKE', '%' . $name . '%')->where('status', 1)->get();
-        }
-
-        if ($books->count() > 0) {
-            return response()->json(['message' => 'Đã tìm thấy sản phẩm', 'data' => BookResource::collection($books)], 200);
-        } else {
-            return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp'], 404);
-        }
-    }
-
-    // LỌC THEO GIÁ
-    public function filterPrice(Request $request)
-    {
+        $query = Book::query();
+        $field = $request->input('field');
+        $name = $request->input('name');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
-
-        $query = Book::query();
-
+        $sortName = $request->input('sort_name', '');
+        $sortPrice = $request->input('sort_price', '');
+        $sortDate = $request->input('sort_date', '');
+        if (!empty($field) && $name) {
+            if ($field === "category_id") {
+                $query->orWhere($field, $name);
+            } else {
+                $query->orWhere($field, 'LIKE', '%' . $name . '%');
+            }
+        }
         if ($minPrice) {
             $query->where('price', '>=', $minPrice);
         }
         if ($maxPrice) {
             $query->where('price', '<=', $maxPrice);
         }
-        $book = $query->where('status', 1)->with('category')->latest()->paginate(10);
-        if ($book->isEmpty()) {
+
+        if ($sortName !== '') {
+            $query->orderBy('name', $sortName);
+        }
+        if ($sortPrice !== '') {
+            $query->orderBy('price', $sortPrice);
+        }
+        if ($sortDate !== '') {
+            if ($sortDate === 'new') {
+                $query->latest('created_at');
+            } elseif ($sortDate === 'old') {
+                $query->oldest('created_at');
+            }
+        }
+        $query->with('category')->where('status', 1);
+        $books = $query->paginate(10);
+        if ($books->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
         } else {
-            return response()->json(['message' => 'Success', 'data' => BookResource::collection($book)]);
+            return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)]);
         }
     }
 }

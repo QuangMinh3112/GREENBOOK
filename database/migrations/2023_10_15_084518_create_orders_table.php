@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('order_code')->uniqid();
             $table->string('name');
             $table->string('phone_number');
+            $table->integer('province_id');
+            $table->integer('district_id');
+            $table->integer('ward_id');
             $table->string('address');
-            $table->enum('payment', ['COD', 'Paid'])->default('COD');
+            $table->enum('payment', ['COD', 'Paid', 'Waiting'])->nullable()->default("Waiting");
             $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed', 'cancel'])->default('pending');
             $table->integer('total');
             $table->integer('coupon')->nullable();

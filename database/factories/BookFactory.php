@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -36,6 +37,7 @@ class BookFactory extends Factory
             'sale' => $this->faker->numberBetween(0, 1),
             'number_of_pages' => $this->faker->numberBetween(100, 300),
             'view' => $this->faker->numberBetween(10, 1000),
+            'created_at' => $this->faker->dateTimeBetween(Carbon::now()->subMonth(2), Carbon::now()),
         ];
     }
 }

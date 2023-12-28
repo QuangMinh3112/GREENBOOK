@@ -70,9 +70,13 @@ class ApiCartController extends Controller
             return response()->json(['message' => 'Không tìm thấy sản phẩm']);
         } else {
             $newQuantity = $request->input('quantity');
+            $book = Book::find($cart->book_id);
+            if ($newQuantity > $book->quantity) {
+                return response()->json(['message' => 'Số lượng sản phẩm có sẵn không đủ'], 404);
+            }
             $cart->quantity = $newQuantity;
             $cart->update();
-            return response()->json(['message' => 'Cập nhật thành công', 'data' => $cart]);
+            return response()->json(['message' => 'Cập nhật thành công', 'data' => $cart], 200);
         }
     }
     public function removeCart($id_cart)
@@ -100,6 +104,7 @@ class ApiCartController extends Controller
     {
         $invalidBook = [];
         $outStock = [];
+        $payment = $request->input('payment');
         if (Auth::user()->is_vertify != 1) {
             return response()->json(['message' => 'Bạn cần phải xác minh tài khoản trước khi đặt hàng']);
         } else {
@@ -145,7 +150,6 @@ class ApiCartController extends Controller
                         'name' => $request->input('name'),
                         'phone_number' => $request->input('phone_number'),
                         'address' => $request->input('address'),
-                        'payment' => 'COD',
                         'total' => 0,
                         'coupon' => $coupon,
                         'user_id' => $user_id,
@@ -176,7 +180,15 @@ class ApiCartController extends Controller
                     $this->cart::where('user_id', $user_id)->delete();
                     $orderDetail = OrderDetail::where('order_id', $order->id)->get();
                     Mail::to(Auth::user()->email)->send(new OrderSuccess($order, $orderDetail));
-                    return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
+                    if ($payment === "COD") {
+                        $order->update([
+                            "payment" => "COD"
+                        ]);
+                        return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
+                    } else if ($payment === "MOMO") {
+                        $url =  route('momo_payment', ['order_id' => $order->id]);
+                        return response()->json(['message' => 'Vui lòng thực hiện thanh toán', 'data' => $order, 'url' => $url]);
+                    }
                 }
             }
         }

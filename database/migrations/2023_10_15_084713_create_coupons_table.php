@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
-            $table->integer('discount')->nullable();
-            $table->enum('value', ['number', 'percent'])->nullable();
-            $table->enum('status', ['public', 'private'])->nullable();
-            $table->dateTime('end_time')->nullable();
+            $table->integer('value')->nullable();
+            $table->enum('type', ['number', 'percent'])->nullable();
+            $table->integer('quantity')->default(1);
+            $table->dateTime('start_date')->nullable();
+            $table->integer('used_count')->default(0);
+            $table->dateTime('end_date')->nullable();
             $table->integer('point_required')->default(100);
-            $table->text('description')->nullable();
+            $table->integer('price_required')->default(0);
+            $table->enum('status', ['public', 'private'])->default('public');
             $table->timestamps();
         });
     }
