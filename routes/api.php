@@ -41,13 +41,6 @@ Route::get('/unauthenticated', function () {
 });
 
 Route::middleware(AlwaysAcceptJson::class)->group(function () {
-    // Lấy tất cả thành phố/tỉnh
-    Route::get('provinces', [ApiProvince::class, 'index']);
-    // Lấy tất cả quận/xã
-    Route::get('districts/{id}', [ApiDistrict::class, 'findDistrict']);
-    // Lấy tất cả huyện
-    Route::get('wards/{id}', [ApiWard::class, 'findWard']);
-
     Route::prefix('book')->controller(ApiBookController::class)->group(function () {
         //Show tất cả sách
         Route::get('/', 'index');

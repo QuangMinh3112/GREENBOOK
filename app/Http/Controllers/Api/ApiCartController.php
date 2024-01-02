@@ -113,7 +113,7 @@ class ApiCartController extends Controller
             if (count($carts) == 0) {
                 return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
             } else {
-                $total = 0;
+                $total_product_amount = 0;
                 if ($request->input('coupon')) {
                     $coupon = Coupon::where('code', 'LIKE', '%' . $request->input('coupon') . '%')->first();
 
@@ -150,9 +150,11 @@ class ApiCartController extends Controller
                         'name' => $request->input('name'),
                         'phone_number' => $request->input('phone_number'),
                         'address' => $request->input('address'),
+                        'total_product_amount' => 0,
                         'total' => 0,
                         'coupon' => $coupon,
                         'user_id' => $user_id,
+                        'ship_fee' => $request->input('ship_fee'),
                         'added_date' => now(),
                     ]);
                     foreach ($carts as $cart) {
@@ -165,16 +167,17 @@ class ApiCartController extends Controller
                             'book_image' => $book->image,
                             'book_price' => $book->price,
                         ]);
-                        $total += ($cart->quantity * $book->price);
+                        $total_product_amount += ($cart->quantity * $book->price);
                     }
                     if ($coupon != null) {
                         if ($coupon->value === 'number') {
-                            $order->total = $total - $coupon->discount;
+                            $order->total = $total_product_amount - $coupon->discount;
                         } else {
-                            $order->total = $total - ($total * ($coupon->discount / 100));
+                            $order->total = $total_product_amount - ($total_product_amount * ($coupon->discount / 100));
                         }
                     } else {
-                        $order->total = $total;
+                        $order->total_product_amount = $total_product_amount;
+                        $order->total = $total_product_amount + $order->ship_fee;
                     }
                     $order->save();
                     $this->cart::where('user_id', $user_id)->delete();

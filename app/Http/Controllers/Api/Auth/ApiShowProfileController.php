@@ -11,7 +11,7 @@ class ApiShowProfileController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('checkAuthLogin');
+        $this->middleware('auth:api');
     }
 
     public function showProfile()
