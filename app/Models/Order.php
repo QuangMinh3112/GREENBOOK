@@ -19,6 +19,8 @@ class Order extends Model
         'address',
         'payment',
         'status',
+        'ship_fee',
+        'total_product_amount',
         'total',
         'code',
         'user_id'

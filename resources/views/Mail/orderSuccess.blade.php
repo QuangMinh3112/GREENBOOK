@@ -82,7 +82,7 @@
                     @endphp
                     @foreach ($orderDetail as $data)
                         <tr>
-                            <td> {{ $i }}</td>
+                            <td>{{ $i }}</td>
                             <td>{{ $data->book_name }}</td>
                             <td>{{ $data->book_price }} VNĐ</td>
                             <td>{{ $data->quantity }}</td>
@@ -93,7 +93,19 @@
                         @endphp
                     @endforeach
                     <tr class="total">
-                        <td colspan="4"><b>Tổng tiền</b></td>
+                        <td colspan="4"><b>Tổng tiền sản phẩm</b></td>
+                        <td>
+                            <h5>{{ $order->total_product_amount }} VNĐ</h5>
+                        </td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="4"><b>Phí vận chuyển</b></td>
+                        <td>
+                            <h5>{{ $order->ship_fee }} VNĐ</h5>
+                        </td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="4"><b>Tổng thanh toán</b></td>
                         <td>
                             <h5>{{ $order->total }} VNĐ</h5>
                         </td>

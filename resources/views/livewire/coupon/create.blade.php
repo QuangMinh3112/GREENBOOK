@@ -25,6 +25,7 @@
                         <option selected value="percent">Chọn loại KM</option>
                         <option value="percent">Phần trăm</option>
                         <option value="number">Giá tiền</option>
+                        <option value="free_ship">Free ship</option>
                     </select>
                     @error('type')
                         <span class="text-danger fst-italic">{{ $message }}</span>

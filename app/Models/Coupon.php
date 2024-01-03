@@ -36,4 +36,8 @@ class Coupon extends Model
     {
         return $userPoint >= $this->point_required;
     }
+    public function getImageAttribute($coupon)
+    {
+        return asset('storage/' . $coupon);
+    }
 }

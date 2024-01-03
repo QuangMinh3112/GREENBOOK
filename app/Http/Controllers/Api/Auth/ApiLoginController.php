@@ -54,6 +54,7 @@ class ApiLoginController extends Controller
                 'name' => $socialiteUser->name,
                 'email' => $socialiteUser->email,
                 'password' => bcrypt(Str::random(16)),
+                'is_vertify' => 1,
             ]);
         }
 
