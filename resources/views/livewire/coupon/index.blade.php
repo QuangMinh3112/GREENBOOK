@@ -11,6 +11,7 @@
                             <tr>
                                 <th>STT</th>
                                 <th scope="col">Tên</th>
+                                <th scope="col">QR CODE</th>
                                 <th scope="col">CODE</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Đã dùng</th>
@@ -27,6 +28,9 @@
                                 <tr>
                                     <th>{{ $data->id }}</th>
                                     <td>{{ $data->name }}</td>
+                                    <td><img class="img-thumbnail" src="{{ $data->image }}" alt=""
+                                            width="100">
+                                    </td>
                                     <td>{{ $data->code }}</td>
                                     <td>{{ $data->quantity }}</td>
                                     <td>{{ $data->used_count }}</td>

@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
+            $table->string('image')->default('qr_coupon/qr_code.jpg');
             $table->integer('value')->nullable();
-            $table->enum('type', ['number', 'percent'])->nullable();
+            $table->enum('type', ['number', 'percent', 'free_ship'])->nullable();
             $table->integer('quantity')->default(1);
             $table->dateTime('start_date')->nullable();
             $table->integer('used_count')->default(0);

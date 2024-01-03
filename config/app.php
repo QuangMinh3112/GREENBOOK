@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Ichtrojan\Otp\OtpServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -187,6 +188,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Otp' => Ichtrojan\Otp\Otp::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'QrCode' => \SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
     ])->toArray(),
 
 ];

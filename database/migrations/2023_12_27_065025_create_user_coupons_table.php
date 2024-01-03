@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('coupon_id');
+            $table->integer('is_used')->default(0);
             $table->timestamps();
         });
     }

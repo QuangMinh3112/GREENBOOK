@@ -12,5 +12,10 @@ class UserCoupon extends Model
     protected $fillable = [
         'user_id',
         'coupon_id',
+        'is_used'
     ];
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
+    }
 }

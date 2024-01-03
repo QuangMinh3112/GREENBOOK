@@ -12,6 +12,7 @@ use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\UserCoupon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -41,22 +42,33 @@ class ApiCartController extends Controller
     }
     public function addToCart(Request $request, $book_id)
     {
-        $user_id = Auth()->user()->id;
+        $user = Auth::user();
         $book_id = $book_id;
-
+        if ($request->input('quantity')) {
+            $quantity = $request->input('quantity');
+        } else {
+            $quantity = 1;
+        }
         $book = Book::find($book_id);
         if ($book->quantity == 0) {
             return response()->json(['message' => 'Sản phẩm đã hết hàng'], 200);
         }
-        $cartItem = Cart::where('user_id', $user_id)->where('book_id', $book_id)->first();
+        if ($book->quantity < $quantity) {
+            return response()->json(['message' => 'Sản phẩm có sẵn không đủ'], 200);
+        }
+        $cartItem = Cart::where('user_id', $user->id)->where('book_id', $book_id)->first();
         if ($cartItem) {
-            $cartItem->quantity++;
-            $cartItem->save();
+            $cartItem->quantity += $quantity;
+            if ($cartItem->quantity > $book->quantity) {
+                return response()->json(['message' => 'Sản phẩm có sẵn không đủ'], 200);
+            } else {
+                $cartItem->save();
+            }
         } else {
             $this->cart->create([
-                'user_id' => $user_id,
+                'user_id' => $user->id,
                 'book_id' => $book_id,
-                'quantity' => 1,
+                'quantity' => $quantity,
                 'added_date' => now()
             ]);
         }
@@ -93,19 +105,24 @@ class ApiCartController extends Controller
     {
         $user = Auth::user();
         $carts = $this->cart::where('user_id', $user->id)->get();
+
         if ($carts->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy giỏ hàng'], 404);
         } else {
-            $carts->each()->delete();
+            $carts->each(function ($cart) {
+                $cart->delete();
+            });
             return response()->json(['message' => 'Xoá toàn bộ sản phẩm trong giỏ hàng thành công'], 200);
         }
     }
+
     public function createOrder(OrderRequest $request)
     {
         $invalidBook = [];
         $outStock = [];
+        $user = Auth::user();
         $payment = $request->input('payment');
-        if (Auth::user()->is_vertify != 1) {
+        if ($user->is_vertify != 1) {
             return response()->json(['message' => 'Bạn cần phải xác minh tài khoản trước khi đặt hàng']);
         } else {
             $user_id = Auth::user()->id;
@@ -114,18 +131,6 @@ class ApiCartController extends Controller
                 return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
             } else {
                 $total_product_amount = 0;
-                if ($request->input('coupon')) {
-                    $coupon = Coupon::where('code', 'LIKE', '%' . $request->input('coupon') . '%')->first();
-
-                    if ($coupon && !$coupon->qualified(auth()->user()->point)) {
-                        return response()->json(['message' => 'Không đủ điểm để sử dụng mã giảm giá này'], 422);
-                    }
-                    if (!$coupon) {
-                        return response()->json(['message' => 'Không tồn tại mã giảm giá'], 422);
-                    }
-                } else {
-                    $coupon = null;
-                }
                 foreach ($carts as $cart) {
                     $book = $this->book::find($cart->book_id);
                     if ($book->status == 0) {
@@ -152,7 +157,7 @@ class ApiCartController extends Controller
                         'address' => $request->input('address'),
                         'total_product_amount' => 0,
                         'total' => 0,
-                        'coupon' => $coupon,
+                        'coupon' => "",
                         'user_id' => $user_id,
                         'ship_fee' => $request->input('ship_fee'),
                         'added_date' => now(),
@@ -169,12 +174,33 @@ class ApiCartController extends Controller
                         ]);
                         $total_product_amount += ($cart->quantity * $book->price);
                     }
-                    if ($coupon != null) {
-                        if ($coupon->value === 'number') {
-                            $order->total = $total_product_amount - $coupon->discount;
-                        } else {
-                            $order->total = $total_product_amount - ($total_product_amount * ($coupon->discount / 100));
+                    $coupon = null;
+                    if ($request->input('coupon_id')) {
+                        $user_coupon = UserCoupon::where('user_id', $user->id)
+                            ->where('coupon_id', $request->input('coupon_id'))
+                            ->where('is_used', 0)
+                            ->first();
+                        if ($user_coupon) {
+                            $coupon = Coupon::find($user_coupon->coupon_id);
+                            if ($coupon->price_required > $total_product_amount) {
+                                return response()->json(["message" => "Tổng giá tiền chưa đạt tiêu chuẩn"], 422);
+                            } else {
+                                $user_coupon->update(['is_used' => 1]);
+                            }
                         }
+                    }
+                    if ($coupon != null) {
+                        if ($coupon->type === "number") {
+                            $order->total_product_amount = $total_product_amount - $coupon->value;
+                        }
+                        if ($coupon->type === "percent") {
+                            $order->total_product_amount = $total_product_amount - ($total_product_amount * ($coupon->value / 100));
+                        }
+                        if ($coupon->type === "free_ship") {
+                            $order->ship_fee = 0;
+                        }
+                        $order->coupon = $coupon->code;
+                        $order->total = $order->total_product_amount + $order->ship_fee;
                     } else {
                         $order->total_product_amount = $total_product_amount;
                         $order->total = $total_product_amount + $order->ship_fee;
@@ -182,7 +208,7 @@ class ApiCartController extends Controller
                     $order->save();
                     $this->cart::where('user_id', $user_id)->delete();
                     $orderDetail = OrderDetail::where('order_id', $order->id)->get();
-                    Mail::to(Auth::user()->email)->send(new OrderSuccess($order, $orderDetail));
+                    Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail));
                     if ($payment === "COD") {
                         $order->update([
                             "payment" => "COD"

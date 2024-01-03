@@ -5,14 +5,12 @@ use App\Http\Controllers\Api\ApiCartController;
 use App\Http\Controllers\Api\ApiCategoryController;
 use App\Http\Controllers\Api\ApiCategoryPostController;
 use App\Http\Controllers\Api\ApiCouponController;
-use App\Http\Controllers\Api\ApiDistrict;
 use App\Http\Controllers\Api\ApiFavoriteBookController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiPostController;
-use App\Http\Controllers\Api\ApiProvince;
+use App\Http\Controllers\Api\ApiUserCouponController;
 use App\Http\Controllers\Api\ApiVNPay;
-use App\Http\Controllers\Api\ApiWard;
 use App\Http\Controllers\Api\Auth\ApiEditProfileController;
 use App\Http\Controllers\Api\Auth\ApiLoginController;
 use App\Http\Controllers\Api\Auth\ApiLogoutController;
@@ -20,7 +18,6 @@ use App\Http\Controllers\Api\Auth\ApiRegisterController;
 use App\Http\Controllers\Api\Auth\ApiResetPassword;
 use App\Http\Controllers\Api\Auth\ApiShowProfileController;
 use App\Http\Controllers\Api\Auth\ApiVerificationController;
-use App\Http\Controllers\Api\StripePaymentController;
 use App\Http\Middleware\AlwaysAcceptJson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -129,7 +126,20 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         });
         // Lất tất cả coupon public
         Route::prefix('coupon')->controller(ApiCouponController::class)->group(function () {
+            // Lấy tất cả coupon
             Route::get('/', 'getFreeCoupon');
+            // Xem chi tiết Coupon
+            Route::get('/show/{id}', 'showCoupon');
+            // Lấy coupon
+            Route::get('/get-coupon/{id}', 'getCoupon');
+        });
+        Route::prefix('user-coupon')->controller(ApiUserCouponController::class)->group(function () {
+            // Xem danh sách coupon user
+            Route::get('/', 'index');
+            // Xem chi tiết coupon của user
+            Route::get('/show/{id}', 'show');
+            // Xoá coupon
+            Route::get('/delete/{id}', 'delete');
         });
         Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
             // Xem đơn hàng
@@ -141,7 +151,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             // Huỷ đơn hàng (Nếu là status pending sẽ thay đổi được, shipping shipped completed faild thì không)
             Route::put('/cancel-order/{order_id}', 'cancelOrder');
         });
-        Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
+        // Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
         Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
     });
 });
