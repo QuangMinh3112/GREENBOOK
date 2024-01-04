@@ -35,7 +35,7 @@ class ApiCartController extends Controller
         $user = Auth()->user();
         $carts = $this->cart->where('user_id', $user->id)->with(['book'])->latest('id')->get();
         if (count($carts) > 0) {
-            return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => CartResource::collection($carts)], 200);
+            return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => $carts], 200);
         } else {
             return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 200);
         }
@@ -74,10 +74,10 @@ class ApiCartController extends Controller
         }
         return response()->json(['message' => 'Thêm sản phẩm thành công'], 200);
     }
-    public function update(Request $request, $book_id)
+    public function update(Request $request, $cart_id)
     {
         $user_id = Auth()->user()->id;
-        $cart = $this->cart->where('book_id', $book_id)->where('user_id', $user_id)->first();
+        $cart = $this->cart->where('id', $cart_id)->where('user_id', $user_id)->first();
         if (!$cart) {
             return response()->json(['message' => 'Không tìm thấy sản phẩm']);
         } else {

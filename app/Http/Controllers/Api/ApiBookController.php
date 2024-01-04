@@ -17,7 +17,7 @@ class ApiBookController extends Controller
     public function index()
     {
         $books = Book::with('category')->where('status', 1)->paginate(10);
-        return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)], 200);
+        return response()->json(['message' => 'Success', 'data' => $books], 200);
     }
     public function show(string $id)
     {
@@ -36,7 +36,7 @@ class ApiBookController extends Controller
     public function topBook()
     {
         $books = Book::orderByDesc('view')->where('status', 1)->take(10)->get();
-        return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)]);
+        return response()->json(['message' => 'Success', 'data' => $books]);
     }
     /**
      * Find product as field
@@ -50,7 +50,7 @@ class ApiBookController extends Controller
         }
         $relatedBook = Book::where('id', '!=', $currentBook->id)->where('category_id', $currentBook->category_id)->where('status', 1)->with('category')->latest()->paginate(5);
         if ($relatedBook) {
-            return response()->json(['message' => 'Success', 'data' => BookResource::collection($relatedBook)], 200);
+            return response()->json(['message' => 'Success', 'data' => $relatedBook], 200);
         } else if ($relatedBook->isEmty()) {
             return response()->json(['message' => 'Không tìm thấy sách có liên quan'], 404);
         }
@@ -59,46 +59,30 @@ class ApiBookController extends Controller
     public function search(Request $request)
     {
         $query = Book::query();
-        $name_field = $request->input('name_field');
+        $category_id = $request->input('category_id');
         $name = $request->input('name');
-        $author_field = $request->input('author_field');
         $author = $request->input('author');
-        $published_company_field = $request->input('published_company_field');
         $published_company = $request->input('published_company');
-        $published_year_field = $request->input('published_year_field');
         $published_year = $request->input('published_year');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
         $sortName = $request->input('sort_name', '');
         $sortPrice = $request->input('sort_price', '');
         $sortDate = $request->input('sort_date', '');
-        if (!empty($name_field) && $name) {
-            if ($name_field === "category_id") {
-                $query->orWhere($name_field, $name);
-            } else {
-                $query->orWhere($name_field, 'LIKE', '%' . $name . '%');
-            }
+        if (!empty($category_id) && $category_id) {
+            $query->where('category_id', $category_id);
         }
-        if (!empty($author_field) && $author) {
-            if ($author_field === "category_id") {
-                $query->orWhere($author_field, $author);
-            } else {
-                $query->orWhere($author_field, 'LIKE', '%' . $author . '%');
-            }
+        if (!empty($name) && $name) {
+            $query->where('name', $name);
         }
-        if (!empty($published_company_field) && $published_company) {
-            if ($published_company_field === "category_id") {
-                $query->orWhere($published_company_field, $published_company);
-            } else {
-                $query->orWhere($published_company_field, 'LIKE', '%' . $published_company . '%');
-            }
+        if (!empty($author) && $author) {
+            $query->where('author', $author);
         }
-        if (!empty($published_year_field) && $published_year) {
-            if ($published_year_field === "category_id") {
-                $query->orWhere($published_year_field, $published_year);
-            } else {
-                $query->orWhere($published_year_field, 'LIKE', '%' . $published_year . '%');
-            }
+        if (!empty($published_company) && $published_company) {
+            $query->where('published_company', $published_company);
+        }
+        if (!empty($published_year) && $published_year) {
+            $query->where('published_year', $published_year);
         }
         if ($minPrice) {
             $query->where('price', '>=', $minPrice);
@@ -106,7 +90,6 @@ class ApiBookController extends Controller
         if ($maxPrice) {
             $query->where('price', '<=', $maxPrice);
         }
-
         if ($sortName !== '') {
             $query->orderBy('name', $sortName);
         }
@@ -125,7 +108,7 @@ class ApiBookController extends Controller
         if ($books->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
         } else {
-            return response()->json(['message' => 'Success', 'data' => BookResource::collection($books)]);
+            return response()->json(['message' => 'Success', 'data' => $books]);
         }
     }
 }
