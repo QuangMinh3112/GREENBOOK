@@ -100,6 +100,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::post('/vertify-otp', [ApiVerificationController::class, 'otpVertify']);
         // Cập nhật hồ sơ
         Route::post('/update-profile', [ApiEditProfileController::class, 'updateProfile']);
+        // Cập nhật mật khẩu
+        Route::post('/update-password', [ApiEditProfileController::class, 'updatePassword']);
         // GIỎ HÀNG
         Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
             // Xem giỏ hàng

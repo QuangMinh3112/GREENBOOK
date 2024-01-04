@@ -14,16 +14,12 @@ class ApiEditProfileController extends Controller
     {
         $this->middleware('auth:api');
     }
-    public function updateProfile(Request $request)
+    public function updatePassword(Request $request)
     {
         $user = Auth::user();
-
         $request->validate([
-            'old_password' => '',
+            'old_password' => 'required',
             'password' => 'string|min:5|max:255|confirmed',
-            'name' => 'min:5|max:255',
-            'phone_number' => '',
-            'email' => 'email',
         ]);
 
         if (!Hash::check($request->input('old_password'), $user->password)) {
@@ -31,20 +27,36 @@ class ApiEditProfileController extends Controller
         }
 
         $userData = [];
-        if ($request->filled('name')) {
-            $userData['name'] = bcrypt($request->input('name'));
-        }
-        if ($request->filled('phone_number')) {
-            $userData['phone_number'] = bcrypt($request->input('phone_number'));
-        }
-        if ($request->filled('email')) {
-            $userData['email'] = bcrypt($request->input('email'));
-        }
         if ($request->filled('password')) {
             $userData['password'] = bcrypt($request->input('password'));
         }
         $user->update($userData);
 
-        return response()->json(['message' => 'Cập nhật hồ sơ thành công'], 200);
+        return response()->json(['message' => 'Cập nhật mật khẩu thành công'], 200);
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'min:5|max:255',
+            'phone_number' => '',
+            'email' => 'email',
+        ]);
+
+        $userData = [];
+        if ($request->filled('name')) {
+            $userData['name'] = $request->input('name');
+        }
+        if ($request->filled('phone_number')) {
+            $userData['phone_number'] = $request->input('phone_number');
+        }
+        if ($request->filled('email')) {
+            $userData['email'] = $request->input('email');
+        }
+
+        $user->update($userData);
+
+        return response()->json(['message' => 'Cập nhật thông tin hồ sơ thành công'], 200);
     }
 }
