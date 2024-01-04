@@ -59,18 +59,45 @@ class ApiBookController extends Controller
     public function search(Request $request)
     {
         $query = Book::query();
-        $field = $request->input('field');
+        $name_field = $request->input('name_field');
         $name = $request->input('name');
+        $author_field = $request->input('author_field');
+        $author = $request->input('author');
+        $published_company_field = $request->input('published_company_field');
+        $published_company = $request->input('published_company');
+        $published_year_field = $request->input('published_year_field');
+        $published_year = $request->input('published_year');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
         $sortName = $request->input('sort_name', '');
         $sortPrice = $request->input('sort_price', '');
         $sortDate = $request->input('sort_date', '');
-        if (!empty($field) && $name) {
-            if ($field === "category_id") {
-                $query->orWhere($field, $name);
+        if (!empty($name_field) && $name) {
+            if ($name_field === "category_id") {
+                $query->orWhere($name_field, $name);
             } else {
-                $query->orWhere($field, 'LIKE', '%' . $name . '%');
+                $query->orWhere($name_field, 'LIKE', '%' . $name . '%');
+            }
+        }
+        if (!empty($author_field) && $author) {
+            if ($author_field === "category_id") {
+                $query->orWhere($author_field, $author);
+            } else {
+                $query->orWhere($author_field, 'LIKE', '%' . $author . '%');
+            }
+        }
+        if (!empty($published_company_field) && $published_company) {
+            if ($published_company_field === "category_id") {
+                $query->orWhere($published_company_field, $published_company);
+            } else {
+                $query->orWhere($published_company_field, 'LIKE', '%' . $published_company . '%');
+            }
+        }
+        if (!empty($published_year_field) && $published_year) {
+            if ($published_year_field === "category_id") {
+                $query->orWhere($published_year_field, $published_year);
+            } else {
+                $query->orWhere($published_year_field, 'LIKE', '%' . $published_year . '%');
             }
         }
         if ($minPrice) {
