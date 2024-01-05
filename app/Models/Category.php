@@ -46,15 +46,24 @@ class Category extends Model
         $allCategories = Category::all();
         $rootCategories = $allCategories->whereNull('parent_id');
         self::formatTree($rootCategories, $allCategories);
-        return $rootCategories;
+        if ($rootCategories->isNotEmpty()) {
+            return $rootCategories;
+        } else {
+            return null;
+        }
     }
     private static function formatTree($categories, $allCategories)
     {
         foreach ($categories as $category) {
-            $category->children = $allCategories->where('parent_id', $category->id);
-            if ($category->children->isNotEmpty()) {
-                self::formatTree($category->children, $allCategories);
+            $children = $allCategories->where('parent_id', $category->id);
+
+            if ($children->isNotEmpty()) {
+                $category->children = collect(self::formatTree($children, $allCategories));
+            } else {
+                $category->children = null;
             }
         }
+
+        return $categories;
     }
 }

@@ -14,15 +14,13 @@ class ApiCategoryController extends Controller
      */
     public function index()
     {
-        //
         $categories = Category::tree();
         if ($categories) {
-            return response()->json(['message' => 'Success', 'data' => CategoryResource::collection($categories)], 200);
+            return response()->json(['message' => 'Success', 'data' => $categories], 200);
         } else {
             return response()->json(['message' => 'Not Found'], 404);
         }
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -34,12 +32,11 @@ class ApiCategoryController extends Controller
     {
         $category = Category::find($id);
         if ($category) {
-            return new CategoryResource($category);
+            return response()->json(['message' => 'Success', 'data' => $category], 200);
         } else {
-            return response()->json(['message' => 'danh muc khong ton tai'], 404);
+            return response()->json(['message' => 'Danh mục không tồn tại'], 404);
         }
     }
-
     /**
      * Update the specified resource in storage.
      */

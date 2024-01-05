@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
-use App\Models\User;
 use App\Models\UserCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +20,36 @@ class ApiCouponController extends Controller
     {
         $coupon = $this->coupon::where('end_date', '>', now())->where('status', 'like', '%public%')->get();
         if (count($coupon) > 0) {
-            return response()->json(["message" => "Success", "data" => CouponResource::collection($coupon)], 200);
+            return response()->json(["message" => "Success", "data" => $coupon], 200);
+        } else {
+            return response()->json(["message" => "No coupon"], 200);
+        }
+    }
+    public function filterCoupon(Request $request)
+    {
+        $type = $request->input('type');
+        $sort = $request->input('sort');
+        $expired = $request->input('expired');
+        $name = $request->input('name');
+        $date =  now();
+        $coupon = $this->coupon::query();
+        if ($type != null) {
+            $coupon->where('type', 'like', $type);
+        }
+        if ($sort != null) {
+            $coupon->orderBy('created_at', $sort);
+        }
+        if ($name != null) {
+            $coupon->where('name', 'like', '%' . $name . '%');
+        }
+        if ($expired === true) {
+            $coupon->where('end_date', '>', $date);
+        } else {
+            $coupon->where('end_date', '>', now());
+        }
+        $coupons = $coupon->where('status', 'like', '%public%')->paginate(10);
+        if ($coupons) {
+            return response()->json(["message" => "Success", "data" => $coupons], 200);
         } else {
             return response()->json(["message" => "No coupon"], 200);
         }
@@ -34,7 +61,7 @@ class ApiCouponController extends Controller
             if ($coupon->status === "private") {
                 return response()->json(["message" => "Bạn không có quyền xem mã giảm giá"], 403);
             } else {
-                return response()->json(["message" => "Success", "data" => new CouponResource($coupon)], 200);
+                return response()->json(["message" => "Success", "data" => $coupon], 200);
             }
         } else {
             return response()->json(["message" => "Không tìm thấy mã giảm giá"], 404);

@@ -21,10 +21,10 @@ class CouponFactory extends Factory
             //
             "name" => $this->faker->name(),
             "value" => $this->faker->numberBetween(10, 30),
-            "type" => $this->faker->randomElement(['percent', 'number']),
+            "type" => $this->faker->randomElement(['percent', 'number', 'free_ship']),
             "quantity" => $this->faker->numberBetween(10, 100),
-            "start_date" => $this->faker->dateTimeBetween('-1 month', 'now'),
-            "end_date" => $this->faker->dateTimeBetween('now', '+1 month'),
+            "start_date" => $this->faker->dateTimeBetween('-3 month', 'now'),
+            "end_date" => $this->faker->dateTimeBetween('-1 month', '+1 month'),
             "point_required" => $this->faker->numberBetween(100, 500),
             "price_required" => $this->faker->numberBetween(50000, 500000),
             "code" => strtoupper(Str::random(10)),
