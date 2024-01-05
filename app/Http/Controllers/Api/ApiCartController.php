@@ -176,16 +176,19 @@ class ApiCartController extends Controller
                     $coupon = null;
                     if ($request->input('coupon_id')) {
                         $user_coupon = UserCoupon::where('user_id', $user->id)
-                            ->where('coupon_id', $request->input('coupon_id'))
-                            ->where('is_used', 0)
-                            ->first();
+                            ->where('coupon_id', $request->input('coupon_id'))->first();
                         if ($user_coupon) {
                             $coupon = Coupon::find($user_coupon->coupon_id);
                             if ($coupon->price_required > $total_product_amount) {
                                 return response()->json(["message" => "Tổng giá tiền chưa đạt tiêu chuẩn"], 422);
+                            } else if ($coupon->is_activate == 0) {
+                                return response()->json(["message" => "Mã giảm giá đã ngừng hoạt động"], 404);
                             } else {
                                 $user_coupon->update(['is_used' => 1]);
                             }
+                        }
+                        if ($user_coupon->is_used == 1) {
+                            return response()->json(["message" => "Mã giảm giá đã được dùng"], 422);
                         }
                     }
                     if ($coupon != null) {

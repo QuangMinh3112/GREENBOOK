@@ -3,9 +3,41 @@
         <h6 class="m-0 font-weight-bold text-white">Danh sách danh mục bài đăng</h6>
     </div>
     <div class="card-body">
+        <div class="row mx-auto">
+            <div class="mb-3 mr-2">
+                <input type="text" class="form-control" name="" id=""
+                    wire:model.live.debounce.300ms ="name" placeholder="Tìm theo tên">
+            </div>
+            <div class="mb-3 mr-2">
+                <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "status">
+                    <option value="Công bố" selected>Công bố</option>
+                    <option value="Bản nháp">Riêng tư</option>
+                </select>
+            </div>
+            <div class="mb-3 mr-2">
+                <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "type">
+                    <option value="" selected>Loại giảm giá</option>
+                    <option value="">%</option>
+                    <option value="">Giá tiền</option>
+                    <option value="">Free Ship</option>
+                </select>
+            </div>
+            <div class="mb-3 mr-2">
+                <select name="" id="" class="form-control"
+                    wire:model.live.debounce.300ms = "is_activate">
+                    <option value="" selected>Hoạt động</option>
+                    <option value="">Ngừng hoạt động</option>
+                </select>
+            </div>
+            <div class="mb-3 mr-2 align-item-center">
+                @if (session('success'))
+                    <span class="text-success">{{ session('success') }}</span>
+                @endif
+            </div>
+        </div>
         <div class="example">
             <div class="rounded-bottom">
-                <div class="p-3">
+                <div class="">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -45,8 +77,8 @@
                                             <a wire:navigate href="{{ route('coupon.edit', $data->id) }}"
                                                 class="mx-2 text-success"><i class="fa-solid fa-pen-to-square"></i></a>
                                             {{-- Ngừng hoạt động --}}
-                                            <a wire:click='' class="mx-2 text-success"><i
-                                                    class="fa-solid fa-pen-to-square"></i></a>
+                                            <a wire:click='' class="mx-2 text-danger"><i
+                                                    class="fa-solid fa-stop"></i></a>
                                         </div>
                                     </td>
                                 </tr>

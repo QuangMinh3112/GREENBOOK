@@ -27,7 +27,7 @@
         </div>
         <div class="example">
             <div class="rounded-bottom">
-                <div class="p-3">
+                <div class="">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>

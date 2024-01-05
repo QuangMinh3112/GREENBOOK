@@ -88,16 +88,16 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
     Route::post('/forgot-password', [ApiResetPassword::class, 'forgotPassword']);
     // Đặt lại mật khẩu
     Route::post('/reset-password', [ApiResetPassword::class, 'resetPassword']);
+    // Gửi mã xác minh tài khoản
+    Route::post('/send-otp', [ApiVerificationController::class, 'sendOtpVertify']);
+    // Xác minh tài khoản
+    Route::post('/vertify-otp', [ApiVerificationController::class, 'otpVertify']);
 
     Route::middleware(['auth:api'])->group(function () {
         // Xem profile cá nhân
         Route::get('/show-profile', [ApiShowProfileController::class, 'showProfile']);
         // Đăng xuất
         Route::get('/logout', [ApiLogoutController::class, 'logOut']);
-        // Gửi mã xác minh tài khoản
-        Route::get('/send-otp', [ApiVerificationController::class, 'sendOtpVertify']);
-        // Xác minh tài khoản
-        Route::post('/vertify-otp', [ApiVerificationController::class, 'otpVertify']);
         // Cập nhật hồ sơ
         Route::post('/update-profile', [ApiEditProfileController::class, 'updateProfile']);
         // Cập nhật mật khẩu

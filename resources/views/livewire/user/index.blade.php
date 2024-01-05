@@ -5,7 +5,7 @@
     <div class="card-body">
         <div class="example">
             <div class="rounded-bottom">
-                <div class="p-3">
+                <div class="">
                     <div class="row mx-auto">
                         <div class="mb-3 mr-2">
                             <input type="text" class="form-control" name="" id=""

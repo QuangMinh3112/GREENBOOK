@@ -20,7 +20,8 @@ class Coupon extends Model
         'point_required',
         'used_count',
         'price_required',
-        'status'
+        'status',
+        'is_activate'
     ];
 
     public function getCouponValue(): string

@@ -24,11 +24,11 @@ return new class extends Migration
             $table->dateTime('end_date')->nullable();
             $table->integer('point_required')->default(100);
             $table->integer('price_required')->default(0);
+            $table->integer('is_activate')->default(1);
             $table->enum('status', ['public', 'private'])->default('public');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

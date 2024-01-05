@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\ApiMomo;
-use App\Http\Controllers\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,10 +62,10 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/show-user/{id}', App\Livewire\User\Show::class)->name('user.show');
         Route::get('/edit-user/{id}', App\Livewire\User\Edit::class)->name('user.edit');
     });
-    Route::prefix('ship-fee')->group(function () {
-        Route::get('/', App\Livewire\Ship\Index::class)->name('ship-fee.index');
-        Route::get('/create-ship-fee', App\Livewire\Ship\Create::class)->name('ship-fee.create');
-        Route::get('/edit-ship-fee/{id}', App\Livewire\Ship\Edit::class)->name('ship-fee.edit');
+    Route::prefix('setting')->group(function () {
+        Route::get('/', App\Livewire\Setting\Index::class)->name('setting.index');
+        Route::get('/create-setting', App\Livewire\Setting\Create::class)->name('setting.create');
+        Route::get('/edit-setting/{id}', App\Livewire\Setting\Edit::class)->name('setting.edit');
     });
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
@@ -77,8 +76,8 @@ Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin
     Route::post('/register-process', 'registerProcess')->name('registerProcess');
     Route::get('/logout', 'logOut')->name('logout');
 });
-Route::prefix('/')->controller(ClientController::class)->group(function () {
-    Route::get('/', 'index')->name('client.home');
+Route::get('/', function () {
+    return redirect()->route('login');
 });
 Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
 

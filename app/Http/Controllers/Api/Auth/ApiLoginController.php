@@ -31,6 +31,8 @@ class ApiLoginController extends Controller
             $infomation = Auth::user();
             if ($infomation->status == 0) {
                 return response()->json(['error' => 'Bạn đã bị cấm'], 401);
+            } else if ($infomation->is_vertify == 0) {
+                return response()->json(['error' => 'Bạn cần phải xác minh tài khoản trước'], 401);
             } else {
                 $accessToken = auth()->user()->createToken('MyAppToken')->accessToken;
                 return response()->json(['access_token' => $accessToken, 'message' => 'Đăng nhập thành công', 'data' => $infomation], 200);
