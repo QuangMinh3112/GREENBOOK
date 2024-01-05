@@ -132,6 +132,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             Route::get('/', 'getFreeCoupon');
             // Xem chi tiết Coupon
             Route::get('/show/{id}', 'showCoupon');
+            // Lọc coupon
+            Route::get('/filter', 'filterCoupon');
             // Lấy coupon
             Route::get('/get-coupon/{id}', 'getCoupon');
         });
@@ -142,6 +144,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             Route::get('/show/{id}', 'show');
             // Xoá coupon
             Route::get('/delete/{id}', 'delete');
+            // Lọc coupon
+            Route::get('/filter', 'filterUserCoupon');
         });
         Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
             // Xem đơn hàng

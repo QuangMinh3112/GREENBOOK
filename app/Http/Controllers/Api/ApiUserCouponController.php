@@ -25,18 +25,30 @@ class ApiUserCouponController extends Controller
             return response()->json(["message" => "Không có mã giảm giá nào"], 200);
         }
     }
-    public function filter(Request $request)
+    public function filterUserCoupon(Request $request)
     {
         $type = $request->input('type');
         $is_used = $request->input('is_used');
+        $name = $request->input('name');
         $userCoupons = UserCoupon::query();
         if ($type) {
             $userCoupons->whereHas('coupon', function ($query) use ($type) {
-                $query->where('type', $type);
+                $query->where('type', 'like', '%' . $type . '%');
             });
         }
-        if ($is_used) {
-            $coupon->where('is_used', $is_used);
+        if ($name) {
+            $userCoupons->whereHas('coupon', function ($query) use ($name) {
+                $query->where('name', 'like', '%' . $name . '%');
+            });
+        }
+        if ($is_used == 1) {
+            $userCoupons->where('is_used', 1);
+        }
+        $coupon = $userCoupons->with('coupon')->paginate(10);
+        if ($coupon) {
+            return response()->json(['message' => 'Success', 'data' => $coupon], 200);
+        } else {
+            return response()->json(['message' => 'Fail'], 404);
         }
     }
     public function show($id)

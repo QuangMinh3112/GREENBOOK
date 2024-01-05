@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
-use App\Http\Resources\CartResource;
 use App\Mail\OrderSuccess;
 use App\Models\Book;
 use Illuminate\Http\Request;

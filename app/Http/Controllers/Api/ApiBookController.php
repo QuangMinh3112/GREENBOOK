@@ -59,7 +59,7 @@ class ApiBookController extends Controller
     public function search(Request $request)
     {
         $query = Book::query();
-        $category_id = $request->input('category_id');
+        $category_slug = $request->input('category_slug');
         $name = $request->input('name');
         $author = $request->input('author');
         $published_company = $request->input('published_company');
@@ -69,8 +69,10 @@ class ApiBookController extends Controller
         $sortName = $request->input('sort_name', '');
         $sortPrice = $request->input('sort_price', '');
         $sortDate = $request->input('sort_date', '');
-        if (!empty($category_id) && $category_id) {
-            $query->where('category_id', $category_id);
+        if (!empty($category_slug) && $category_slug) {
+            $query->whereHas('category', function ($query) use ($category_slug) {
+                $query->where('slug', $category_slug);
+            });
         }
         if (!empty($name) && $name) {
             $query->where('name', $name);
