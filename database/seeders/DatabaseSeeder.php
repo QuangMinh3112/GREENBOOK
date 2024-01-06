@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(100)->create();
-        // \App\Models\Category::factory(30)->create();
+        \App\Models\User::factory(30)->create();
         \App\Models\Book::factory(100)->create();
         \App\Models\CategoryPost::factory(10)->create();
         \App\Models\Coupon::factory(30)->create();
         \App\Models\Post::factory(100)->create();
+        \App\Models\Review::factory(1000)->create();
         DB::table('users')->insert([
             'name' => 'admin',
             'avatar' => '',

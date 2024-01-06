@@ -18,7 +18,7 @@ class ApiCouponController extends Controller
     }
     public function getFreeCoupon()
     {
-        $coupon = $this->coupon::where('end_date', '>', now())->where('status', 'like', '%public%')->get();
+        $coupon = $this->coupon::where('end_date', '>', now())->where('status', 'like', '%public%')->where('is_activate', 1)->paginate(10);
         if (count($coupon) > 0) {
             return response()->json(["message" => "Success", "data" => $coupon], 200);
         } else {
@@ -47,7 +47,7 @@ class ApiCouponController extends Controller
         } else {
             $coupon->where('end_date', '>', now());
         }
-        $coupons = $coupon->where('status', 'like', '%public%')->paginate(10);
+        $coupons = $coupon->where('status', 'like', '%public%')->where('is_activate', 1)->paginate(10);
         if ($coupons) {
             return response()->json(["message" => "Success", "data" => $coupons], 200);
         } else {
@@ -58,7 +58,7 @@ class ApiCouponController extends Controller
     {
         $coupon = Coupon::find($id);
         if ($coupon) {
-            if ($coupon->status === "private") {
+            if ($coupon->status === "private" || $coupon->is_activate == 0) {
                 return response()->json(["message" => "Bạn không có quyền xem mã giảm giá"], 403);
             } else {
                 return response()->json(["message" => "Success", "data" => $coupon], 200);
@@ -82,11 +82,14 @@ class ApiCouponController extends Controller
             if ($coupon->status === "private") {
                 return response()->json(["message" => "Bạn không có quyền lấy mã giảm giá"], 403);
             }
+            if ($coupon->is_activate == 0) {
+                return response()->json(["message" => "Bạn không có quyền lấy mã giảm giá"], 403);
+            }
             if ($coupon->point_required > $user->point) {
                 return response()->json(["message" => "Bạn không đủ điểm để lấy mã giảm giá"], 404);
             }
             if ($user_coupon > 0) {
-                return response()->json(["message" => "Bạn đã sở hữu mã giảm giá, không thể lấy thêm"], 200);
+                return response()->json(["message" => "Bạn đã sở hữu mã giảm giá, không thể lấy thêm"], 404);
             } else {
                 UserCoupon::create([
                     "user_id" => $user->id,
