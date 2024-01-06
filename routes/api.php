@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ApiFavoriteBookController;
 use App\Http\Controllers\Api\ApiMomo;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiPostController;
+use App\Http\Controllers\Api\ApiReviewController;
 use App\Http\Controllers\Api\ApiUserCouponController;
 use App\Http\Controllers\Api\ApiVNPay;
 use App\Http\Controllers\Api\Auth\ApiEditProfileController;
@@ -74,6 +75,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         // Top bài đăng xem nhiều nhất
         Route::get('/top-post', 'topPost');
     });
+    Route::get('review/show/{id}', [ApiReviewController::class, 'show']);
+
     //Đăng nhập
     Route::post('/login', [ApiLoginController::class, 'login']);
     // Đăng ký
@@ -158,6 +161,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             Route::put('/cancel-order/{order_id}', 'cancelOrder');
         });
         // Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
-        Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
     });
+    Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
 });
