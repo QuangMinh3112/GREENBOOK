@@ -67,6 +67,7 @@ class ApiOrderController extends Controller
         $service_id = $request->input('service_id');
         $province_id = $request->input('province_id');
         $ward_id = $request->input('ward_id');
+        $district_id = $request->input('district_id');
         if ($order->status === 'Chờ xử lý') {
             if ($name) {
                 $order->name = $name;
@@ -82,6 +83,9 @@ class ApiOrderController extends Controller
             }
             if ($service_id) {
                 $order->service_id = $service_id;
+            }
+            if ($district_id) {
+                $order->district_id = $district_id;
             }
             if ($ward_id) {
                 $order->ward_id = $ward_id;
