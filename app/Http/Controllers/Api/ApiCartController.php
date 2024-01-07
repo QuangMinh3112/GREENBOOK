@@ -21,12 +21,14 @@ class ApiCartController extends Controller
     //
     protected $cart;
     protected $book;
-    public function __construct(Cart $cart, Book $book)
+    protected $apiMomo;
+    public function __construct(Cart $cart, Book $book, ApiMomo $apiMomo)
     {
         $this->cart = $cart;
         $this->book = $book;
         $this->middleware('auth:api');
         $this->middleware('check.book.status')->only(['addToCart']);
+        $this->apiMomo = $apiMomo;
     }
 
     public function index()
@@ -159,6 +161,10 @@ class ApiCartController extends Controller
                         'coupon' => "",
                         'user_id' => $user_id,
                         'ship_fee' => $request->input('ship_fee'),
+                        'service_id' => $request->input('service_id'),
+                        'province_id' => $request->input('province_id'),
+                        'ward_id' => $request->input('ward_id'),
+                        'ship_fee' => $request->input('ship_fee'),
                         'added_date' => now(),
                     ]);
                     foreach ($carts as $cart) {
@@ -217,7 +223,7 @@ class ApiCartController extends Controller
                         ]);
                         return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
                     } else if ($payment === "MOMO") {
-                        $url =  route('momo_payment', ['order_id' => $order->id]);
+                        $url = $this->apiMomo->momo_payment($order->id);
                         return response()->json(['message' => 'Vui lòng thực hiện thanh toán', 'data' => $order, 'url' => $url]);
                     }
                 }

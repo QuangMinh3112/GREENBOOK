@@ -40,6 +40,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'minhvqph27791@fpt.edu.vn',
             'password' => Hash::make('123123'),
         ]);
+        DB::table('settings')->insert([
+            'name' => 'GREEN BOOK',
+            "email" => 'minh@gmail.com',
+            "phone_number" => "0123123123",
+            "address" => "Hà nội",
+            "logo" => "https://img.freepik.com/premium-vector/red-youtube-logo-social-media-logo_197792-1803.jpg",
+            "is_active" => 1,
+        ]);
         // DB::table('coupons')->insert([
         //     'name' => 'Mã giảm giá người mới',
         //     'code' => 'WELCOMETOGREENBOOK',

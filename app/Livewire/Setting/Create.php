@@ -22,6 +22,7 @@ class Create extends Component
     public $name;
     public $phone_number;
     public $address;
+    public $is_active = 1;
     public function render()
     {
         return view('livewire.setting.create');
@@ -32,13 +33,17 @@ class Create extends Component
         if ($this->logo) {
             $logo = $this->logo->store('profile', 'public');
         }
-        Setting::create([
+        $setting = Setting::create([
             "name" => $validated["name"],
             "email" => $validated["email"],
             "phone_number" => $validated["phone_number"],
             "address" => $validated["address"],
             "logo" => $logo,
+            "is_active" => $this->is_active,
         ]);
+        if ($this->is_active == 1) {
+            $allSetting = Setting::where('id', '!=', $setting->id)->update(["is_active" => 0]);
+        }
         $this->reset();
         request()->session()->flash('success', 'Thêm mới thành công');
     }

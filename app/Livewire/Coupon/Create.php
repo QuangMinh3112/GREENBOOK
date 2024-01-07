@@ -3,16 +3,20 @@
 namespace App\Livewire\Coupon;
 
 use App\Models\Coupon;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 #[Layout('Layout.app')]
 #[Title('Thêm mới danh mục bài đăng ')]
 class Create extends Component
 {
+    use WithFileUploads;
     #[Validate()]
     public $name;
     public $value;
@@ -20,8 +24,10 @@ class Create extends Component
     public $quantity;
     public $startDate;
     public $endDate;
+    public $status;
     public $pointRequired;
     public $priceRequired;
+    public $image;
 
     public function render()
     {
@@ -33,6 +39,10 @@ class Create extends Component
         do {
             $code = strtoupper(Str::random(10));
         } while (Coupon::where('code', $code)->exists());
+        $qrCode = QrCode::size(100)->generate($code);
+        // $timestamp = now()->timestamp;
+        // $qrCodePath = 'public/qr_coupon/' . $code . '_' . $timestamp . '.png';
+        // Storage::put($qrCodePath, $qrCode);
         Coupon::create([
             "name" => $validated["name"],
             "value" => $validated["value"],
@@ -42,7 +52,9 @@ class Create extends Component
             "end_date" => $validated["endDate"],
             "point_required" => $validated["pointRequired"],
             "price_required" => $validated["priceRequired"],
-            "code" =>  $code
+            "code" =>  $code,
+            "status" => $this->status,
+            "image" => $qrCode,
         ]);
         $this->reset();
         request()->session()->flash('success', 'Thêm mới thành công');

@@ -32,6 +32,16 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="type">Trạng thái:</label>
+                    <select class="form-control" wire:model="status">
+                        <option selected value="public">Công khai</option>
+                        <option value="private">Riêng tư</option>
+                    </select>
+                    @error('type')
+                        <span class="text-danger fst-italic">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="quantity">Số lượng:</label>
                     <input type="number" class="form-control" id="quantity" wire:model="quantity">
                     @error('quantity')

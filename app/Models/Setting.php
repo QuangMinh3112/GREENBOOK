@@ -16,6 +16,7 @@ class Setting extends Model
         "address",
         "phone_number",
         "name",
+        "is_active"
     ];
     public function getLogoAttribute($logo)
     {

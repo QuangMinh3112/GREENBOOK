@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label" for="formFile">Ảnh LOGO</label> <br>
                             <input class="" type="file" wire:model="logo" id="formFile">
 
@@ -53,6 +53,13 @@
                             @error('logo')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Trạng thái</label> <br>
+                            <select wire:model="is_active" class="form-control">
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Không hoạt động</option>
+                            </select>
                         </div>
                     </div>
                     <hr>
