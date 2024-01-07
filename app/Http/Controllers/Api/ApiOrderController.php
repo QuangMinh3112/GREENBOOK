@@ -48,9 +48,10 @@ class ApiOrderController extends Controller
     }
     public function orderDetail($order_id)
     {
+        $order = Order::find($order_id);
         $detail = OrderDetail::where('order_id', $order_id)->get();
         if ($detail) {
-            return response()->json(['message' => 'Đã lấy chi chi tiết đơn hàng', 'data' => $detail], 200);
+            return response()->json(['message' => 'Đã lấy chi chi tiết đơn hàng', 'data' => $detail, 'order' => $order], 200);
         } else {
             return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
         }
