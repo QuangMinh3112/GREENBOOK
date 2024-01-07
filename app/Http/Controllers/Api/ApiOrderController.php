@@ -90,11 +90,11 @@ class ApiOrderController extends Controller
                 if ($order->coupon != null) {
                     $coupon = Coupon::where('code', 'like', $order->coupon)->first();
                     if ($coupon->type === "free_ship") {
-                        $ship_fee == 0;
+                        $ship_fee = 0;
                     }
                 }
                 $order->ship_fee = $ship_fee;
-                $order->total = $order->total_product_amount + $request->ship_fee;
+                $order->total = $order->total_product_amount + $ship_fee;
             }
             if ($request->input('payment') && $order->payment === "Watting") {
                 $order->payment = "COD";

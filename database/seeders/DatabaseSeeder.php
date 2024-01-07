@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             'role' => 1,
             'is_vertify' => 1,
             'email' => 'minhvqph27791@fpt.edu.vn',
+            "point" => 900,
             'password' => Hash::make('123123'),
         ]);
         DB::table('settings')->insert([
