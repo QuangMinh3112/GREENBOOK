@@ -162,6 +162,7 @@ class ApiCartController extends Controller
                         'user_id' => $user_id,
                         'ship_fee' => $request->input('ship_fee'),
                         'service_id' => $request->input('service_id'),
+                        'district_id' => $request->input('district_id'),
                         'province_id' => $request->input('province_id'),
                         'ward_id' => $request->input('ward_id'),
                         'ship_fee' => $request->input('ship_fee'),
