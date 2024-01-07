@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
@@ -59,20 +60,41 @@ class ApiOrderController extends Controller
     public function updateOrder(Request $request, $order_id)
     {
         $order = Order::findOrFail($order_id);
+        $name = $request->input('name');
+        $address = $request->input('address');
+        $phone_number = $request->input('phone_number');
+        $ship_fee = $request->input('ship_fee');
+        $service_id = $request->input('service_id');
+        $province_id = $request->input('province_id');
+        $ward_id = $request->input('ward_id');
         if ($order->status === 'Chờ xử lý') {
-            if ($request->input('name')) {
-                $order->name = $request->name;
+            if ($name) {
+                $order->name = $name;
             }
-            if ($request->input('phone_number')) {
-                $order->phone_number = $request->phone_number;
+            if ($phone_number) {
+                $order->phone_number = $phone_number;
             }
-
-            if ($request->input('address')) {
-                $order->address = $request->address;
+            if ($address != null) {
+                $order->address = $address;
             }
-            if ($request->input('ship_fee')) {
-                $order->ship_fee = $request->ship_fee;
-                $order->total = $order->total_product_amount + $request->ship_fee;
+            if ($province_id) {
+                $order->province_id = $province_id;
+            }
+            if ($service_id) {
+                $order->service_id = $service_id;
+            }
+            if ($ward_id) {
+                $order->ward_id = $ward_id;
+            }
+            if ($ship_fee) {
+                if ($order->coupon != null) {
+                    $coupon = Coupon::where('code', 'like', $order->coupon)->first();
+                    if ($coupon->type === "free_ship") {
+                        $ship_fee = 0;
+                    }
+                }
+                $order->ship_fee = $ship_fee;
+                $order->total = $order->total_product_amount + $ship_fee;
             }
             if ($request->input('payment') && $order->payment === "Watting") {
                 $order->payment = "COD";

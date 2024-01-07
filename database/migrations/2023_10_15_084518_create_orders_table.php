@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('ship_fee');
             $table->integer('total_product_amount');
             $table->integer('total');
-            $table->integer('coupon')->nullable();
+            $table->string('coupon')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

@@ -123,6 +123,7 @@ class ApiCartController extends Controller
         $outStock = [];
         $user = Auth::user();
         $payment = $request->input('payment');
+        $ship_fee = $request->input('ship_fee');
         if ($user->is_vertify != 1) {
             return response()->json(['message' => 'Bạn cần phải xác minh tài khoản trước khi đặt hàng']);
         } else {
@@ -162,9 +163,10 @@ class ApiCartController extends Controller
                         'user_id' => $user_id,
                         'ship_fee' => $request->input('ship_fee'),
                         'service_id' => $request->input('service_id'),
+                        'district_id' => $request->input('district_id'),
                         'province_id' => $request->input('province_id'),
                         'ward_id' => $request->input('ward_id'),
-                        'ship_fee' => $request->input('ship_fee'),
+                        'ship_fee' => $ship_fee,
                         'added_date' => now(),
                     ]);
                     foreach ($carts as $cart) {
@@ -179,11 +181,14 @@ class ApiCartController extends Controller
                         ]);
                         $total_product_amount += ($cart->quantity * $book->price);
                     }
-                    $coupon = null;
-                    if ($request->input('coupon_id')) {
-                        $user_coupon = UserCoupon::where('user_id', $user->id)
-                            ->where('coupon_id', $request->input('coupon_id'))->first();
+                    $coupon_id = $request->input('coupon_id');
+                    $coupon = "";
+                    if ($coupon_id) {
+                        $user_coupon = UserCoupon::where('id', $coupon_id)->first();
                         if ($user_coupon) {
+                            if ($user_coupon->is_used == 1) {
+                                return response()->json(["message" => "Mã giảm giá đã được dùng"], 422);
+                            }
                             $coupon = Coupon::find($user_coupon->coupon_id);
                             if ($coupon->price_required > $total_product_amount) {
                                 return response()->json(["message" => "Tổng giá tiền chưa đạt tiêu chuẩn"], 422);
@@ -193,27 +198,27 @@ class ApiCartController extends Controller
                                 $user_coupon->update(['is_used' => 1]);
                             }
                         }
-                        if ($user_coupon->is_used == 1) {
-                            return response()->json(["message" => "Mã giảm giá đã được dùng"], 422);
-                        }
                     }
                     if ($coupon != null) {
                         if ($coupon->type === "number") {
-                            $order->total_product_amount = $total_product_amount - $coupon->value;
+                            $total_product_amount = $total_product_amount - $coupon->value;
                         }
                         if ($coupon->type === "percent") {
-                            $order->total_product_amount = $total_product_amount - ($total_product_amount * ($coupon->value / 100));
+                            $total_product_amount = $total_product_amount - ($total_product_amount * ($coupon->value / 100));
                         }
                         if ($coupon->type === "free_ship") {
                             $order->ship_fee = 0;
                         }
                         $order->coupon = $coupon->code;
-                        $order->total = $order->total_product_amount + $order->ship_fee;
+                        $order->total_product_amount = $total_product_amount;
+                        $order->total = $total_product_amount + $order->ship_fee;
+                        $order->save();
                     } else {
                         $order->total_product_amount = $total_product_amount;
                         $order->total = $total_product_amount + $order->ship_fee;
+                        $order->save();
                     }
-                    $order->save();
+
                     $this->cart::where('user_id', $user_id)->delete();
                     $orderDetail = OrderDetail::where('order_id', $order->id)->get();
                     Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail));
