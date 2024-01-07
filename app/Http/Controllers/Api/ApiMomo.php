@@ -29,9 +29,12 @@ class ApiMomo extends Controller
         curl_close($ch);
         return $result;
     }
-    public function momo_payment(Request $request, $order_id)
+    public function momo_payment($order_id)
     {
         $order = Order::find($order_id);
+        if ($order->payment === "Paid") {
+            return response()->json(['message' => 'Đơn hàng đã thanh toán'], 400);
+        }
         if ($order) {
             $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
             $partnerCode = "MOMOBKUN20180529";
@@ -42,13 +45,11 @@ class ApiMomo extends Controller
             $orderId = strval($order->order_id);
             $returnUrl = "http://127.0.0.1:8000/momo-response";
             $notifyurl = "http://localhost:8000/atm/ipn_momo.php";
-            // Lưu ý: link notifyUrl không phải là dạng localhost
             $bankCode = "SML";
             $orderid = strval($order->id);
             $requestId = time() . "";
             $requestType = "payWithMoMoATM";
             $extraData = "";
-            //before sign HMAC SHA256 signature
             $rawHashArr =  array(
                 'partnerCode' => $partnerCode,
                 'accessKey' => $accessKey,

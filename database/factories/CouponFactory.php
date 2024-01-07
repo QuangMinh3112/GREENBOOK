@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Coupon>
@@ -17,6 +19,7 @@ class CouponFactory extends Factory
      */
     public function definition(): array
     {
+        $code = strtoupper(Str::random(10));
         return [
             //
             "name" => $this->faker->name(),
@@ -27,7 +30,8 @@ class CouponFactory extends Factory
             "end_date" => $this->faker->dateTimeBetween('-1 month', '+1 month'),
             "point_required" => $this->faker->numberBetween(100, 500),
             "price_required" => $this->faker->numberBetween(50000, 500000),
-            "code" => strtoupper(Str::random(10)),
+            "code" => $code,
+            "image" => QrCode::size(100)->generate($code),
             "status" => $this->faker->randomElement(['public', 'private']),
         ];
     }

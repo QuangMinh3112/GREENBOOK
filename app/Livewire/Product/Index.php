@@ -23,7 +23,6 @@ class Index extends Component
     public $isOpen = 0;
     public function render()
     {
-        sleep(1);
         return view('livewire.product.index', [
             'products' => Book::nameSearch($this->name)
                 ->authorSearch($this->author)

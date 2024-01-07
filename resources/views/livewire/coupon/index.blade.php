@@ -1,6 +1,6 @@
 <div class="card mb-4 shadow">
     <div class="card-header py-3 bg-green">
-        <h6 class="m-0 font-weight-bold text-white">Danh sách danh mục bài đăng</h6>
+        <h6 class="m-0 font-weight-bold text-white">Danh sách mã giảm giá</h6>
     </div>
     <div class="card-body">
         <div class="row mx-auto">
@@ -10,23 +10,23 @@
             </div>
             <div class="mb-3 mr-2">
                 <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "status">
-                    <option value="Công bố" selected>Công bố</option>
-                    <option value="Bản nháp">Riêng tư</option>
+                    <option value="public" selected>Công bố</option>
+                    <option value="private">Riêng tư</option>
                 </select>
             </div>
             <div class="mb-3 mr-2">
                 <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "type">
-                    <option value="" selected>Loại giảm giá</option>
-                    <option value="">%</option>
-                    <option value="">Giá tiền</option>
-                    <option value="">Free Ship</option>
+                    <option value="" selected>Loại mã giảm giá</option>
+                    <option value="percent">%</option>
+                    <option value="number">Giá tiền</option>
+                    <option value="free_ship">Free Ship</option>
                 </select>
             </div>
             <div class="mb-3 mr-2">
                 <select name="" id="" class="form-control"
                     wire:model.live.debounce.300ms = "is_activate">
-                    <option value="" selected>Hoạt động</option>
-                    <option value="">Ngừng hoạt động</option>
+                    <option value="1" selected>Hoạt động</option>
+                    <option value="0">Ngừng hoạt động</option>
                 </select>
             </div>
             <div class="mb-3 mr-2 align-item-center">
@@ -55,14 +55,12 @@
                                 <th scope="col">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody wire:loading.class='op-low'>
                             @foreach ($coupons as $data)
                                 <tr>
                                     <th>{{ $data->id }}</th>
                                     <td>{{ $data->name }}</td>
-                                    <td><img class="img-thumbnail" src="{{ $data->image }}" alt=""
-                                            width="100">
-                                    </td>
+                                    <td class="img-thumb">{!! $data->image !!}</td>
                                     <td>{{ $data->code }}</td>
                                     <td>{{ $data->quantity }}</td>
                                     <td>{{ $data->used_count }}</td>
@@ -77,8 +75,21 @@
                                             <a wire:navigate href="{{ route('coupon.edit', $data->id) }}"
                                                 class="mx-2 text-success"><i class="fa-solid fa-pen-to-square"></i></a>
                                             {{-- Ngừng hoạt động --}}
-                                            <a wire:click='' class="mx-2 text-danger"><i
-                                                    class="fa-solid fa-stop"></i></a>
+                                            @if ($is_activate == 1)
+                                                <a wire:click='deActivate({{ $data->id }})'
+                                                    class="mx-2 text-danger"><i class="fa-solid fa-stop"></i></a>
+                                            @else
+                                                <a wire:click='activate({{ $data->id }})'
+                                                    class="mx-2 text-success"><i class="fa-solid fa-check"></i></a>
+                                            @endif
+                                            {{-- Để riêng tư --}}
+                                            @if ($status === 'public')
+                                                <a wire:click='private({{ $data->id }})' class="mx-2 text-danger">
+                                                    <i class="fa-solid fa-lock"></i></a>
+                                            @else
+                                                <a wire:click='public({{ $data->id }})' class="mx-2 text-success">
+                                                    <i class="fa-solid fa-unlock"></i></a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

@@ -2,43 +2,16 @@
     {{-- Success is as dangerous as failure. --}}
     <div class="card shadow mb-4">
         <div class="card-header py-3 bg-green">
-            <h6 class="m-0 font-weight-bold text-white ">Danh sách sản phẩm</h6>
+            <h6 class="m-0 font-weight-bold text-white ">Danh sách hồ sơ website</h6>
         </div>
         <div class="card-body">
             {{-- <div class="row mx-auto">
                 <div class="mb-3 mr-2">
-                    <input type="text" class="form-control" name="" id=""
-                        wire:model.live.debounce.300ms ="name" placeholder="Tìm theo tên">
-                </div>
-                <div class="mb-3 mr-2">
-                    <input type="text" class="form-control" name="" id=""
-                        wire:model.live.debounce.300ms ="author" placeholder="Tìm tác giả">
-                </div>
-                <div class="mb-3 mr-2">
-                    <select name="" id="" class="form-control"
-                        wire:model.live.debounce.300ms = "sortOrder">
-                        <option value="" selected>Không sắp xếp</option>
-                        <option value="asc">Giá tiền tăng dần</option>
-                        <option value="desc">Gía tiền giảm dần</option>
-
+                    <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "is_active">
+                        <option value="" selected>Chọn trạng thái</option>
+                        <option value="asc">Hoạt động</option>
+                        <option value="desc">Không hoạt động</option>
                     </select>
-                </div>
-                <div class="mb-3 mr-2">
-                    <select class="form-control" name="category_id" wire:model.live.debounce.300ms='category_id'>
-                        @include('Admin.partials.category-option')
-                    </select>
-                </div>
-                <div class="mb-3 mr-2">
-                    <select name="" id="" class="form-control"
-                        wire:model.live.debounce.300ms = "isActivate">
-                        <option value="1" selected>Đang hoạt động</option>
-                        <option value="0">Ngừng kinh doanh</option>
-                    </select>
-                </div>
-                <div class="mb-3 mr-2 align-item-center">
-                    @if (session('success'))
-                        <span class="text-success">{{ session('success') }}</span>
-                    @endif
                 </div>
             </div> --}}
             <div class="table-responsive">
@@ -51,6 +24,7 @@
                             <th scope="col">Email</th>
                             <th scope="col">Số điện thoại</th>
                             <th scope="col">Địa chỉ</th>
+                            <th scope="col">Trạng thái</th>
                             <th scope="col">Hành động</th>
                         </tr>
                     </thead>
@@ -62,6 +36,7 @@
                             <th scope="col">Email</th>
                             <th scope="col">Số điện thoại</th>
                             <th scope="col">Địa chỉ</th>
+                            <th scope="col">Trạng thái</th>
                             <th scope="col">Hành động</th>
                         </tr>
                     </tfoot>
@@ -75,15 +50,24 @@
                                 <td>{{ $data->email }}</td>
                                 <td>{{ $data->phone_number }}</td>
                                 <td>{{ $data->address }}</td>
+                                <td>
+                                    @if ($data->is_active == 1)
+                                        <button class="btn btn-success" disabled>Hoạt động</button>
+                                    @else
+                                        <button class="btn btn-secondary" disabled>Không hoạt động</button>
+                                    @endif
                                 </td>
                                 <td class="">
                                     <div class="d-flex">
-                                        <a wire:navigate class="text-secondary mx-2"
-                                            href="{{ route('product.show', $data->id) }}"><i
-                                                class="fa-solid fa-eye"></i></a>
-                                        <a class="text-success mx-2" wire:navigate
-                                            href="{{ route('product.edit', $data->id) }}"><i
+                                        @if ($data->is_active == 0)
+                                            <a class="mx-2 text-success" wire:click="active({{ $data->id }})"><i
+                                                    class="fa-solid fa-check"></i></a>
+                                        @endif
+                                        <a class="text-success" wire:navigate
+                                            href="{{ route('setting.edit', $data->id) }}"><i
                                                 class="fa-regular fa-pen-to-square"></i></a>
+                                        <a class="mx-2 text-danger" wire:click="delete({{ $data->id }})"><i
+                                                class="fa-solid fa-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>

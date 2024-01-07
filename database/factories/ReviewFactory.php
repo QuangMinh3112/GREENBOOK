@@ -21,7 +21,7 @@ class ReviewFactory extends Factory
             "user_id" => $this->faker->numberBetween(1, 30),
             "book_id" => $this->faker->numberBetween(1, 100),
             "comment" => $this->faker->paragraph(3),
-            "ratting" => $this->faker->numberBetween(0, 5),
+            "rating" => $this->faker->numberBetween(0, 5),
         ];
     }
 }

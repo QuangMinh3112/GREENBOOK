@@ -7,18 +7,39 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class ApiOrderController extends Controller
 {
     protected $order;
+    protected $apiMomo;
     public function __construct(Order $order)
     {
         $this->order = $order;
     }
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $order = $this->order::where('user_id', $user->id)->get();
+        $query = $this->order::query();
+        $payment = $request->input('payment');
+        $status = $request->input('status');
+        $create_at = $request->input('create_at');
+        $order_code = $request->input('order_code');
+
+        if ($payment !== null) {
+            $query->where('payment', 'like', '%' . $payment . '%');
+        }
+        if ($status !== null) {
+            $query->where('status', 'like', '%' . $status . '%');
+        }
+        if ($create_at !== null) {
+            $create_at = Carbon::parse($create_at)->toDateString();
+            $query->whereDate('created_at', $create_at);
+        }
+        if ($order_code) {
+            $query->where('order_code', 'like', '%' . $order_code . '%');
+        }
+        $order = $query->where('user_id', $user->id)->get();
         if ($order) {
             return response()->json(['message' => 'Đã lấy đơn hàng', 'data' => $order], 200);
         } else {
@@ -38,16 +59,22 @@ class ApiOrderController extends Controller
     {
         $order = Order::findOrFail($order_id);
         if ($order->status === 'Chờ xử lý') {
-            if ($request->filled('name')) {
+            if ($request->input('name')) {
                 $order->name = $request->name;
             }
-
-            if ($request->filled('phone_number')) {
+            if ($request->input('phone_number')) {
                 $order->phone_number = $request->phone_number;
             }
 
-            if ($request->filled('address')) {
+            if ($request->input('address')) {
                 $order->address = $request->address;
+            }
+            if ($request->input('ship_fee')) {
+                $order->ship_fee = $request->ship_fee;
+                $order->total = $order->total_product_amount + $request->ship_fee;
+            }
+            if ($request->input('payment') && $order->payment === "Watting") {
+                $order->payment = "COD";
             }
             $order->save();
             return response()->json(['message' => 'Cập nhật đơn hàng thành công', 'data' => $order], 200);

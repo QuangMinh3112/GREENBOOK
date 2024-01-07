@@ -14,6 +14,7 @@ class Coupon extends Model
         'code',
         'value',
         'type',
+        'image',
         'quantity',
         'start_date',
         'end_date',
@@ -37,8 +38,8 @@ class Coupon extends Model
     {
         return $userPoint >= $this->point_required;
     }
-    public function getImageAttribute($coupon)
-    {
-        return asset('storage/' . $coupon);
-    }
+    // public function getImageAttribute($coupon)
+    // {
+    //     return asset('storage/' . $coupon);
+    // }
 }
