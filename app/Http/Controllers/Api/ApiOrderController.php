@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
@@ -86,6 +87,12 @@ class ApiOrderController extends Controller
                 $order->ward_id = $ward_id;
             }
             if ($ship_fee) {
+                if ($order->coupon != null) {
+                    $coupon = Coupon::where('code', 'like', $order->coupon)->first();
+                    if ($coupon->type === "free_ship") {
+                        $ship_fee == 0;
+                    }
+                }
                 $order->ship_fee = $ship_fee;
                 $order->total = $order->total_product_amount + $request->ship_fee;
             }
