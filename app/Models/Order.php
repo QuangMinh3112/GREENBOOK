@@ -23,7 +23,11 @@ class Order extends Model
         'total_product_amount',
         'total',
         'code',
-        'user_id'
+        'user_id',
+        'service_id',
+        'province_id',
+        'district_id',
+        'ward_id',
     ];
     public function getPaymentAttribute($value)
     {

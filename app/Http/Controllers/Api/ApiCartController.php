@@ -161,6 +161,10 @@ class ApiCartController extends Controller
                         'coupon' => "",
                         'user_id' => $user_id,
                         'ship_fee' => $request->input('ship_fee'),
+                        'service_id' => $request->input('service_id'),
+                        'province_id' => $request->input('province_id'),
+                        'ward_id' => $request->input('ward_id'),
+                        'ship_fee' => $request->input('ship_fee'),
                         'added_date' => now(),
                     ]);
                     foreach ($carts as $cart) {
