@@ -142,7 +142,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
             // Lọc coupon
             Route::get('/filter', 'filterCoupon');
             // Lấy coupon
-            Route::get('/get-coupon/{id}', 'getCoupon');
+            Route::post('/get-coupon/{id}', 'getCoupon');
         });
         Route::prefix('user-coupon')->controller(ApiUserCouponController::class)->group(function () {
             // Xem danh sách coupon user
