@@ -29,7 +29,6 @@
                                 @foreach ($coupons as $data)
                                     <tr>
                                         <th>{{ $i }}</th>
-
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->code }}</td>
                                         <td>{{ $data->discount }}{{ $data->getCouponValue() }}</td>

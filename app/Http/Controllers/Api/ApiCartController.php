@@ -221,11 +221,12 @@ class ApiCartController extends Controller
 
                     $this->cart::where('user_id', $user_id)->delete();
                     $orderDetail = OrderDetail::where('order_id', $order->id)->get();
-                    Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail));
                     if ($payment === "COD") {
                         $order->update([
                             "payment" => "COD"
                         ]);
+                        $trangThai = "Thanh toán khi nhận hàng";
+                        Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail, $trangThai));
                         return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
                     } else if ($payment === "MOMO") {
                         $url = $this->apiMomo->momo_payment($order->id);

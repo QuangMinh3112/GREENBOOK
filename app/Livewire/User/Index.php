@@ -14,17 +14,15 @@ class Index extends Component
 {
     use WithPagination;
     public $page = 5;
-    public $role = 0;
     public $name = "";
     public $email = "";
-    public $status = 1;
     public function render()
     {
         return view('livewire.user.index', [
             'users' => User::nameSearch($this->name)
                 ->emailSearch($this->email)
-                ->where('role', $this->role)
-                ->where('status', $this->status)
+                ->where('role', 0)
+                ->where('status', 1)
                 ->paginate($this->page),
         ]);
     }

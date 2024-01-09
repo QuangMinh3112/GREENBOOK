@@ -89,7 +89,7 @@
                                             <a class="mx-2 text-success" href="{{ route('user.edit', $data->id) }}"><i
                                                     class="fa-solid fa-pen-to-square"></i></a>
                                             {{-- Ngừng hoạt động --}}
-                                            @if ($status != 0)
+                                            @if ($data->status != 0)
                                                 <a wire:click.prevent="lock({{ $data->id }})"
                                                     class="mx-2 text-danger"><i class="fa-solid fa-lock"></i></a>
                                             @else

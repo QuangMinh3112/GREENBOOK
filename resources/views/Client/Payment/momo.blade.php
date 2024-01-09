@@ -122,22 +122,10 @@
     <div class="main-content">
         <i class="fa fa-check main-content__checkmark" id="checkmark"></i>
         <p class="main-content__body" data-lead-id="main-content-body">Đơn hàng của bạn đang chờ để xác nhận, vui lòng
-            kiểm tra mail để theo dõi đơn hàng !!!.</p>
+            kiểm tra mail để theo dõi đơn hàng !!!</p>
     </div>
     <br>
     <br>
-    <button id="#close">
-        Quay lại trang chủ
-    </button>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('#close').addEventListener('click', function() {
-                window.open('', '_self').close();
-            });
-        });
-    </script>
 
 </body>
-
-
 </html>

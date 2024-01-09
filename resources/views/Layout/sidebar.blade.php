@@ -168,7 +168,7 @@
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Danh sách</a>
+                <a wire:navigate class="collapse-item" href="{{ route('order.index') }}">Danh sách</a>
                 <a class="collapse-item" href="cards.html">Thêm mới</a>
             </div>
         </div>

@@ -27,7 +27,8 @@ return new class extends Migration
             $table->integer('total_product_amount');
             $table->integer('total');
             $table->string('coupon')->nullable();
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
+            $table->integer('admin_id')->nullable();
             $table->timestamps();
         });
     }

@@ -18,4 +18,8 @@ class OrderDetail extends Model
         'book_image',
         'book_price',
     ];
+    public function book()
+    {
+        return $this->belongsTo(Book::class);
+    }
 }

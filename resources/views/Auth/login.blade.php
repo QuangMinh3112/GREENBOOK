@@ -15,7 +15,7 @@
                         @endif
 
                     <span class="login100-form-title p-b-48">
-                        <i class="zmdi zmdi-font"></i>
+
                     </span>
 
                     <div class="wrap-input100 validate-input">
@@ -37,14 +37,6 @@
                                 Đăng nhập
                             </button>
                         </div>
-                    </div>
-                    <div class="text-center p-t-115">
-                        <span class="txt1">
-                            Chưa có tài khoản ?
-                        </span>
-                        <a class="txt2" href="{{ route('register') }}">
-                            Đăng kí ngay
-                        </a>
                     </div>
                 </form>
             </div>

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderSuccess;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 class ApiMomo extends Controller
 {
@@ -42,7 +46,7 @@ class ApiMomo extends Controller
             $secretKey = "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa";
             $orderInfo = "Thanh toán qua MoMo";
             $amount = strval($order->total);
-            $orderId = strval($order->order_id);
+            // $orderId = strval($order->order_id);
             $returnUrl = "http://127.0.0.1:8000/momo-response";
             $notifyurl = "http://localhost:8000/atm/ipn_momo.php";
             $bankCode = "SML";
@@ -128,6 +132,9 @@ class ApiMomo extends Controller
                     $result = 'Success';
                     $order->update(['payment' => 'Paid']);
                     $orderDetail = OrderDetail::where('order_id', 'like', '%' . $order->id . '%')->get();
+                    $user = User::find($order->user_id);
+                    $trangThai = "Đã thanh toán";
+                    Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail, $trangThai));
                 } else {
                     $result = '<div class="alert alert-danger"><strong>Payment status: </strong>' . $message . '/' . $localMessage . '</div>';
                 }
@@ -135,6 +142,7 @@ class ApiMomo extends Controller
                 $result = '<div class="alert alert-danger">This transaction could be hacked, please check your signature and returned signature</div>';
             }
         }
+
         return view('Client.Payment.momo', compact('partnerCode', 'accessKey', 'orderId', 'localMessage', 'message', 'transId', 'orderInfo', 'amount', 'errorCode', 'responseTime', 'requestId', 'extraData', 'payType', 'orderType', 'm2signature', 'result', 'secretKey', 'rawHash', 'partnerSignature', 'orderDetail', 'order'));
     }
 }

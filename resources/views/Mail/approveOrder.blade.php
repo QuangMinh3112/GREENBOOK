@@ -60,7 +60,7 @@
 <body>
     <div class="container">
         <div>
-            <h2>Đặt hàng thành công</h2>
+            <h2>Đơn hàng của bạn đã được xác nhận</h2>
             <p>Cảm ơn bạn đã mua hàng của chúng tôi</p>
         </div>
         <div>
@@ -92,12 +92,6 @@
                             $i++;
                         @endphp
                     @endforeach
-                    <tr class="total">
-                        <td colspan="4"><b>Trạng thái đơn hàng</b></td>
-                        <td>
-                            <h5>{{ $trangThai }}</h5>
-                        </td>
-                    </tr>
                     <tr class="total">
                         <td colspan="4"><b>Tổng tiền sản phẩm</b></td>
                         <td>
