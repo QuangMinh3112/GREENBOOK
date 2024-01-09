@@ -3,36 +3,42 @@
         <h6 class="m-0 font-weight-bold text-white">Danh sách mã giảm giá</h6>
     </div>
     <div class="card-body">
-        <div class="row mx-auto">
-            <div class="mb-3 mr-2">
-                <input type="text" class="form-control" name="" id=""
-                    wire:model.live.debounce.300ms ="name" placeholder="Tìm theo tên">
+        <div class="row mx-auto justify-content-between">
+            <div class="d-flex">
+                <div class="mb-3 mr-2">
+                    <input type="text" class="form-control" name="" id=""
+                        wire:model.live.debounce.300ms ="name" placeholder="Tìm theo tên">
+                </div>
+                <div class="mb-3 mr-2">
+                    <select name="" id="" class="form-control"
+                        wire:model.live.debounce.300ms = "status">
+                        <option value="public" selected>Công bố</option>
+                        <option value="private">Riêng tư</option>
+                    </select>
+                </div>
+                <div class="mb-3 mr-2">
+                    <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "type">
+                        <option value="" selected>Loại mã giảm giá</option>
+                        <option value="percent">%</option>
+                        <option value="number">Giá tiền</option>
+                        <option value="free_ship">Free Ship</option>
+                    </select>
+                </div>
+                <div class="mb-3 mr-2">
+                    <select name="" id="" class="form-control"
+                        wire:model.live.debounce.300ms = "is_activate">
+                        <option value="1" selected>Hoạt động</option>
+                        <option value="0">Ngừng hoạt động</option>
+                    </select>
+                </div>
+                <div class="mb-3 mr-2 align-item-center">
+                    @if (session('success'))
+                        <span class="text-success">{{ session('success') }}</span>
+                    @endif
+                </div>
             </div>
-            <div class="mb-3 mr-2">
-                <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "status">
-                    <option value="public" selected>Công bố</option>
-                    <option value="private">Riêng tư</option>
-                </select>
-            </div>
-            <div class="mb-3 mr-2">
-                <select name="" id="" class="form-control" wire:model.live.debounce.300ms = "type">
-                    <option value="" selected>Loại mã giảm giá</option>
-                    <option value="percent">%</option>
-                    <option value="number">Giá tiền</option>
-                    <option value="free_ship">Free Ship</option>
-                </select>
-            </div>
-            <div class="mb-3 mr-2">
-                <select name="" id="" class="form-control"
-                    wire:model.live.debounce.300ms = "is_activate">
-                    <option value="1" selected>Hoạt động</option>
-                    <option value="0">Ngừng hoạt động</option>
-                </select>
-            </div>
-            <div class="mb-3 mr-2 align-item-center">
-                @if (session('success'))
-                    <span class="text-success">{{ session('success') }}</span>
-                @endif
+            <div>
+                <a wire:navigate href="{{ route('coupon.give') }}" class="btn btn-success">Tặng mã giảm giá</a>
             </div>
         </div>
         <div class="example">

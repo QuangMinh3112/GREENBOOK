@@ -9,14 +9,13 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderSuccess extends Mailable
+class ApproveOrder extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-
     public $order;
     public $orderDetail;
     public $trangThai;
@@ -35,7 +34,7 @@ class OrderSuccess extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Đặt hàng thành công',
+            subject: 'Xác nhận đơn hàng',
         );
     }
 
@@ -45,7 +44,7 @@ class OrderSuccess extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Mail.orderSuccess',
+            view: 'Mail.approveOrder',
         );
     }
 

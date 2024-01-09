@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test-start', function () {
     return view('Layout.layout');
 });
-
+Route::get('/coupon', function () {
+    return view('Mail.couponGive');
+});
 Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
     // DANH MỤC SÁCH
     Route::prefix('category')->group(function () {
@@ -52,6 +54,7 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
     // COUPON
     Route::prefix('coupon')->group(function () {
         Route::get('/', App\Livewire\Coupon\Index::class)->name('coupon.index');
+        Route::get('/give-coupon', App\Livewire\Coupon\GiveCoupon::class)->name('coupon.give');
         Route::get('/create-coupon', App\Livewire\Coupon\Create::class)->name('coupon.create');
         Route::get('/edit-coupon/{id}', App\Livewire\Coupon\Edit::class)->name('coupon.edit');
     });
@@ -66,6 +69,11 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/', App\Livewire\Setting\Index::class)->name('setting.index');
         Route::get('/create-setting', App\Livewire\Setting\Create::class)->name('setting.create');
         Route::get('/edit-setting/{id}', App\Livewire\Setting\Edit::class)->name('setting.edit');
+    });
+    Route::prefix('order')->group(function () {
+        Route::get('/', App\Livewire\Order\Index::class)->name('order.index');
+        Route::get('/create-order', App\Livewire\Order\Create::class)->name('order.create');
+        Route::get('/show-order/{id}', App\Livewire\Order\Show::class)->name('order.show');
     });
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');

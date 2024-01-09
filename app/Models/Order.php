@@ -37,8 +37,6 @@ class Order extends Model
             return 'Thanh toán khi nhận hàng';
         } elseif ($value === 'Paid') {
             return 'Đã thanh toán';
-        } else {
-            return 'Trạng thái thanh toán không xác định';
         }
     }
     public function getStatusAttribute($value)
@@ -71,5 +69,9 @@ class Order extends Model
         return $this->where('user_id', $user_id)
             ->where('status', 'completed')
             ->exists();
+    }
+    public function scopeSearch($query, $value)
+    {
+        $query->where('order_code', 'like', "%{$value}%");
     }
 }

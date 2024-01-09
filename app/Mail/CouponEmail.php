@@ -9,24 +9,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderSuccess extends Mailable
+class CouponEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-
-    public $order;
-    public $orderDetail;
-    public $trangThai;
-
-    public function __construct($order, $orderDetail, $trangThai)
+    public $coupon;
+    public function __construct($coupon)
     {
         //
-        $this->order = $order;
-        $this->orderDetail = $orderDetail;
-        $this->trangThai = $trangThai;
+        $this->coupon = $coupon;
     }
 
     /**
@@ -35,7 +29,7 @@ class OrderSuccess extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Đặt hàng thành công',
+            subject: 'Mã giảm giá',
         );
     }
 
@@ -45,7 +39,7 @@ class OrderSuccess extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Mail.orderSuccess',
+            view: 'Mail.couponGive',
         );
     }
 
