@@ -20,7 +20,7 @@ class CheckBookStatus
         if (!$book) {
             return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
         }
-        if ($book->status == 0) {
+        if ($book->status === 0) {
             return response()->json(['message' => 'Sản phẩm ngừng hoạt động'], 422);
         }
         return $next($request);

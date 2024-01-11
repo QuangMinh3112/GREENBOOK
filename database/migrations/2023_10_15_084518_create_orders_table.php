@@ -16,13 +16,14 @@ return new class extends Migration
             $table->string('order_code')->uniqid();
             $table->string('name');
             $table->string('phone_number');
+            $table->string('email')->default('minhvqph27791@fpt.edu.vn');
             $table->string('address');
             $table->integer('service_id')->nullable();
             $table->integer('province_id');
             $table->integer('district_id');
             $table->integer('ward_id');
             $table->enum('payment', ['COD', 'Paid', 'Waiting'])->nullable()->default("Waiting");
-            $table->enum('status', ['pending', 'shipping', 'shipped', 'completed', 'failed', 'cancel'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'shipping', 'shipped', 'completed', 'failed', 'cancel', 'refund'])->default('pending');
             $table->integer('ship_fee');
             $table->integer('total_product_amount');
             $table->integer('total');

@@ -22,7 +22,7 @@ class Order extends Model
         'ship_fee',
         'total_product_amount',
         'total',
-        'code',
+        'coupon',
         'user_id',
         'service_id',
         'province_id',
@@ -73,5 +73,9 @@ class Order extends Model
     public function scopeSearch($query, $value)
     {
         $query->where('order_code', 'like', "%{$value}%");
+    }
+    public function scopeFindId($query, $uuid)
+    {
+        return $query->where('id', $uuid);
     }
 }

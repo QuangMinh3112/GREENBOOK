@@ -18,6 +18,20 @@ class ApiOrderController extends Controller
     {
         $this->order = $order;
     }
+    public function searchOrder(Request $request)
+    {
+        $id = $request->input('id');
+        if ($id) {
+            $order = Order::find($id);
+            if ($order) {
+                return response()->json(["message" => "Success", "data" => $order], 200);
+            } else {
+                return response()->json(["message" => "Không tìm thấy đơn hàng"], 404);
+            }
+        } else {
+            return response()->json(["message" => "Vui lòng nhập mã đơn hàng"], 500);
+        }
+    }
     public function index(Request $request)
     {
         $user = Auth::user();

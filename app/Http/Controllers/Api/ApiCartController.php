@@ -15,6 +15,7 @@ use App\Models\UserCoupon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cookie;
 
 class ApiCartController extends Controller
 {
@@ -22,19 +23,26 @@ class ApiCartController extends Controller
     protected $cart;
     protected $book;
     protected $apiMomo;
+    protected $userId;
     public function __construct(Cart $cart, Book $book, ApiMomo $apiMomo)
     {
         $this->cart = $cart;
         $this->book = $book;
-        $this->middleware('auth:api');
         $this->middleware('check.book.status')->only(['addToCart']);
         $this->apiMomo = $apiMomo;
+        $this->userId = $this->checkUserId();
     }
-
+    public function checkUserId()
+    {
+        if (Auth::guard('api')->check()) {
+            return Auth::guard('api')->id();
+        } else {
+            return null;
+        }
+    }
     public function index()
     {
-        $user = Auth()->user();
-        $carts = $this->cart->where('user_id', $user->id)->with(['book'])->latest('id')->get();
+        $carts = $this->cart->where('user_id', $this->userId)->with(['book'])->latest('id')->get();
         if (count($carts) > 0) {
             return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => $carts], 200);
         } else {
@@ -43,7 +51,6 @@ class ApiCartController extends Controller
     }
     public function addToCart(Request $request, $book_id)
     {
-        $user = Auth::user();
         $book_id = $book_id;
         if ($request->input('quantity')) {
             $quantity = $request->input('quantity');
@@ -57,7 +64,7 @@ class ApiCartController extends Controller
         if ($book->quantity < $quantity) {
             return response()->json(['message' => 'Sản phẩm có sẵn không đủ'], 200);
         }
-        $cartItem = Cart::where('user_id', $user->id)->where('book_id', $book_id)->first();
+        $cartItem = Cart::where('user_id', $this->userId)->where('book_id', $book_id)->first();
         if ($cartItem) {
             $cartItem->quantity += $quantity;
             if ($cartItem->quantity > $book->quantity) {
@@ -67,7 +74,7 @@ class ApiCartController extends Controller
             }
         } else {
             $this->cart->create([
-                'user_id' => $user->id,
+                'user_id' => $this->userId,
                 'book_id' => $book_id,
                 'quantity' => $quantity,
                 'added_date' => now()
@@ -77,8 +84,8 @@ class ApiCartController extends Controller
     }
     public function update(Request $request, $cart_id)
     {
-        $user_id = Auth()->user()->id;
-        $cart = $this->cart->where('id', $cart_id)->where('user_id', $user_id)->first();
+        $userId = $this->checkUserId();
+        $cart = $this->cart->where('id', $cart_id)->where('user_id', $userId)->first();
         if (!$cart) {
             return response()->json(['message' => 'Không tìm thấy sản phẩm']);
         } else {
@@ -104,8 +111,8 @@ class ApiCartController extends Controller
     }
     public function removeAll()
     {
-        $user = Auth::user();
-        $carts = $this->cart::where('user_id', $user->id)->get();
+        $userId = $this->checkUserId();
+        $carts = $this->cart::where('user_id', $userId)->get();
 
         if ($carts->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy giỏ hàng'], 404);
@@ -121,117 +128,124 @@ class ApiCartController extends Controller
     {
         $invalidBook = [];
         $outStock = [];
-        $user = Auth::user();
+        $userId = $this->checkUserId();
         $payment = $request->input('payment');
+        $email = $request->input('email');
+        $name = $request->input('name');
+        $phone_number = $request->input('phone_number');
+        $address = $request->input('address');
         $ship_fee = $request->input('ship_fee');
-        if ($user->is_vertify != 1) {
-            return response()->json(['message' => 'Bạn cần phải xác minh tài khoản trước khi đặt hàng']);
+        $service_id = $request->input('service_id');
+        $district_id = $request->input('district_id');
+        $province_id = $request->input('province_id');
+        $ward_id = $request->input('ward_id');
+        $carts = $this->cart::where('user_id', $userId)->get();
+        if (count($carts) == 0) {
+            return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
         } else {
-            $user_id = Auth::user()->id;
-            $carts = $this->cart::where('user_id', $user_id)->get();
-            if (count($carts) == 0) {
-                return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 400);
+            $total_product_amount = 0;
+            foreach ($carts as $cart) {
+                $book = $this->book::find($cart->book_id);
+                if ($book->status == 0) {
+                    $invalidBook[] = $book;
+                }
+            }
+            foreach ($carts as $cart) {
+                $book = $this->book::find($cart->book_id);
+                if ($book->quantity == 0) {
+                    $outStock[] = $book;
+                }
+            }
+            if (count($invalidBook) > 0) {
+                return response()->json(['message' => 'Tồn tại sản phẩm không hoạt động', 'invalid_book' => $invalidBook], 422);
+            } else if (count($outStock) > 0) {
+                return response()->json(['message' => 'Tồn tại sản phẩm hết hàng', 'out_stock' => $outStock], 422);
             } else {
-                $total_product_amount = 0;
+                $id = Str::uuid();
+                $order = Order::create([
+                    'id' => $id,
+                    'status' => 'pending',
+                    'name' => $name,
+                    'phone_number' => $phone_number,
+                    'address' => $address,
+                    'total_product_amount' => 0,
+                    'total' => 0,
+                    'email' => $email,
+                    'coupon' => "",
+                    'user_id' => $userId,
+                    'service_id' => $service_id,
+                    'district_id' => $district_id,
+                    'province_id' => $province_id,
+                    'ward_id' => $ward_id,
+                    'ship_fee' => $ship_fee,
+                    'added_date' => now(),
+                ]);
                 foreach ($carts as $cart) {
                     $book = $this->book::find($cart->book_id);
-                    if ($book->status == 0) {
-                        $invalidBook[] = $book;
-                    }
-                }
-                foreach ($carts as $cart) {
-                    $book = $this->book::find($cart->book_id);
-                    if ($book->quantity == 0) {
-                        $outStock[] = $book;
-                    }
-                }
-                if (count($invalidBook) > 0) {
-                    return response()->json(['message' => 'Tồn tại sản phẩm không hoạt động', 'invalid_book' => $invalidBook], 422);
-                } else if (count($outStock) > 0) {
-                    return response()->json(['message' => 'Tồn tại sản phẩm hết hàng', 'out_stock' => $outStock], 422);
-                } else {
-                    $id = Str::uuid();
-                    $order = Order::create([
-                        'id' => $id,
-                        'status' => 'pending',
-                        'name' => $request->input('name'),
-                        'phone_number' => $request->input('phone_number'),
-                        'address' => $request->input('address'),
-                        'total_product_amount' => 0,
-                        'total' => 0,
-                        'coupon' => "",
-                        'user_id' => $user_id,
-                        'ship_fee' => $request->input('ship_fee'),
-                        'service_id' => $request->input('service_id'),
-                        'district_id' => $request->input('district_id'),
-                        'province_id' => $request->input('province_id'),
-                        'ward_id' => $request->input('ward_id'),
-                        'ship_fee' => $ship_fee,
-                        'added_date' => now(),
+                    OrderDetail::create([
+                        'order_id' =>  $order->id,
+                        'book_id' => $cart->book_id,
+                        'quantity' => $cart->quantity,
+                        'book_name' => $book->name,
+                        'book_image' => $book->image,
+                        'book_price' => $book->price,
                     ]);
-                    foreach ($carts as $cart) {
-                        $book = $this->book::find($cart->book_id);
-                        OrderDetail::create([
-                            'order_id' =>  $order->id,
-                            'book_id' => $cart->book_id,
-                            'quantity' => $cart->quantity,
-                            'book_name' => $book->name,
-                            'book_image' => $book->image,
-                            'book_price' => $book->price,
-                        ]);
-                        $total_product_amount += ($cart->quantity * $book->price);
-                    }
-                    $coupon_id = $request->input('coupon_id');
-                    $coupon = "";
-                    if ($coupon_id) {
-                        $user_coupon = UserCoupon::where('id', $coupon_id)->first();
-                        if ($user_coupon) {
-                            if ($user_coupon->is_used == 1) {
-                                return response()->json(["message" => "Mã giảm giá đã được dùng"], 422);
-                            }
-                            $coupon = Coupon::find($user_coupon->coupon_id);
-                            if ($coupon->price_required > $total_product_amount) {
-                                return response()->json(["message" => "Tổng giá tiền chưa đạt tiêu chuẩn"], 422);
-                            } else if ($coupon->is_activate == 0) {
-                                return response()->json(["message" => "Mã giảm giá đã ngừng hoạt động"], 404);
-                            } else {
-                                $user_coupon->update(['is_used' => 1]);
-                            }
+                    $total_product_amount += ($cart->quantity * $book->price);
+                }
+                $coupon_id = $request->input('coupon_id');
+                $coupon = "";
+                if ($coupon_id) {
+                    $user_coupon = UserCoupon::where('id', $coupon_id)->first();
+                    if ($user_coupon) {
+                        if ($user_coupon->is_used == 1) {
+                            return response()->json(["message" => "Mã giảm giá đã được dùng"], 422);
+                        }
+                        $coupon = Coupon::find($user_coupon->coupon_id);
+                        if ($coupon->price_required > $total_product_amount) {
+                            return response()->json(["message" => "Tổng giá tiền chưa đạt tiêu chuẩn"], 422);
+                        } else if ($coupon->is_activate == 0) {
+                            return response()->json(["message" => "Mã giảm giá đã ngừng hoạt động"], 404);
+                        } else {
+                            $user_coupon->update(['is_used' => 1]);
                         }
                     }
-                    if ($coupon != null) {
-                        if ($coupon->type === "number") {
-                            $total_product_amount = $total_product_amount - $coupon->value;
-                        }
-                        if ($coupon->type === "percent") {
-                            $total_product_amount = $total_product_amount - ($total_product_amount * ($coupon->value / 100));
-                        }
-                        if ($coupon->type === "free_ship") {
-                            $order->ship_fee = 0;
-                        }
-                        $order->coupon = $coupon->code;
-                        $order->total_product_amount = $total_product_amount;
-                        $order->total = $total_product_amount + $order->ship_fee;
-                        $order->save();
-                    } else {
-                        $order->total_product_amount = $total_product_amount;
-                        $order->total = $total_product_amount + $order->ship_fee;
-                        $order->save();
+                }
+                if ($coupon != null) {
+                    if ($coupon->type === "number") {
+                        $total_product_amount = $total_product_amount - $coupon->value;
                     }
-
-                    $this->cart::where('user_id', $user_id)->delete();
-                    $orderDetail = OrderDetail::where('order_id', $order->id)->get();
-                    if ($payment === "COD") {
-                        $order->update([
-                            "payment" => "COD"
-                        ]);
-                        $trangThai = "Thanh toán khi nhận hàng";
-                        Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail, $trangThai));
+                    if ($coupon->type === "percent") {
+                        $total_product_amount = $total_product_amount - ($total_product_amount * ($coupon->value / 100));
+                    }
+                    if ($coupon->type === "free_ship") {
+                        $order->ship_fee = 0;
+                    }
+                    $order->coupon = $coupon->code;
+                    $order->total_product_amount = $total_product_amount;
+                    $order->total = $total_product_amount + $order->ship_fee;
+                    $order->save();
+                } else {
+                    $order->total_product_amount = $total_product_amount;
+                    $order->total = $total_product_amount + $order->ship_fee;
+                    $order->save();
+                }
+                $this->cart::where('user_id', $userId)->delete();
+                $orderDetail = OrderDetail::where('order_id', $order->id)->get();
+                if ($payment === "COD") {
+                    $order->update([
+                        "payment" => "COD"
+                    ]);
+                    $trangThai = "Thanh toán khi nhận hàng";
+                    $result = Mail::to($email)->send(new OrderSuccess($order, $orderDetail, $trangThai));
+                    if ($result) {
                         return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
-                    } else if ($payment === "MOMO") {
-                        $url = $this->apiMomo->momo_payment($order->id);
-                        return response()->json(['message' => 'Vui lòng thực hiện thanh toán', 'data' => $order, 'url' => $url]);
+                    } else {
+                        return response()->json(['message' => 'Gửi email thất bại'], 500);
                     }
+                    return response()->json(['message' => 'Đặt hàng thành công', 'data' => $order]);
+                } else if ($payment === "MOMO") {
+                    $url = $this->apiMomo->momo_payment($order->id, $email);
+                    return response()->json(['message' => 'Vui lòng thực hiện thanh toán', 'data' => $order, 'url' => $url]);
                 }
             }
         }

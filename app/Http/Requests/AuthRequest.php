@@ -29,4 +29,17 @@ class AuthRequest extends FormRequest
             'avatar' => 'nullable',
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Vui lòng nhập tên.',
+            'name.min' => 'Tên phải có ít nhất :min ký tự.',
+            'name.max' => 'Tên không được vượt quá :max ký tự.',
+            'email.required' => 'Vui lòng nhập địa chỉ email.',
+            'email.email' => 'Địa chỉ email không hợp lệ.',
+            'email.unique' => 'Địa chỉ email đã được sử dụng.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+        ];
+    }
 }
