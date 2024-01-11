@@ -43,11 +43,7 @@ class ApiCartController extends Controller
     public function index()
     {
         $carts = $this->cart->where('user_id', $this->userId)->with(['book'])->latest('id')->get();
-        if (count($carts) > 0) {
-            return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => $carts], 200);
-        } else {
-            return response()->json(['message' => 'Không có sản phẩm nào trong giỏ hàng'], 200);
-        }
+        return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => $carts], 200);
     }
     public function addToCart(Request $request, $book_id)
     {
