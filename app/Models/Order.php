@@ -22,7 +22,7 @@ class Order extends Model
         'ship_fee',
         'total_product_amount',
         'total',
-        'code',
+        'coupon',
         'user_id',
         'service_id',
         'province_id',

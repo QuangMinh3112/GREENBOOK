@@ -22,20 +22,24 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'name' => 'required|string',
-            'phone_number' => 'required|string',
-            'address' => 'required|string',
-            'coupon' => 'nullable|string',
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'phone_number' => 'required|max:20',
+            'address' => 'required|max:512',
         ];
     }
     public function messages()
     {
         return [
-            'name.required' => 'Tên không được bỏ trống.',
-            'phone_number.required' => 'Số điện thoại không được bỏ trống.',
-            'address.required' => 'Địa chỉ không được bỏ trống.',
-            'coupon.string' => 'Mã giảm giá phải là một chuỗi.',
+            'name.required' => 'Vui lòng nhập tên.',
+            'name.max' => 'Tên không được vượt quá :max ký tự.',
+            'email.required' => 'Vui lòng nhập địa chỉ email.',
+            'email.email' => 'Địa chỉ email không hợp lệ.',
+            'email.max' => 'Địa chỉ email không được vượt quá :max ký tự.',
+            'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+            'phone_number.max' => 'Số điện thoại không được vượt quá :max ký tự.',
+            'address.required' => 'Vui lòng nhập địa chỉ.',
+            'address.max' => 'Địa chỉ không được vượt quá :max ký tự.',
         ];
     }
 }
