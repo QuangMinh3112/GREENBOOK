@@ -74,4 +74,8 @@ class Order extends Model
     {
         $query->where('order_code', 'like', "%{$value}%");
     }
+    public function scopeFindId($query, $uuid)
+    {
+        return $query->where('id', $uuid);
+    }
 }

@@ -40,6 +40,7 @@ Route::get('/unauthenticated', function () {
 });
 
 Route::middleware(AlwaysAcceptJson::class)->group(function () {
+
     Route::prefix('book')->controller(ApiBookController::class)->group(function () {
         //Show tất cả sách
         Route::get('/', 'index');
@@ -80,7 +81,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
     Route::get('review/show/{id}', [ApiReviewController::class, 'show']);
     // Lấy profile webstie
     Route::get('setting', [ApiSettingController::class, 'getSetting']);
-
     //Đăng nhập
     Route::post('/login', [ApiLoginController::class, 'login']);
     // Đăng ký
@@ -99,6 +99,23 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
     Route::post('/send-otp', [ApiVerificationController::class, 'sendOtpVertify']);
     // Xác minh tài khoản
     Route::post('/vertify-otp', [ApiVerificationController::class, 'otpVertify']);
+    // GIỎ HÀNG
+    Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
+        // Xem giỏ hàng
+        Route::get('/', 'index');
+        //Thêm mới vào giỏ hàng
+        Route::post('/add/{book_id}', 'addToCart');
+        //Cập nhật giỏ hàng
+        Route::put('/update/{book_id}', 'update');
+        // Xoá sản phẩm khỏi giỏ hàng
+        Route::delete('/remove/{book_id}', 'removeCart');
+        // Xoá toàn bộ sản phẩm khỏi giỏ hàng
+        Route::delete('/remove-all', 'removeAll');
+        // Tạo đơn hàng từ giỏ hàng
+        Route::post('/create-order', 'createOrder');
+    });
+    // Tìm kiếm đơn hàng
+    Route::get('/check-order', [ApiOrderController::class, 'searchOrder']);
 
     Route::middleware(['auth:api'])->group(function () {
         // Xem profile cá nhân
@@ -109,21 +126,6 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::post('/update-profile', [ApiEditProfileController::class, 'updateProfile']);
         // Cập nhật mật khẩu
         Route::post('/update-password', [ApiEditProfileController::class, 'updatePassword']);
-        // GIỎ HÀNG
-        Route::prefix('cart')->controller(ApiCartController::class)->group(function () {
-            // Xem giỏ hàng
-            Route::get('/', 'index');
-            //Thêm mới vào giỏ hàng
-            Route::post('/add/{book_id}', 'addToCart');
-            //Cập nhật giỏ hàng
-            Route::put('/update/{book_id}', 'update');
-            // Xoá sản phẩm khỏi giỏ hàng
-            Route::delete('/remove/{book_id}', 'removeCart');
-            // Xoá toàn bộ sản phẩm khỏi giỏ hàng
-            Route::delete('/remove-all', 'removeAll');
-            // Tạo đơn hàng từ giỏ hàng
-            Route::post('/create-order', 'createOrder');
-        });
         // SẢN PHẨM YÊU THÍCH
         Route::prefix('favorite-book')->controller(ApiFavoriteBookController::class)->group(function () {
             // Xem sản phẩm yêu thích
@@ -167,5 +169,5 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::post('review/add/{id}', [ApiReviewController::class, 'addReview']);
         // Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
     });
-    Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
+    Route::get('momo_payment/{order_id}/{email}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
 });

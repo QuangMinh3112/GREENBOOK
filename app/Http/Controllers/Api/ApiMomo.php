@@ -96,7 +96,6 @@ class ApiMomo extends Controller
     public function fallBack()
     {
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
-
         if (!empty($_GET)) {
             $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
             $partnerCode = request("partnerCode");
@@ -115,18 +114,14 @@ class ApiMomo extends Controller
             $payType = request("payType");
             $orderType = request("orderType");
             $extraData = request("extraData");
-            $m2signature = request("signature"); //MoMo signature
-            //Checksum
+            $m2signature = request("signature");
             $rawHash = "partnerCode=" . $partnerCode . "&accessKey=" . $accessKey . "&requestId=" . $requestId . "&amount=" . $amount . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
                 "&orderType=" . $orderType . "&transId=" . $transId . "&message=" . $message . "&localMessage=" . $localMessage . "&responseTime=" . $responseTime . "&errorCode=" . $errorCode .
                 "&payType=" . $payType . "&extraData=" . $extraData;
-
             $partnerSignature = hash_hmac("sha256", $rawHash, $secretKey);
-
             echo "<script>console.log('Debug huhu Objects: " . $rawHash . "' );</script>";
             echo "<script>console.log('Debug huhu Objects: " . $secretKey . "' );</script>";
             echo "<script>console.log('Debug huhu Objects: " . $partnerSignature . "' );</script>";
-
             if ($m2signature == $partnerSignature) {
                 if ($errorCode == '0') {
                     $result = 'Success';
@@ -134,7 +129,7 @@ class ApiMomo extends Controller
                     $orderDetail = OrderDetail::where('order_id', 'like', '%' . $order->id . '%')->get();
                     $user = User::find($order->user_id);
                     $trangThai = "Đã thanh toán";
-                    Mail::to($user->email)->send(new OrderSuccess($order, $orderDetail, $trangThai));
+                    Mail::to($order->email)->send(new OrderSuccess($order, $orderDetail, $trangThai));
                 } else {
                     $result = '<div class="alert alert-danger"><strong>Payment status: </strong>' . $message . '/' . $localMessage . '</div>';
                 }
