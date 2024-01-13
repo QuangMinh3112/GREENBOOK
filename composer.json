@@ -18,6 +18,7 @@
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.3",
+        "maatwebsite/excel": "^3.1",
         "pear/pear-core-minimal": "^1.10",
         "realrashid/sweet-alert": "^7.1",
         "simplesoftwareio/simple-qrcode": "^4.2",

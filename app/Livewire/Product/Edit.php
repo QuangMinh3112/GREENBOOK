@@ -28,7 +28,7 @@ class Edit extends Component
     public $published_company;
     public $published_year;
     public $width;
-    public $height;
+    public $length;
     public $number_of_pages;
     public $short_description;
     public $description;
@@ -47,7 +47,7 @@ class Edit extends Component
             $this->published_company = $this->product->published_company;
             $this->published_year = $this->product->published_year;
             $this->width = $this->product->width;
-            $this->height = $this->product->height;
+            $this->length = $this->product->length;
             $this->number_of_pages = $this->product->number_of_pages;
             $this->short_description = $this->product->short_description;
             $this->description = $this->product->description;
@@ -77,7 +77,7 @@ class Edit extends Component
                 "author" => $validated["author"],
                 "width" => $validated["width"],
                 "number_of_pages" => $validated["number_of_pages"],
-                "height" => $validated["height"],
+                "length" => $validated["length"],
                 "published_company" => $validated["published_company"],
                 "published_year" => $validated["published_year"],
                 "short_description" => $validated["short_description"],
@@ -95,7 +95,7 @@ class Edit extends Component
                 "author" => $validated["author"],
                 "width" => $validated["width"],
                 "number_of_pages" => $validated["number_of_pages"],
-                "height" => $validated["height"],
+                "length" => $validated["length"],
                 "published_company" => $validated["published_company"],
                 "published_year" => $validated["published_year"],
                 "short_description" => $validated["short_description"],
@@ -117,7 +117,7 @@ class Edit extends Component
             'published_company' => 'required|min:5|max:255',
             'published_year' => 'required|date_format:Y',
             'width' => 'required|numeric|min:10',
-            'height' => 'required|numeric|min:10',
+            'length' => 'required|numeric|min:10',
             'number_of_pages' => 'required|numeric|min:1',
             'short_description' => 'required|min:5|max:255',
             'description' => 'required',
@@ -147,9 +147,9 @@ class Edit extends Component
             'width.required' => 'Vui lòng nhập chiều rộng sách',
             'width.numeric' => 'Chiều rộng phải là số',
             'width.min' => 'Chiều rộng tối thiểu là 10 cm',
-            'height.required' => 'Vui lòng nhập chiều cao sách',
-            'height.numeric' => 'Chiều cao phải là số',
-            'height.min' => 'Chiều cao tối thiểu là 10 cm',
+            'length.required' => 'Vui lòng nhập chiều cao sách',
+            'length.numeric' => 'Chiều cao phải là số',
+            'length.min' => 'Chiều cao tối thiểu là 10 cm',
             'number_of_pages.required' => 'Vui lòng nhập số trang sách',
             'number_of_pages.numeric' => 'Số trang phải là số',
             'number_of_pages.min' => 'Số trang sách phải lớn hơn 50',

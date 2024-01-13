@@ -27,9 +27,6 @@ class Index extends Component
             'products' => Book::nameSearch($this->name)
                 ->authorSearch($this->author)
                 ->where('status', $this->isActivate)
-                ->when($this->sortOrder !== "", function ($query) {
-                    $query->orderBy('price', $this->sortOrder);
-                })
                 ->when($this->category_id != "", function ($query) {
                     $query->where('category_id', $this->category_id);
                 })

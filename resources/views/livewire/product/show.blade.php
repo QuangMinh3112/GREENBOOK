@@ -31,10 +31,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><b>Giá tiền</b></td>
-                                    <td>{{ $product->price }}</td>
-                                </tr>
-                                <tr>
                                     <td><b>Tác giả</b></td>
                                     <td>{{ $product->author }}</td>
                                 </tr>
@@ -46,29 +42,17 @@
                                     <td><b>Mô tả ngắn</b></td>
                                     <td>{{ $product->short_description }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td><b>Mô tả</b></td>
-
-                                </tr> --}}
                                 <tr>
                                     <td><b>Slug</b></td>
                                     <td>{{ $product->slug }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Nhà xuất bản</b></td>
-                                    <td>{{ $product->published_company }}</td>
-                                </tr>
-                                <tr>
                                     <td><b>Năm xuất bản</b></td>
-                                    <td>{{ $product->pushlished_year }}</td>
+                                    <td>{{ $product->published_year }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Kích thước</b></td>
-                                    <td>{{ $product->width }}CM X {{ $product->height }}CM</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Số lượng</b></td>
-                                    <td>{{ $product->quantity }}</td>
+                                    <td>{{ $product->length }}CM X {{ $product->width }}CM</td>
                                 </tr>
                                 <tr>
                                     <td><b>Trạng thái</b></td>

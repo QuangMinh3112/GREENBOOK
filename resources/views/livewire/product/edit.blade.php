@@ -37,25 +37,6 @@
                         @enderror
                     </div>
                 </div>
-
-                <div class="row g-3">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Giá tiền (VNĐ)</label>
-                        <input class="form-control" type="text" wire:model="price">
-                        @error('price')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Số lượng</label>
-                        <input class="form-control" type="text" wire:model="quantity">
-                        @error('quantity')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
                 <div class="row g-3">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Tác giả</label>
@@ -75,34 +56,26 @@
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Nhà xuấn bản</label>
-                        <input class="form-control" type="text" wire:model="published_company">
-                        @error('published_company')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Năm xuất bản</label>
-                        <input class="form-control" type="text" wire:model="published_year">
-                        @error('published_year')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row g-3">
-                    <div class="col-md-6 mb-3">
                         <label class="form-label">Chiều dài (CM)</label>
-                        <input class="form-control" type="text" wire:model="width">
-                        @error('width')
+                        <input class="form-control" type="text" wire:model="length">
+                        @error('length')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Chiều rộng (CM)</label>
-                        <input class="form-control" type="text" wire:model="height">
-                        @error('height')
+                        <input class="form-control" type="text" wire:model="width">
+                        @error('width')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Năm xuất bản</label>
+                        <input class="form-control" type="text" wire:model="published_year">
+                        @error('published_year')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

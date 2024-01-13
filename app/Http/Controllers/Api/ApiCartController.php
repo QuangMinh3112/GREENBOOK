@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Cookie;
 
 class ApiCartController extends Controller
 {
-    //
     protected $cart;
     protected $book;
     protected $apiMomo;
@@ -42,7 +41,9 @@ class ApiCartController extends Controller
     }
     public function index()
     {
-        $carts = $this->cart->where('user_id', $this->userId)->with(['book'])->latest('id')->get();
+        $carts = $this->cart->where('user_id', $this->userId)->with(['book', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->latest('id')->get();
         return response()->json(['message' => 'Đã lấy ra giỏ hàng', 'data' => $carts], 200);
     }
     public function addToCart(Request $request, $book_id)
@@ -53,17 +54,19 @@ class ApiCartController extends Controller
         } else {
             $quantity = 1;
         }
-        $book = Book::find($book_id);
-        if ($book->quantity == 0) {
+        $book = Book::with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->where('status', 1)->where('id', $book_id)->first();
+        if ($book->warehouse->quantity == 0) {
             return response()->json(['message' => 'Sản phẩm đã hết hàng'], 200);
         }
-        if ($book->quantity < $quantity) {
+        if ($book->warehouse->quantity < $quantity) {
             return response()->json(['message' => 'Sản phẩm có sẵn không đủ'], 200);
         }
         $cartItem = Cart::where('user_id', $this->userId)->where('book_id', $book_id)->first();
         if ($cartItem) {
             $cartItem->quantity += $quantity;
-            if ($cartItem->quantity > $book->quantity) {
+            if ($cartItem->quantity > $book->warehouse->quantity) {
                 return response()->json(['message' => 'Sản phẩm có sẵn không đủ'], 200);
             } else {
                 $cartItem->save();
@@ -86,8 +89,10 @@ class ApiCartController extends Controller
             return response()->json(['message' => 'Không tìm thấy sản phẩm']);
         } else {
             $newQuantity = $request->input('quantity');
-            $book = Book::find($cart->book_id);
-            if ($newQuantity > $book->quantity) {
+            $book = Book::with(['category', 'warehouse' => function ($query) {
+                $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+            }])->where('status', 1)->where('id', $cart->book_id)->first();
+            if ($newQuantity > $book->warehouse->quantity) {
                 return response()->json(['message' => 'Số lượng sản phẩm có sẵn không đủ'], 404);
             }
             $cart->quantity = $newQuantity;
@@ -141,14 +146,11 @@ class ApiCartController extends Controller
         } else {
             $total_product_amount = 0;
             foreach ($carts as $cart) {
-                $book = $this->book::find($cart->book_id);
+                $book = Book::where('id', $cart->book_id)->with('warehouse')->first();
                 if ($book->status == 0) {
                     $invalidBook[] = $book;
                 }
-            }
-            foreach ($carts as $cart) {
-                $book = $this->book::find($cart->book_id);
-                if ($book->quantity == 0) {
+                if ($book->warehouse->quantity < $cart->quantity) {
                     $outStock[] = $book;
                 }
             }
@@ -177,16 +179,25 @@ class ApiCartController extends Controller
                     'added_date' => now(),
                 ]);
                 foreach ($carts as $cart) {
-                    $book = $this->book::find($cart->book_id);
+                    $book = $this->book::where('id', $cart->book_id)->with('warehouse')->first();
+                    if ($cart->quantity > 20) {
+                        $price = $book->warehouse->wholesale_price;
+                    } else {
+                        $price = $book->warehouse->retail_price;
+                    }
                     OrderDetail::create([
                         'order_id' =>  $order->id,
                         'book_id' => $cart->book_id,
                         'quantity' => $cart->quantity,
                         'book_name' => $book->name,
                         'book_image' => $book->image,
-                        'book_price' => $book->price,
+                        'book_price' => $price,
                     ]);
-                    $total_product_amount += ($cart->quantity * $book->price);
+                    if ($cart->quantity > 20) {
+                        $total_product_amount += ($cart->quantity * $book->warehouse->wholesale_price);
+                    } else {
+                        $total_product_amount += ($cart->quantity * $book->warehouse->retail_price);
+                    }
                 }
                 $coupon_id = $request->input('coupon_id');
                 $coupon = "";
