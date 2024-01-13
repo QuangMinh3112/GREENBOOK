@@ -4,6 +4,7 @@ namespace App\Livewire\Warehouse;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Supplier;
 use App\Models\Warehouse;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -31,8 +32,11 @@ class Create extends Component
     public $import_price;
     public $retail_price;
     public $wholesale_price;
+    public $supplier_id;
+    public $warehouse;
     public function render()
     {
+        $exit = Warehouse::pluck('book_id')->toArray();
         return view('livewire.warehouse.create', [
             'products' => Book::nameSearch($this->name)
                 ->authorSearch($this->author)
@@ -42,15 +46,17 @@ class Create extends Component
                 })
                 ->when($this->category_id != "", function ($query) {
                     $query->where('category_id', $this->category_id);
-                })
+                })->whereNotIn('id', $exit)
                 ->paginate($this->page),
             'categories' => Category::tree(),
+            'suppliers' => Supplier::all(),
         ]);
     }
     public function addNew()
     {
         $validated = $this->validate();
         Warehouse::create([
+            "supplier_id" => $validated["supplier_id"],
             "book_id" => $validated["product_id"],
             "import_price" => $validated["import_price"],
             "retail_price" => $validated["retail_price"],
@@ -66,6 +72,7 @@ class Create extends Component
             'import_price' => 'required|numeric|min:0',
             'wholesale_price' => 'required|numeric|min:' . ($this->import_price ?? 0),
             'retail_price' => 'required|numeric|min:' . ($this->wholesale_price ?? 0),
+            'supplier_id' => 'required',
         ];
     }
 
@@ -82,6 +89,7 @@ class Create extends Component
             'retail_price.required' => 'Vui lòng nhập giá bán lẻ.',
             'retail_price.numeric' => 'Giá bán lẻ phải là một số.',
             'retail_price.min' => 'Giá bán lẻ phải lớn hơn hoặc bằng giá sỉ.',
+            'supplier_id' => 'Không bỏ trống nhà cung cấp'
         ];
     }
 }

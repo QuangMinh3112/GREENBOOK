@@ -107,7 +107,7 @@ Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin
 Route::get('/', function () {
     return redirect()->route('login');
 });
-Route::get('/momo-response/{email}', [ApiMomo::class, 'fallBack'])->name('response.momopay');
+Route::get('/momo-response', [ApiMomo::class, 'fallBack'])->name('response.momopay');
 
 Route::get('403-error', function () {
     return view('Error.403');

@@ -115,7 +115,9 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::post('/create-order', 'createOrder');
     });
     // Tìm kiếm đơn hàng
-    Route::get('/check-order', [ApiOrderController::class, 'searchOrder']);
+    Route::post('/check-order', [ApiOrderController::class, 'searchOrder']);
+    //Xem chi tiết đơn hàng
+    Route::get('/order-detail/{order_id}', [ApiOrderController::class, 'orderDetail']);
 
     Route::middleware(['auth:api'])->group(function () {
         // Xem profile cá nhân
@@ -159,8 +161,7 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::prefix('order')->controller(ApiOrderController::class)->group(function () {
             // Xem đơn hàng
             Route::get('/', 'index');
-            //Xem chi tiết đơn hàng
-            Route::get('/order-detail/{order_id}', 'orderDetail');
+
             // Thay đổi thông tin đơn hàng (Nếu là status pending sẽ thay đổi được, shipping shipped completed faild thì không)
             Route::put('/update-order/{order_id}', 'updateOrder');
             // Huỷ đơn hàng (Nếu là status pending sẽ thay đổi được, shipping shipped completed faild thì không)
