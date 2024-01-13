@@ -170,6 +170,7 @@ return [
         Ichtrojan\Otp\OtpServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -187,6 +188,7 @@ return [
         'Otp' => Ichtrojan\Otp\Otp::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'QrCode' => \SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

@@ -16,18 +16,21 @@ class ApiBookController extends Controller
     // SHOW TẤT CẢ SÁCH
     public function index()
     {
-        $books = Book::with('category')->where('status', 1)->paginate(10);
+        $books = Book::with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->where('status', 1)->paginate(10);
         return response()->json(['message' => 'Success', 'data' => $books], 200);
     }
     public function show(string $id)
     {
         //
-        $book = Book::find($id);
+        $book = Book::with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->where('status', 1)->where('id', $id)->first();
         if ($book && $book->status == 1) {
             $book->view += 1;
             $book->save();
-            $category = Category::find($book->id);
-            return response()->json(['message' => 'Success', 'data' => new BookResource($book, $category)], 200);
+            return response()->json(['message' => 'Success', 'data' => $book], 200);
         } else {
             return response()->json(['message' => 'Not Found'], 404);
         }
@@ -35,7 +38,9 @@ class ApiBookController extends Controller
     // TOP 10 SÁCH XEM NHIỀU NHẤT
     public function topBook()
     {
-        $books = Book::orderByDesc('view')->where('status', 1)->take(10)->get();
+        $books = Book::orderByDesc('view')->where('status', 1)->with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->paginate(10);
         return response()->json(['message' => 'Success', 'data' => $books]);
     }
     /**
@@ -48,7 +53,9 @@ class ApiBookController extends Controller
         if (!$currentBook || $currentBook->status == 0) {
             return response()->json(['message' => 'Không tìm thấy sách có liên quan'], 404);
         }
-        $relatedBook = Book::where('id', '!=', $currentBook->id)->where('category_id', $currentBook->category_id)->where('status', 1)->with('category')->latest()->paginate(5);
+        $relatedBook = Book::where('id', '!=', $currentBook->id)->where('category_id', $currentBook->category_id)->where('status', 1)->with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->latest()->paginate(5);
         if ($relatedBook) {
             return response()->json(['message' => 'Success', 'data' => $relatedBook], 200);
         } else if ($relatedBook->isEmty()) {
@@ -86,11 +93,15 @@ class ApiBookController extends Controller
         if (!empty($published_year) && $published_year) {
             $query->where('published_year', $published_year);
         }
-        if ($minPrice) {
-            $query->where('price', '>=', $minPrice);
-        }
-        if ($maxPrice) {
-            $query->where('price', '<=', $maxPrice);
+        if ($minPrice || $maxPrice) {
+            $query->whereHas('warehouse', function ($query) use ($minPrice, $maxPrice) {
+                if ($minPrice) {
+                    $query->where('retail_price', '>=', $minPrice);
+                }
+                if ($maxPrice) {
+                    $query->where('retail_price', '<=', $maxPrice);
+                }
+            });
         }
         if ($sortName !== '') {
             $query->orderBy('name', $sortName);
@@ -105,7 +116,9 @@ class ApiBookController extends Controller
                 $query->oldest('created_at');
             }
         }
-        $query->with('category')->where('status', 1);
+        $query->with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+        }])->where('status', 1);
         $books = $query->paginate(10);
         if ($books->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);

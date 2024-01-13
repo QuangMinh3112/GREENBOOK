@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::factory(100)->create();
+        \App\Models\Warehouse::factory(100)->create();
         \App\Models\Book::factory(100)->create();
         \App\Models\CategoryPost::factory(10)->create();
         \App\Models\Coupon::factory(30)->create();
@@ -49,30 +50,6 @@ class DatabaseSeeder extends Seeder
             "logo" => "https://img.freepik.com/premium-vector/red-youtube-logo-social-media-logo_197792-1803.jpg",
             "is_active" => 1,
         ]);
-        // DB::table('coupons')->insert([
-        //     'name' => 'Mã giảm giá người mới',
-        //     'code' => 'WELCOMETOGREENBOOK',
-        //     'discount' => 10,
-        //     'value' => 'percent',
-        //     'status' => 'public',
-        // ]);
-        // DB::table('coupons')->insert([
-        //     'name' => 'Mã giảm giá người hạng bạc',
-        //     'code' => 'SILVERCOUPON',
-        //     'discount' => 20,
-        //     'value' => 'percent',
-        //     'status' => 'public',
-        //     'point_required' => 200,
-        // ]);
-        // DB::table('coupons')->insert([
-        //     'name' => 'Mã giảm giá hạng vàng',
-        //     'code' => 'GOLDCOUPON',
-        //     'discount' => 30,
-        //     'value' => 'percent',
-        //     'status' => 'public',
-        //     'point_required' => 200,
-        // ]);
-
         DB::table('categories')->insert([
             'name' => 'Sách Giáo Khoa',
             'description' => 'Sách giáo khoa là những tài liệu được thiết kế và biên soạn đặc biệt để hỗ trợ quá trình giảng dạy và học tập trong các hệ thống giáo dục chính thức. Các sách giáo khoa thường được sử dụng trong các cấp học từ mầm non đến đại học và thậm chí cả trong các khóa đào tạo sau đại học.',
@@ -105,6 +82,24 @@ class DatabaseSeeder extends Seeder
             'description' => 'Sách giáo khoa tiếng Anh được thiết kế để giúp học sinh phát triển kỹ năng ngôn ngữ Anh cơ bản và nâng cao. Những cuốn sách này không chỉ tập trung vào việc giảng dạy ngữ pháp và từ vựng, mà còn cung cấp cơ hội cho học sinh thực hành bốn kỹ năng chính: nghe, nói, đọc, và viết.',
             'slug' => Str::slug('Tiếng Anh'),
             'parent_id' => '1'
+        ]);
+        DB::table('suppliers')->insert([
+            'name' => 'Nhà Xuất Bản Nhã Nam',
+            'phone_number' => '0123123123',
+            'email' => 'email@gmail.com',
+            'address' => 'Hà nội'
+        ]);
+        DB::table('suppliers')->insert([
+            'name' => 'Nhà Xuất Bản Tri thức',
+            'phone_number' => '0123123123',
+            'email' => 'email@gmail.com',
+            'address' => 'Hà nội'
+        ]);
+        DB::table('suppliers')->insert([
+            'name' => 'Nhà Xuất Bản Kim Đồng',
+            'phone_number' => '0123123123',
+            'email' => 'email@gmail.com',
+            'address' => 'Hà nội'
         ]);
     }
 }

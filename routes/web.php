@@ -37,6 +37,26 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/show-product/{id}', App\Livewire\Product\Show::class)->name('product.show');
         Route::get('/edit-product/{id}', App\Livewire\Product\Edit::class)->name('product.edit');
     });
+    // NHÀ CUNG CẤP
+    Route::prefix('suppliers')->group(function () {
+        Route::get('/', App\Livewire\Suppliers\Index::class)->name('suppliers.index');
+        Route::get('/create-suppliers', App\Livewire\Suppliers\Create::class)->name('suppliers.create');
+        Route::get('/edit-suppliers/{id}', App\Livewire\Suppliers\Edit::class)->name('suppliers.edit');
+    });
+    // KHO HÀNG
+    Route::prefix('warehouse')->group(function () {
+        Route::get('/', App\Livewire\Warehouse\Index::class)->name('warehouse.index');
+        Route::get('/show-warehouse/{id}', App\Livewire\Warehouse\Show::class)->name('warehouse.show');
+        Route::get('/create-warehouse', App\Livewire\Warehouse\Create::class)->name('warehouse.create');
+        Route::get('/edit-warehouse/{id}', App\Livewire\Warehouse\Edit::class)->name('warehouse.edit');
+    });
+    // NHẬP HÀNG
+    Route::prefix('product-movement')->group(function () {
+        Route::get('/', App\Livewire\ProductMovement\Index::class)->name('product-movement.index');
+        Route::get('/show-product-movement\{id}', App\Livewire\ProductMovement\Show::class)->name('product-movement.show');
+        Route::get('/create-product-movement', App\Livewire\ProductMovement\Create::class)->name('product-movement.create');
+        Route::get('/edit-product-movement/{id}', App\Livewire\ProductMovement\Edit::class)->name('product-movement.edit');
+    });
     // DANH MỤC BÀI ĐĂNG
     Route::prefix('category-post')->group(function () {
         Route::get('/', App\Livewire\CategoryPost\Index::class)->name('category-post.index');

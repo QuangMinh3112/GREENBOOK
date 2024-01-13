@@ -40,24 +40,6 @@
             </div>
         </div>
     </li>
-
-    <!-- Nav Item Category -->
-    {{-- <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-bookmark"></i>
-            <span>Danh mục</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
-            </div>
-        </div>
-    </li> --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
             aria-expanded="true" aria-controls="collapseFour">
@@ -73,7 +55,60 @@
             </div>
         </div>
     </li>
-
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight"
+            aria-expanded="true" aria-controls="collapseEight">
+            <i class="fa-solid fa-warehouse"></i>
+            <span>Kho hàng</span>
+        </a>
+        <div id="collapseEight" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('warehouse.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('warehouse.create') }}">Thêm mới</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine"
+            aria-expanded="true" aria-controls="collapseNine">
+            <i class="fa-solid fa-truck-field"></i>
+            <span>Nhà cung cấp</span>
+        </a>
+        <div id="collapseNine" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('suppliers.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('suppliers.create') }}">Thêm mới</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTen"
+            aria-expanded="true" aria-controls="collapseTen">
+            <i class="fa-solid fa-file-import"></i>
+            <span>Dữ liệu nhập</span>
+        </a>
+        <div id="collapseTen" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('product-movement.index') }}">Danh
+                    sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('product-movement.create') }}">Thêm
+                    mới</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseElevent"
+            aria-expanded="true" aria-controls="collapseElevent">
+            <i class="fa-solid fa-file-export"></i>
+            <span>Dữ liệu xuất</span>
+        </a>
+        <div id="collapseElevent" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('product.index') }}">Danh sách</a>
+                <a wire:navigate class="collapse-item spa_route" href="{{ route('product.create') }}">Thêm mới</a>
+            </div>
+        </div>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider">
 

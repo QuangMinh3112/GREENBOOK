@@ -1,5 +1,5 @@
 {{-- MẪU --}}
-@section('title', 'Thêm danh mục bài đăng mới')
+@section('title', 'Thêm mã giảm giá')
 @extends('Admin.Layouts.layout')
 @section('content')
     <div class="col-8 mx-auto">

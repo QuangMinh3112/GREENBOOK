@@ -16,4 +16,12 @@ class Supplier extends Model
         'fax',
         'address',
     ];
+    public function scopeNameSearch($query, $value)
+    {
+        $query->where('name', 'like', '%' . $value . '%');
+    }
+    public function scopeEmailSearch($query, $value)
+    {
+        $query->where('email', 'like', '%' . $value . '%');
+    }
 }

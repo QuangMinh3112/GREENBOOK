@@ -15,15 +15,6 @@
                         wire:model.live.debounce.300ms ="author" placeholder="Tìm tác giả">
                 </div>
                 <div class="mb-3 mr-2">
-                    <select name="" id="" class="form-control"
-                        wire:model.live.debounce.300ms = "sortOrder">
-                        <option value="" selected>Không sắp xếp</option>
-                        <option value="asc">Giá tiền tăng dần</option>
-                        <option value="desc">Gía tiền giảm dần</option>
-
-                    </select>
-                </div>
-                <div class="mb-3 mr-2">
                     <select class="form-control" name="category_id" wire:model.live.debounce.300ms='category_id'>
                         @include('Admin.partials.category-option')
                     </select>
@@ -48,10 +39,8 @@
                             <th>STT</th>
                             <th scope="col">Tên sách</th>
                             <th scope="col">Danh mục</th>
-                            <th scope="col">Giá sách</th>
                             <th scope="col">Tác giả</th>
                             <th scope="col">Trạng thái</th>
-                            <th scope="col">Số lượng</th>
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">Hành động</th>
                         </tr>
@@ -61,10 +50,8 @@
                             <th>STT</th>
                             <th scope="col">Tên sách</th>
                             <th scope="col">Danh mục</th>
-                            <th scope="col">Giá sách</th>
                             <th scope="col">Tác giả</th>
                             <th scope="col">Trạng thái</th>
-                            <th scope="col">Số lượng</th>
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">Hành động</th>
                         </tr>
@@ -75,10 +62,8 @@
                                 <td>{{ $data->id }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->getCategoryName() }}</td>
-                                <td>{{ $data->price }}</td>
                                 <td>{{ $data->author }}</td>
                                 <td>{{ $data->getStatus() }}</td>
-                                <td>{{ $data->quantity }}</td>
                                 <td><img class="img-thumbnail" src="{{ $data->image }}" alt="" width="100">
                                 </td>
                                 <td class="">

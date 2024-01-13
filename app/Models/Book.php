@@ -15,17 +15,14 @@ class Book extends Model
         'name',
         'image',
         'detail_image',
-        'price',
         'author',
         'category_id',
         'description',
         'short_description',
         'slug',
-        'published_company',
         'published_year',
+        'length',
         'width',
-        'height',
-        'quantity',
         'status',
         'sale',
         'number_of_pages',
@@ -35,7 +32,6 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
     public function getCategoryName()
     {
         $category = Category::find($this->category_id);
@@ -52,6 +48,10 @@ class Book extends Model
         } else {
             return "Active";
         }
+    }
+    public function warehouse()
+    {
+        return $this->hasOne(Warehouse::class, 'book_id');
     }
     public function getImageAttribute($book)
     {

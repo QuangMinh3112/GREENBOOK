@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->integer('quantity');
-            $table->integer('import_price');
-            $table->integer('retail_price');
-            $table->integer('wholesale_price');
-            $table->integer('supplier_id');
-            $table->integer('returned_quantity');
-            $table->integer('defective_quantity');
+            $table->integer('book_id')->nullable();
+            $table->integer('supplier_id')->nullable();
+            $table->integer('quantity')->default(0);
+            $table->integer('import_price')->default(0);
+            $table->integer('retail_price')->default(0);
+            $table->integer('wholesale_price')->default(0);
+            $table->integer('returned_quantity')->default(0);
+            $table->integer('defective_quantity')->default(0);
+            $table->integer('stock')->default(0);
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
