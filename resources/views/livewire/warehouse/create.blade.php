@@ -32,6 +32,19 @@
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div>
+                                    <label class="form-label">Nhà cung cấp</label>
+                                    <select name="" id="" class="form-control"
+                                        wire:model = "supplier_id">
+                                        <option value="" selected>Chọn nhà cung cấp</option>
+                                        @foreach ($suppliers as $data)
+                                            <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('supplier_id')
+                                        <span class="text-danger fst-italic">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-8 mb-3">

@@ -25,7 +25,7 @@ class AuthRequest extends FormRequest
             'name' => 'required|min:5|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'phone_number' => 'required',
+            'phone_number' => 'required|unique:users,phone_number',
             'avatar' => 'nullable',
         ];
     }
@@ -40,6 +40,7 @@ class AuthRequest extends FormRequest
             'email.unique' => 'Địa chỉ email đã được sử dụng.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+            'phone_number.unique' => 'Số điện thoại đã được sử dụng'
         ];
     }
 }

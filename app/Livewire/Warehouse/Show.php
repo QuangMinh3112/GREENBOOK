@@ -7,6 +7,8 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
+#[Layout('Layout.app')]
+#[Title('Chi tiết kho hàng')]
 class Show extends Component
 {
     public $warehouse;

@@ -16,13 +16,15 @@ class Index extends Component
     public $page = 5;
     public $name = "";
     public $email = "";
+    public $role = 0;
+    public $status = 1;
     public function render()
     {
         return view('livewire.user.index', [
             'users' => User::nameSearch($this->name)
                 ->emailSearch($this->email)
-                ->where('role', 0)
-                ->where('status', 1)
+                ->where('role', $this->role)
+                ->where('status', $this->status)
                 ->paginate($this->page),
         ]);
     }

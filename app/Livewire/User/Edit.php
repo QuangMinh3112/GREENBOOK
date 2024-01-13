@@ -57,7 +57,7 @@ class Edit extends Component
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
             'phone_number' => 'required|string|max:15',
             'password' => 'required|string|min:5',
         ];
