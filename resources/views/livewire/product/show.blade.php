@@ -64,8 +64,20 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><b>Số trang</b></td>
-                                    <td>{{ $product->number_of_pages }}</td>
+                                    <td><b>Nhà cung cấp</b></td>
+                                    <td>{{ $warehouse->getSupplier() }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Giá nhập</b></td>
+                                    <td>{{ $warehouse->import_price }} VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Giá lẻ</b></td>
+                                    <td>{{ $warehouse->retail_price }} VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Giá sỉ</b></td>
+                                    <td>{{ $warehouse->wholesale_price }} VNĐ</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -52,6 +52,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::get('/related-book/{book_id}', 'relatedBook');
         //Tìm kiếm theo trường, sắp sếp và lọc
         Route::get('search-and-filter', 'search');
+        //Top sách bán chạy trong tháng
+        Route::get('top-book-month', 'topBuyMonth');
     });
     Route::prefix('category')->controller(ApiCategoryController::class)->group(function () {
         //Lấy toàn bộ danh mục sách theo sơ đồ cây

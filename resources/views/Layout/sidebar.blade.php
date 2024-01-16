@@ -1,21 +1,21 @@
 <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #265149">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <i class="fas fa-fw fa-tachometer-alt"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">GREENBOOK<sup></sup></div>
     </a>
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Bảng thống kê</span></a>
+    <li class="nav-item">
+        <a  class="nav-link" href="{{ route('home') }}">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Thống kê</span></a>
     </li>
 
     <!-- Divider -->
@@ -25,7 +25,6 @@
     <div class="sidebar-heading">
         Quản lý sản phẩm
     </div>
-
     <!-- Nav Item Product -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -96,11 +95,11 @@
             </div>
         </div>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseElevent"
             aria-expanded="true" aria-controls="collapseElevent">
-            <i class="fa-solid fa-file-export"></i>
-            <span>Dữ liệu xuất</span>
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Sự kiện</span>
         </a>
         <div id="collapseElevent" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -108,7 +107,7 @@
                 <a wire:navigate class="collapse-item spa_route" href="{{ route('product.create') }}">Thêm mới</a>
             </div>
         </div>
-    </li>
+    </li> --}}
     <!-- Divider -->
     <hr class="sidebar-divider">
 

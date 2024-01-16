@@ -62,7 +62,6 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Chiều rộng (CM)</label>
                         <input class="form-control" type="text" wire:model="width">
@@ -79,13 +78,50 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nhà cung cấp</label>
+                        <select name="" id="" class="form-control" wire:model = "supplier_id">
+                            <option value="" selected>Chọn nhà cung cấp</option>
+                            @foreach ($suppliers as $data)
+                                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('supplier_id')
+                            <span class="text-danger fst-italic">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Mô tả ngắn sách</label>
-                    <textarea wire:model="short_description" class="form-control" rows="3"></textarea>
-                    @error('short_description')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6 mb-3">
+                        <div class="mb-3">
+                            <label class="form-label">Giá nhập (VNĐ)</label>
+                            <input class="form-control" type="text" wire:model="import_price">
+                            @error('import_price')
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giá lẻ (VNĐ)</label>
+                            <input class="form-control" type="text" wire:model="retail_price">
+                            @error('retail_price')
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giá sỉ (VNĐ)</label>
+                            <input class="form-control" type="text" wire:model="wholesale_price">
+                            @error('wholesale_price')
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Mô tả ngắn sách</label>
+                        <textarea wire:model="short_description" class="form-control" rows="8"></textarea>
+                        @error('short_description')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -96,7 +132,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="formFile">Ảnh bìa cũ</label> <br>
-                    <img src="{{ $oldImage }}" class="img-thumbnail" alt="..." width="300px" height="300px">
+                    <img src="{{ $oldImage }}" class="img-thumbnail" alt="..." width="300px"
+                        height="300px">
                 </div>
                 <div class="mb-3">
 

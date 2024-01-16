@@ -25,6 +25,7 @@ class WarehouseFactory extends Factory
             'supplier_id' => $this->faker->numberBetween(1, 3),
             'returned_quantity' => $this->faker->numberBetween(0, 20),
             'defective_quantity' => $this->faker->numberBetween(0, 10),
+            'delivery_quantity' => $this->faker->numberBetween(10, 300),
             'stock' => $this->faker->numberBetween(0, 10),
             'created_at' => now(),
             'updated_at' => now(),

@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\Coupon::factory(30)->create();
         \App\Models\Post::factory(100)->create();
         \App\Models\Review::factory(1000)->create();
+        \App\Models\OrderDetail::factory(1000)->create();
+        \App\Models\Order::factory(1000)->create();
         DB::table('users')->insert([
             'name' => 'admin',
             'avatar' => '',

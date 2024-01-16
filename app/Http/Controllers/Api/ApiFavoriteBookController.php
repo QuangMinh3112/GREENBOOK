@@ -20,7 +20,7 @@ class ApiFavoriteBookController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $favoriteBook = FavoriteBook::where('user_id', $user->id)->with('book')->latest()->paginate(10);
+            $favoriteBook = FavoriteBook::where('user_id', $user->id)->with(['book', 'warehouse'])->latest()->paginate(10);
             if (count($favoriteBook) > 0) {
                 return response()->json(['message' => 'Lấy ra sản phẩm thành công', 'data' => $favoriteBook], 200);
             } else {

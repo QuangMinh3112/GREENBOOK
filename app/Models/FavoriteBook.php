@@ -17,4 +17,8 @@ class FavoriteBook extends Model
     {
         return $this->belongsTo(Book::class);
     }
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'book_id');
+    }
 }

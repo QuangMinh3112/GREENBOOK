@@ -50,37 +50,44 @@
                             </tr>
                         </tfoot>
                         <tbody wire:loading.class='op-low'>
-                            @foreach ($posts as $data)
-                                <tr>
-                                    <th>{{ $data->id }}</th>
-                                    <td>{{ $data->title }}</td>
-                                    <td>{{ $data->getCategoryName() }}</td>
-                                    <td>{{ $data->status }}</td>
-                                    <td><img class="img-thumbnail" src="{{ $data->image }}" alt=""
-                                            width="100">
-                                    </td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a wire:navigate class="text-secondary mx-2"
-                                                href="{{ route('post.show', $data->id) }}"><i
-                                                    class="fa-solid fa-eye"></i></a>
-                                            <a class="text-success mx-2" wire:navigate
-                                                href="{{ route('post.edit', $data->id) }}"><i
-                                                    class="fa-regular fa-pen-to-square"></i></a>
-                                            @if ($status === 'Công bố')
-                                                <a class="mx-2 text-secondary" wire:click="draft({{ $data->id }})">
-                                                    <i class="fa-solid fa-floppy-disk"></i>
-                                                </a>
-                                            @else
-                                                <a class="mx-2 text-secondary"
-                                                    wire:click="published({{ $data->id }})">
-                                                    <i class="fa-solid fa-upload"></i>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </td>
+                            @if (count($posts) > 0)
+                                @foreach ($posts as $data)
+                                    <tr>
+                                        <th>{{ $data->id }}</th>
+                                        <td>{{ $data->title }}</td>
+                                        <td>{{ $data->getCategoryName() }}</td>
+                                        <td>{{ $data->status }}</td>
+                                        <td><img class="img-thumbnail" src="{{ $data->image }}" alt=""
+                                                width="100">
+                                        </td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <a wire:navigate class="text-secondary mx-2"
+                                                    href="{{ route('post.show', $data->id) }}"><i
+                                                        class="fa-solid fa-eye"></i></a>
+                                                <a class="text-success mx-2" wire:navigate
+                                                    href="{{ route('post.edit', $data->id) }}"><i
+                                                        class="fa-regular fa-pen-to-square"></i></a>
+                                                @if ($status === 'Công bố')
+                                                    <a class="mx-2 text-secondary"
+                                                        wire:click="draft({{ $data->id }})">
+                                                        <i class="fa-solid fa-floppy-disk"></i>
+                                                    </a>
+                                                @else
+                                                    <a class="mx-2 text-secondary"
+                                                        wire:click="published({{ $data->id }})">
+                                                        <i class="fa-solid fa-upload"></i>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr class="text-center">
+                                    <td colspan="6">Không tìm thấy dữ liệu</td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

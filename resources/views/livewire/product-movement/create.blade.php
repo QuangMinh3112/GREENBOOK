@@ -4,7 +4,7 @@
             <h6 class="m-0 font-weight-bold text-white">Nhập kho</h6>
         </div>
         <div class="card-body">
-            <form wire:submit.prevent='addNew()' >
+            <form wire:submit.prevent='addNew()'>
                 <div class="form-group">
                     <label for="name">Mã nhập kho:</label>
                     <input type="text" class="form-control" wire:model="code">
@@ -93,6 +93,9 @@
                         <button type="submit" class="btn btn-success">Thêm mới</button>
                         @if (session('success'))
                             <span class="text-success">{{ session('success') }}</span>
+                        @endif
+                        @if (session('fail'))
+                            <span class="text-danger">{{ session('fail') }}</span>
                         @endif
                     </div>
                     <x-button.previous-btn></x-button.previous-btn>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Product;
 
 use App\Models\Book;
+use App\Models\Warehouse;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -14,9 +15,11 @@ class Show extends Component
 {
 
     public $product;
+    public $warehouse;
     public function mount($id)
     {
         $this->product = Book::find($id);
+        $this->warehouse = Warehouse::where('book_id', $id)->first();
     }
     public function render()
     {

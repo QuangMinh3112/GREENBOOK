@@ -73,9 +73,8 @@
                                 <td>{{ $data->stock }}</td>
                                 <td class="">
                                     <div class="d-flex">
-                                        <a class="mx-2 text-secondary" wire:navigate
-                                            href="{{ route('suppliers.edit', ['id' => $data->id]) }}"><i
-                                                class="fa-solid fa-eye"></i></a>
+                                        <a class="mx-2 text-success" wire:navigate
+                                            href="{{ route('warehouse.edit', ['id' => $data->id]) }}"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </div>
                                 </td>
                             </tr>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('import_price')->default(0);
             $table->integer('retail_price')->default(0);
             $table->integer('wholesale_price')->default(0);
+            $table->integer('delivery_quantity')->default(0);
             $table->integer('returned_quantity')->default(0);
             $table->integer('defective_quantity')->default(0);
             $table->integer('stock')->default(0);
