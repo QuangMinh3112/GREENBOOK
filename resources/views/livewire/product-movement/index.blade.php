@@ -6,12 +6,16 @@
         <div class="card-body">
             <div class="row mx-auto">
                 <div class="mb-3 mr-2">
-                    <input type="text" class="form-control" name="" id=""
-                        wire:model.live.debounce.300ms ="name" placeholder="Tìm theo tên">
+                    <input type="text" class="form-control" wire:model.live.debounce.300ms ="code"
+                        placeholder="Tìm theo tên">
                 </div>
                 <div class="mb-3 mr-2">
-                    <input type="text" class="form-control" name="" id=""
-                        wire:model.live.debounce.300ms ="email" placeholder="Tìm theo email">
+                    <input type="text" class="form-control" wire:model.live.debounce.300ms ="creator"
+                        placeholder="Tìm theo người tạo">
+                </div>
+                <div class="mb-3 mr-2">
+                    <input type="date" class="form-control" wire:model.live.debounce.300ms ="date"
+                        placeholder="Tìm theo email">
                 </div>
                 <div class="mb-3 mr-2">
                     @if (session('success'))
@@ -44,23 +48,31 @@
                         </tr>
                     </tfoot>
                     <tbody wire:loading.class='op-low'>
-                        @foreach ($product_movements as $data)
-                            <tr>
-                                <td>{{ $data->id }}</td>
-                                <td>{{ $data->code }}</td>
-                                <td>{{ $data->description }}</td>
-                                <td>{{ $data->note }}</td>
-                                <td>{{ $data->creator }}</td>
-                                <td>{{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}</td>
-                                <td class="">
-                                    <div class="d-flex">
-                                        <a class="mx-2 text-success" wire:navigate
-                                            href="{{ route('suppliers.edit', ['id' => $data->id]) }}"><i
-                                                class="fa-solid fa-pen-to-square"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                        @if (count($product_movements) > 0)
+                            @foreach ($product_movements as $data)
+                                <tr>
+                                    <td>{{ $data->id }}</td>
+                                    <td>{{ $data->code }}</td>
+                                    <td>{{ $data->description }}</td>
+                                    <td>{{ $data->note }}</td>
+                                    <td>{{ $data->creator }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}</td>
+                                    <td class="">
+                                        <div class="d-flex">
+                                            <a class="mx-2 text-secondary" wire:navigate
+                                                href="{{ route('product-movement.show', ['id' => $data->id]) }}">
+                                                <i class="fa-solid fa-eye"></i>
+                                                <a class="mx-2 text-success" wire:navigate
+                                                    href="{{ route('product-movement.edit', ['id' => $data->id]) }}"><i
+                                                        class="fa-solid fa-pen-to-square"></i></a>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <td colspan="7" class="text-center">Không có dữ liệu</td>
+                        @endif
                     </tbody>
                 </table>
             </div>

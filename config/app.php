@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'vi',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -170,7 +170,6 @@ return [
         Ichtrojan\Otp\OtpServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*

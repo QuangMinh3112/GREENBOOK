@@ -37,14 +37,14 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Số điện thoại</label>
                             <input class="form-control" type="text" wire:model="phone_number">
-                            @error('name')
+                            @error('phone_number')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Số FAX</label>
                             <input class="form-control" type="text" wire:model="fax">
-                            @error('phone_number')
+                            @error('fax')
                                 <span class="text-danger fst-italic">{{ $message }}</span>
                             @enderror
                         </div>

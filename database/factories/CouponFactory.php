@@ -21,7 +21,6 @@ class CouponFactory extends Factory
     {
         $code = strtoupper(Str::random(10));
         return [
-            //
             "name" => $this->faker->name(),
             "value" => $this->faker->numberBetween(10, 30),
             "type" => $this->faker->randomElement(['percent', 'number', 'free_ship']),

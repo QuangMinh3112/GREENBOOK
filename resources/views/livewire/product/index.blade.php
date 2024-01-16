@@ -57,35 +57,41 @@
                         </tr>
                     </tfoot>
                     <tbody wire:loading.class='op-low'>
-                        @foreach ($products as $data)
-                            <tr>
-                                <td>{{ $data->id }}</td>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ $data->getCategoryName() }}</td>
-                                <td>{{ $data->author }}</td>
-                                <td>{{ $data->getStatus() }}</td>
-                                <td><img class="img-thumbnail" src="{{ $data->image }}" alt="" width="100">
-                                </td>
-                                <td class="">
-                                    <div class="d-flex">
-                                        <a wire:navigate class="text-secondary mx-2"
-                                            href="{{ route('product.show', $data->id) }}"><i
-                                                class="fa-solid fa-eye"></i></a>
-                                        <a class="text-success mx-2" wire:navigate
-                                            href="{{ route('product.edit', $data->id) }}"><i
-                                                class="fa-regular fa-pen-to-square"></i></a>
-                                        @if ($isActivate == 1)
-                                            <a class="mx-2 text-danger" wire:click="deActivate({{ $data->id }})"><i
-                                                    class="fa-solid fa-exclamation"></i></a>
-                                        @else
-                                            <a class="mx-2 text-primary" wire:click="test({{ $data->id }})"><i
-                                                    class="fa-solid fa-check"></i></a>
-                                        @endif
+                        @if (count($products) > 0)
+                            @foreach ($products as $data)
+                                <tr>
+                                    <td>{{ $data->id }}</td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>{{ $data->getCategoryName() }}</td>
+                                    <td>{{ $data->author }}</td>
+                                    <td>{{ $data->getStatus() }}</td>
+                                    <td><img class="img-thumbnail" src="{{ $data->image }}" alt=""
+                                            width="100">
+                                    </td>
+                                    <td class="">
+                                        <div class="d-flex">
+                                            <a wire:navigate class="text-secondary mx-2"
+                                                href="{{ route('product.show', $data->id) }}"><i
+                                                    class="fa-solid fa-eye"></i></a>
+                                            <a class="text-success mx-2" wire:navigate
+                                                href="{{ route('product.edit', $data->id) }}"><i
+                                                    class="fa-regular fa-pen-to-square"></i></a>
+                                            @if ($isActivate == 1)
+                                                <a class="mx-2 text-danger"
+                                                    wire:click="deActivate({{ $data->id }})"><i
+                                                        class="fa-solid fa-exclamation"></i></a>
+                                            @else
+                                                <a class="mx-2 text-primary" wire:click="test({{ $data->id }})"><i
+                                                        class="fa-solid fa-check"></i></a>
+                                            @endif
 
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <td colspan="7" class="text-center">Không có dữ liệu</td>
+                        @endif
                     </tbody>
                 </table>
             </div>

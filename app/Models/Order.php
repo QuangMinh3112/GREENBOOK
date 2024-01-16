@@ -44,14 +44,22 @@ class Order extends Model
         switch ($value) {
             case 'pending':
                 return 'Chờ xử lý';
-            case 'shipping':
-                return 'Đang giao hàng';
+            case 'confirmed':
+                return 'Đã xác nhận';
+            case 'pending':
+                return 'Chờ xử lý';
+            case 'completed':
+                return 'Hoàn thành';
+            case 'cancel':
+                return 'Đã huỷ';
             case 'shipped':
                 return 'Đã giao hàng';
             case 'completed':
                 return 'Hoàn thành';
             case 'failed':
                 return 'Thất bại';
+            case 'shipping':
+                return 'Đang giao';
             default:
                 return $value;
         }
@@ -77,5 +85,9 @@ class Order extends Model
     public function scopeFindId($query, $uuid)
     {
         return $query->where('id', $uuid);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

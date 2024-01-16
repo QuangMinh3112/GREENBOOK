@@ -28,7 +28,15 @@ class Warehouse extends Model
             return "Rỗng";
         }
     }
-
+    public function getSupplier()
+    {
+        $supplier = Supplier::find($this->supplier_id);
+        if ($supplier) {
+            return $supplier->name;
+        } else {
+            return "Rỗng";
+        }
+    }
     public function getBookImage()
     {
         $book = Book::find($this->book_id);

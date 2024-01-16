@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\OrderDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiBookController extends Controller
 {
@@ -17,15 +20,17 @@ class ApiBookController extends Controller
     public function index()
     {
         $books = Book::with(['category', 'warehouse' => function ($query) {
-            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
-        }])->where('status', 1)->paginate(10);
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'delivery_quantity');
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })->where('status', 1)->paginate(12);
         return response()->json(['message' => 'Success', 'data' => $books], 200);
     }
     public function show(string $id)
     {
         //
         $book = Book::with(['category', 'warehouse' => function ($query) {
-            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'delivery_quantity');
         }])->where('status', 1)->where('id', $id)->first();
         if ($book && $book->status == 1) {
             $book->view += 1;
@@ -39,13 +44,34 @@ class ApiBookController extends Controller
     public function topBook()
     {
         $books = Book::orderByDesc('view')->where('status', 1)->with(['category', 'warehouse' => function ($query) {
-            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
-        }])->paginate(10);
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'delivery_quantity');
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })
+            ->paginate(12);
         return response()->json(['message' => 'Success', 'data' => $books]);
     }
     /**
      * Find product as field
      */
+    // TOP SẢN PHẨM MUA TRONG THÁNG
+    public function topBuyMonth()
+    {
+        $bestSellingBooks = DB::table('order_details')
+            ->select('book_id', 'book_name', DB::raw('SUM(quantity) as total_quantity'))
+            ->groupBy('book_id', 'book_name')
+            ->orderByDesc('total_quantity')
+            ->with('book')
+            ->get();
+        dd($bestSellingBooks);
+        $books = Book::orderByDesc('view')->where('status', 1)->with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'delivery_quantity');
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })
+            ->paginate(12);
+        return response()->json(['message' => 'Success', 'data' => $books]);
+    }
     // SẢN PHẨM LIÊN QUAN
     public function relatedBook($bookId)
     {
@@ -55,7 +81,9 @@ class ApiBookController extends Controller
         }
         $relatedBook = Book::where('id', '!=', $currentBook->id)->where('category_id', $currentBook->category_id)->where('status', 1)->with(['category', 'warehouse' => function ($query) {
             $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
-        }])->latest()->paginate(5);
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })->latest()->paginate(5);
         if ($relatedBook) {
             return response()->json(['message' => 'Success', 'data' => $relatedBook], 200);
         } else if ($relatedBook->isEmty()) {
@@ -77,9 +105,13 @@ class ApiBookController extends Controller
         $sortPrice = $request->input('sort_price', '');
         $sortDate = $request->input('sort_date', '');
         if (!empty($category_slug) && $category_slug) {
-            $query->whereHas('category', function ($query) use ($category_slug) {
-                $query->where('slug', $category_slug);
-            });
+            $category = Category::where('slug', $category_slug)->first();
+            if ($category) {
+                $categoryIds = $category->children()->pluck('id')->prepend($category->id);
+                $query->whereHas('category', function ($query) use ($categoryIds) {
+                    $query->whereIn('id', $categoryIds);
+                });
+            }
         }
         if (!empty($name) && $name) {
             $query->where('name', $name);
@@ -118,8 +150,10 @@ class ApiBookController extends Controller
         }
         $query->with(['category', 'warehouse' => function ($query) {
             $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
-        }])->where('status', 1);
-        $books = $query->paginate(10);
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })->where('status', 1);
+        $books = $query->paginate(12);
         if ($books->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
         } else {

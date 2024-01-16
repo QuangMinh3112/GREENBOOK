@@ -12,6 +12,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 
+use function PHPUnit\Framework\isEmpty;
+
 #[Layout('Layout.app')]
 #[Title('Nhập kho')]
 class Create extends Component
@@ -26,6 +28,7 @@ class Create extends Component
     public $code;
     public $description;
     public $note;
+    public $book_id;
     public function mount()
     {
         $this->inputs = [];
@@ -34,11 +37,12 @@ class Create extends Component
         $this->quantity = [];
         $this->total = [];
         $this->product_id = [];
+        $this->book_id = Warehouse::pluck('book_id')->toArray();
     }
     public function render()
     {
         return view('livewire.product-movement.create', [
-            "books" => Book::all(),
+            "books" => Book::whereIn('id', $this->book_id)->get(),
         ]);
     }
     public function addField($key)
@@ -48,31 +52,37 @@ class Create extends Component
     }
     public function addNew()
     {
-        $validated = $this->validate();
-        $import = ProductMovement::create([
-            "code" => $validated["code"],
-            "description" => $validated["description"],
-            "note" => $validated["note"],
-            "creator" => Auth::user()->name,
-            "type" => "import",
-        ]);
-        if ($import) {
-            foreach ($this->inputs as $key => $product_id) {
-                ProductTransition::create([
-                    "movement_id" => $import->id,
-                    "product_id" => $product_id,
-                    "quantity" => $this->quantity[$key],
-                    "total" => $this->total[$key]
-                ]);
-                $warehouse = Warehouse::where('book_id', $this->product_id[$key])->first();
-                if ($warehouse) {
-                    $warehouse->stock += $warehouse->quantity;
-                    $warehouse->quantity = $this->quantity[$key];
-                    $warehouse->save();
+        if (empty($this->inputs)) {
+            request()->session()->flash('fail', 'Không có sản phẩm nào để nhập hàng');
+        } else {
+            // dd($this->quantity, $this->product_id);
+            $validated = $this->validate();
+            $import = ProductMovement::create([
+                "code" => $validated["code"],
+                "description" => $validated["description"],
+                "note" => $validated["note"],
+                "creator" => Auth::user()->name,
+                "type" => "import",
+            ]);
+            if ($import) {
+                $count = count($this->product_id);
+                for ($key = 0; $key < $count; $key++) {
+                    ProductTransition::create([
+                        "movement_id" => $import->id,
+                        "product_id" => $this->product_id[$key],
+                        "quantity" => $this->quantity[$key],
+                        "total" => $this->total[$key]
+                    ]);
+                    $warehouse = Warehouse::where('book_id', $this->product_id[$key])->first();
+                    if ($warehouse) {
+                        $warehouse->stock += $warehouse->quantity;
+                        $warehouse->quantity = $this->quantity[$key];
+                        $warehouse->save();
+                    }
                 }
             }
+            request()->session()->flash('success', 'Thêm mới thành công');
         }
-        request()->session()->flash('success', 'Thêm mới thành công');
     }
     public function removeField($key)
     {
@@ -100,6 +110,8 @@ class Create extends Component
             'code' => 'required|max:255',
             'description' => 'required|max:255',
             'note' => 'max:255',
+            'product_id' => 'required',
+            'quantity' => 'required|min:0'
         ];
     }
 
@@ -111,6 +123,9 @@ class Create extends Component
             'description.required' => 'Không bỏ trống nội dung.',
             'description.max' => 'Miêu tả không được vượt quá 255 ký tự.',
             'note.max' => 'Ghi chú không được vượt quá 255 ký tự.',
+            'product_id.required' => 'Vui lòng chọn sản phẩm',
+            'quantity.required' => 'Vui lòng nhập số lượng nhập',
+            'quantity.min' => 'Số lượng nhập phải lớn hơn 1'
         ];
     }
 }

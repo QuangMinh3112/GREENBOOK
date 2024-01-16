@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('order_id');
             $table->integer('book_id');
             $table->integer('quantity');
-            $table->string('book_name');
-            $table->string('book_image');
-            $table->string('book_price');
+            $table->string('book_name')->nullable();
+            $table->string('book_image')->nullable();
+            $table->string('book_price')->nullable();
             $table->timestamps();
         });
     }

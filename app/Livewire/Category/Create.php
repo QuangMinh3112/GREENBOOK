@@ -53,7 +53,7 @@ class Create extends Component
             'name.min' => 'Tối thiểu 5 kí tự',
             'name.max' => 'Tối đa 255 kí tự',
             'description.required' => 'Bắt buộc phải điền mô tả',
-            'description.min' => 'Tối thiểu 5 kí tự',
+            'description.min' => 'Tối thiểu 10 kí tự',
             'description.max' => 'Tối đa 255 kí tự',
         ];
     }

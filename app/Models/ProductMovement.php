@@ -16,4 +16,8 @@ class ProductMovement extends Model
         "type",
         "description"
     ];
+    public function scopeCodeSearch($query, $value)
+    {
+        $query->where('code', 'like', '%' . $value . '%');
+    }
 }

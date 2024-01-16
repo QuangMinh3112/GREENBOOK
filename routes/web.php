@@ -95,6 +95,7 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/create-order', App\Livewire\Order\Create::class)->name('order.create');
         Route::get('/show-order/{id}', App\Livewire\Order\Show::class)->name('order.show');
     });
+    Route::get('/home', App\Livewire\Home\Index::class)->name('home');
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');
 Route::prefix('auth')->controller(AuthController::class)->middleware('CheckLogin')->group(function () {
