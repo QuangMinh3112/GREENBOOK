@@ -24,7 +24,7 @@ class Create extends Component
     public $quantity;
     public $startDate;
     public $endDate;
-    public $status;
+    public $status = 'public';
     public $pointRequired;
     public $priceRequired;
     public $image;
@@ -40,9 +40,6 @@ class Create extends Component
             $code = strtoupper(Str::random(10));
         } while (Coupon::where('code', $code)->exists());
         $qrCode = QrCode::size(100)->generate($code);
-        // $timestamp = now()->timestamp;
-        // $qrCodePath = 'public/qr_coupon/' . $code . '_' . $timestamp . '.png';
-        // Storage::put($qrCodePath, $qrCode);
         Coupon::create([
             "name" => $validated["name"],
             "value" => $validated["value"],

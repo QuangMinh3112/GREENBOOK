@@ -48,6 +48,14 @@
                                             </li>
                                             <li class="list-group-item justify-content-between d-flex">
                                                 <div>
+                                                    <b>Thanh toán:</b>
+                                                </div>
+                                                <div>
+                                                    {{ $order->payment }}
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item justify-content-between d-flex">
+                                                <div>
                                                     <b>Trạng thái đơn hàng:</b>
                                                 </div>
                                                 <div>
@@ -67,7 +75,7 @@
                                                     nhật</button>
                                             </div>
                                             <div>
-                                                <button class="btn btn-danger">Huỷ đơn hàng</button>
+                                                <button wire:click='cancel()' class="btn btn-danger">Huỷ đơn hàng</button>
                                             </div>
                                         @elseif ($order->status === 'Đã xác nhận')
                                             <div>
@@ -175,6 +183,21 @@
                                             {{ $order->ship_fee }} VNĐ
                                         </div>
                                     </div>
+                                    @if ($usingCoupon != null)
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <b class="fw-normal mb-0 text-black">Mã giảm giá :
+                                            </b>
+                                            <div>
+                                                @if ($usingCoupon->coupon->type === 'percent')
+                                                    -{{ $usingCoupon->coupon->value }} %
+                                                @elseif ($usingCoupon->coupon->type === 'number')
+                                                    -{{ $usingCoupon->coupon->value }} VNĐ
+                                                @elseif ($usingCoupon->coupon->type === 'free_ship')
+                                                    FREE SHIP
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <h5 class="fw-normal mb-0 text-black">Tổng tiền :
                                         </h5>

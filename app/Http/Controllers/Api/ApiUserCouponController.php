@@ -41,7 +41,9 @@ class ApiUserCouponController extends Controller
                 $query->where('name', 'like', '%' . $name . '%');
             });
         }
-        if ($is_used == 1) {
+        if ($is_used == 0) {
+            $userCoupons->where('is_used', 0);
+        } else {
             $userCoupons->where('is_used', 1);
         }
         $coupon = $userCoupons->with('coupon')->paginate(10);
