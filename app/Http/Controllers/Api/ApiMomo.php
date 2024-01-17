@@ -86,7 +86,10 @@ class ApiMomo extends Controller
             $result = $this->execPostRequest($endpoint, json_encode($data));
             $jsonResult = json_decode($result, true);
             $url = $jsonResult['payUrl'];
+
             if ($url) {
+                $order->payment_url = $jsonResult['payUrl'];
+                $order->save();
                 return response()->json(['url' => $url], 200);
             } else {
                 return response()->json(['message' => 'Error'], 404);
@@ -125,7 +128,10 @@ class ApiMomo extends Controller
             if ($m2signature == $partnerSignature) {
                 if ($errorCode == '0') {
                     $result = 'Success';
-                    $order->update(['payment' => 'Paid']);
+                    $order->update([
+                        'payment' => 'Paid',
+                        'payment_url' => '',
+                    ]);
                     $orderDetail = OrderDetail::where('order_id', 'like', '%' . $order->id . '%')->get();
                     $user = User::find($order->user_id);
                     $trangThai = "Đã thanh toán";
