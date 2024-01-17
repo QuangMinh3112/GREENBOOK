@@ -166,4 +166,22 @@ class ApiBookController extends Controller
             return response()->json(['message' => 'Success', 'data' => $books]);
         }
     }
+    public function searchName(Request $request)
+    {
+        $query = Book::query()->with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'supplier_id');
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })->where('status', 1);
+        $name = $request->input('name');
+        if (!empty($name) && $name) {
+            $query->where('name', $name);
+        }
+        $books = $query->paginate(12);
+        if ($books->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
+        } else {
+            return response()->json(['message' => 'Success', 'data' => $books]);
+        }
+    }
 }
