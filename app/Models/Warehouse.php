@@ -17,6 +17,7 @@ class Warehouse extends Model
         "wholesale_price",
         "returned_quantity",
         "defective_quantity",
+        'delivery_quantity',
         "stock",
     ];
     public function getBookName()
@@ -53,5 +54,9 @@ class Warehouse extends Model
     public function carts()
     {
         return $this->hasMany(Cart::class, 'book_id', 'book_id');
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 }

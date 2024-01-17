@@ -71,21 +71,28 @@
                         </tr>
                     </tfoot>
                     <tbody wire:loading.class='op-low'>
-                        @foreach ($orders as $data)
-                            <tr>
-                                <td scope="col">{{ $data->order_code }}</td>
-                                <td scope="col">{{ $data->payment }}</td>
-                                <td scope="col">{{ $data->name }}</td>
-                                <td scope="col">{{ $data->total }} VNĐ</td>
-                                <td scope="col">{{ $data->status }}</td>
-                                <td scope="col">{{ $data->address }}</td>
-                                <td scope="col">{{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}</td>
-                                <td scope="col">
-                                    <a wire:navigate href="{{ route('order.show', ['id' => $data->id]) }}"><i
-                                            class="fa-solid fa-eye"></i></a>
-                                </td>
+                        @if (count($orders) > 0)
+                            @foreach ($orders as $data)
+                                <tr>
+                                    <td scope="col">{{ $data->order_code }}</td>
+                                    <td scope="col">{{ $data->payment }}</td>
+                                    <td scope="col">{{ $data->name }}</td>
+                                    <td scope="col">{{ $data->total }} VNĐ</td>
+                                    <td scope="col">{{ $data->status }}</td>
+                                    <td scope="col">{{ $data->address }}</td>
+                                    <td scope="col">{{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}
+                                    </td>
+                                    <td scope="col">
+                                        <a wire:navigate href="{{ route('order.show', ['id' => $data->id]) }}"><i
+                                                class="fa-solid fa-eye"></i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr class="text-center">
+                                <td colspan="8">Không có dữ liệu</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

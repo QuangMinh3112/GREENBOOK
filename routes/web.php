@@ -37,6 +37,13 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/show-product/{id}', App\Livewire\Product\Show::class)->name('product.show');
         Route::get('/edit-product/{id}', App\Livewire\Product\Edit::class)->name('product.edit');
     });
+    // COMBO
+    // Route::prefix('combo-book')->group(function () {
+    //     Route::get('/', App\Livewire\Combo\Index::class)->name('combo.index');
+    //     Route::get('/create-product', App\Livewire\Combo\Create::class)->name('combo.create');
+    //     Route::get('/show-product/{id}', App\Livewire\Combo\Show::class)->name('combo.show');
+    //     Route::get('/edit-product/{id}', App\Livewire\Combo\Edit::class)->name('combo.edit');
+    // });
     // NHÀ CUNG CẤP
     Route::prefix('suppliers')->group(function () {
         Route::get('/', App\Livewire\Suppliers\Index::class)->name('suppliers.index');
@@ -85,16 +92,19 @@ Route::prefix('admin')->middleware('CheckAdmin')->group(function () {
         Route::get('/show-user/{id}', App\Livewire\User\Show::class)->name('user.show');
         Route::get('/edit-user/{id}', App\Livewire\User\Edit::class)->name('user.edit');
     });
+    // CÀI ĐẶT WEBSITE
     Route::prefix('setting')->group(function () {
         Route::get('/', App\Livewire\Setting\Index::class)->name('setting.index');
         Route::get('/create-setting', App\Livewire\Setting\Create::class)->name('setting.create');
         Route::get('/edit-setting/{id}', App\Livewire\Setting\Edit::class)->name('setting.edit');
     });
+    // ĐƠN HÀNG
     Route::prefix('order')->group(function () {
         Route::get('/', App\Livewire\Order\Index::class)->name('order.index');
         Route::get('/create-order', App\Livewire\Order\Create::class)->name('order.create');
         Route::get('/show-order/{id}', App\Livewire\Order\Show::class)->name('order.show');
     });
+    // THỐNG KÊ
     Route::get('/home', App\Livewire\Home\Index::class)->name('home');
 });
 Route::post('/upload', [BaseController::class, 'upload'])->name('ckeditor.upload');

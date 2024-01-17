@@ -22,7 +22,8 @@ class Show extends Component
     public function mount($id)
     {
         $this->order = Order::find($id);
-        $this->orderDetail = OrderDetail::where('order_id', $id)->with('book')->get();
+        $this->orderDetail = OrderDetail::where('order_id', $id)->with(['book', 'warehouse'])->get();
+        dd($this->orderDetail->warehouse);
         foreach ($this->orderDetail as $detail) {
             $this->quantity[$detail->id] = $detail->quantity;
         }

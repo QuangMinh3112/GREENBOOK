@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a  class="nav-link" href="{{ route('home') }}">
+        <a class="nav-link" href="{{ route('home') }}">
             <i class="fa-solid fa-chart-simple"></i>
             <span>Thống kê</span></a>
     </li>
