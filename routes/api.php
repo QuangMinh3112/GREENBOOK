@@ -52,6 +52,8 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::get('/related-book/{book_id}', 'relatedBook');
         //Tìm kiếm theo trường, sắp sếp và lọc
         Route::get('search-and-filter', 'search');
+        //
+        Route::get('name-search', 'searchName');
         //Top sách bán chạy trong tháng
         Route::get('top-book-month', 'topBuyMonth');
     });
@@ -172,5 +174,5 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         Route::post('review/add/{id}', [ApiReviewController::class, 'addReview']);
         // Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
     });
-    Route::get('momo_payment/{order_id}/{email}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
+    Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
 });
