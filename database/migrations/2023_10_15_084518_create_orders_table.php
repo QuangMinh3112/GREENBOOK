@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('email')->default('minhvqph27791@fpt.edu.vn');
             $table->string('address');
             $table->integer('service_id')->nullable();
-            $table->integer('province_id');
-            $table->integer('district_id');
-            $table->integer('ward_id');
+            $table->integer('province_id')->nullable();
+            $table->integer('district_id')->nullable();
+            $table->integer('ward_id')->nullable();
             $table->enum('payment', ['COD', 'Paid', 'Waiting'])->nullable()->default("Waiting");
             $table->enum('status', ['pending', 'confirmed', 'shipping', 'shipped', 'completed', 'failed', 'cancel', 'refund'])->default('pending');
             $table->integer('ship_fee');

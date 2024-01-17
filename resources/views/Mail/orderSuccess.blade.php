@@ -65,6 +65,7 @@
         </div>
         <div>
             <h4>Mã số đơn hàng : {{ $order->id }}</h4>
+            <h4>Order Code : {{ $order->order_code }}</h4>
             <h5>Tất cả sản phẩm</h5>
             <table>
                 <thead>

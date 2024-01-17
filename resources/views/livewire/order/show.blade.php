@@ -69,20 +69,34 @@
                                             <div>
                                                 <button class="btn btn-danger">Huỷ đơn hàng</button>
                                             </div>
-                                        @elseif ($order->status === 'Đang giao hàng')
+                                        @elseif ($order->status === 'Đã xác nhận')
                                             <div>
-                                                <button class="btn btn-success" wire:click='completed()'>Đã nhận
+                                                <button class="btn btn-success" wire:click='shipping()'>Bắt đầu giao
                                                     hàng</button>
                                             </div>
                                             <div>
-                                                <button class="btn btn-danger" wire:click.prevent='noRecive()'>Không
+                                                <button class="btn btn-danger" wire:click='cancel()'>Huỷ đơn
+                                                    hàng</button>
+                                            </div>
+                                        @elseif ($order->status === 'Đang giao')
+                                            <div>
+                                                <button class="btn btn-success btn-sm" wire:click='completed()'>Đã nhận
+                                                    hàng</button>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary btn-sm" wire:click='defective()'>Trả
+                                                    hàng</button>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-danger btn-sm" wire:click='returned()'>Không
                                                     nhận
                                                     hàng</button>
                                             </div>
-                                        @else
+                                            <div>
+                                                <button class="btn btn-warning btn-sm" wire:click='defective()'>Đơn hàng
+                                                    lỗi</button>
+                                            </div>
                                         @endif
-
-
                                     </div>
                                     @if (session('success'))
                                         <span class="text-success">{{ session('success') }}</span>
@@ -131,24 +145,24 @@
                                                             VNĐ
                                                         </small>
                                                         <br>
-                                                        @if ($data->quantity <= 0)
-                                                            <small class="text-success">Còn
+                                                        @if ($data->warehouse->quantity >= $data->quantity)
+                                                            <small class="text-success">Còn hàng ( SL:
+                                                                {{ $data->warehouse->quantity }} )
                                                                 {{ $data->book->quantity }}</small>
-                                                        @elseif ($data->book->quantity == 0)
+                                                        @elseif ($data->warehouse->quantity == 0)
                                                             <small class="text-danger">Hết hàng</small>
                                                         @else
                                                             <small class="text-warning">Thiếu
-                                                                {{ $data->quantity - 0 }}</small>
+                                                                {{ $data->quantity - $data->warehouse->quantity }}</small>
                                                         @endif
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                                        @if ($order->status === 'pending')
+                                                        @if ($order->status === 'Chờ xử lý')
                                                             <a class="text-danger"
                                                                 wire:click.live='delete({{ $data->id }})'>
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </a>
                                                         @endif
-
                                                     </div>
                                                 </div>
                                             </div>

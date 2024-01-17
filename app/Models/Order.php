@@ -46,20 +46,18 @@ class Order extends Model
                 return 'Chờ xử lý';
             case 'confirmed':
                 return 'Đã xác nhận';
-            case 'pending':
-                return 'Chờ xử lý';
             case 'completed':
                 return 'Hoàn thành';
             case 'cancel':
                 return 'Đã huỷ';
             case 'shipped':
                 return 'Đã giao hàng';
-            case 'completed':
-                return 'Hoàn thành';
             case 'failed':
                 return 'Thất bại';
             case 'shipping':
                 return 'Đang giao';
+            case 'refund':
+                return 'Trả hàng';
             default:
                 return $value;
         }
