@@ -175,4 +175,5 @@ Route::middleware(AlwaysAcceptJson::class)->group(function () {
         // Route::post('vnpay_payment/{order_id}',  [ApiVNPay::class, 'vnpay_payment'])->name('vnpay_payment'); // Thanh toán VNPAY
     });
     Route::get('momo_payment/{order_id}',  [ApiMomo::class, 'momo_payment'])->name('momo_payment'); // Thanh toán momo
+    Route::get('payment/{order_id}', [ApiOrderController::class, 'payment']);
 });

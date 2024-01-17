@@ -134,4 +134,21 @@ class ApiOrderController extends Controller
             return response()->json(['message' => 'Bạn không thể hủy đơn hàng'], 404);
         }
     }
+    public function payment($id)
+    {
+        $order = Order::find($id);
+        if ($order) {
+            if ($order->payment != "Watting") {
+                return response()->json(['message' => 'Đơn hàng đã thanh toán'], 200);
+            } else {
+                if ($order->payment_url != "") {
+                    return response()->json(['message' => 'Success', 'url' => $order->payment_url], 200);
+                } else {
+                    return response()->json(['message' => 'Không tồn tại đường link thanh toán'], 404);
+                }
+            }
+        } else {
+            return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
+        }
+    }
 }

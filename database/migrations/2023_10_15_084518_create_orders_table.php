@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('coupon')->nullable();
             $table->integer('user_id')->nullable();
             $table->integer('admin_id')->nullable();
+            $table->string('payment_url')->nullable();
             $table->timestamps();
         });
     }
