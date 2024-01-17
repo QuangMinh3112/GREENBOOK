@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Combo extends Model
 {
     use HasFactory;
-
-    protected $table = 'events';
+    protected $table = 'combos';
     protected $fillable = [
-        "name",
-        "start_date",
-        "end_date",
-        "description",
-        "is_activate",
+        'name',
+        'image',
+        'description',
+        'total_price'
     ];
 }

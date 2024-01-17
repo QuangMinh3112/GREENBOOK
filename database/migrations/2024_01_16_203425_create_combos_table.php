@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_books', function (Blueprint $table) {
+        Schema::create('combos', function (Blueprint $table) {
             $table->id();
-            $table->integer('event_id');
-            $table->integer('book_id');
+            $table->string('name');
+            $table->string('image');
+            $table->string('description');
+            $table->integer('total_price');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_books');
+        Schema::dropIfExists('combos');
     }
 };

@@ -57,19 +57,18 @@ class ApiBookController extends Controller
     // TOP SẢN PHẨM MUA TRONG THÁNG
     public function topBuyMonth()
     {
-        $bestSellingBooks = DB::table('order_details')
-            ->select('book_id', 'book_name', DB::raw('SUM(quantity) as total_quantity'))
-            ->groupBy('book_id', 'book_name')
-            ->orderByDesc('total_quantity')
-            ->with('book')
-            ->get();
-        dd($bestSellingBooks);
-        $books = Book::orderByDesc('view')->where('status', 1)->with(['category', 'warehouse' => function ($query) {
-            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'delivery_quantity');
-        }])->whereHas('warehouse', function ($query) {
-            $query->whereNotNull('book_id');
-        })
-            ->paginate(12);
+        $books = Book::where('status', 1)
+            ->with(['category', 'warehouse' => function ($query) {
+                $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'delivery_quantity');
+            }])
+            ->whereHas('warehouse', function ($query) {
+                $query->whereNotNull('book_id');
+            })
+            ->join('warehouses', 'books.id', '=', 'warehouses.book_id')
+            ->orderByDesc('warehouses.delivery_quantity')
+            ->select('books.*')
+            ->paginate(10);
+
         return response()->json(['message' => 'Success', 'data' => $books]);
     }
     // SẢN PHẨM LIÊN QUAN
@@ -93,11 +92,15 @@ class ApiBookController extends Controller
     // TÌM THEO TRƯỜNG & LỌC GIÁ
     public function search(Request $request)
     {
-        $query = Book::query();
+        $query = Book::query()->with(['category', 'warehouse' => function ($query) {
+            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price', 'supplier_id');
+        }])->whereHas('warehouse', function ($query) {
+            $query->whereNotNull('book_id');
+        })->where('status', 1);
         $category_slug = $request->input('category_slug');
         $name = $request->input('name');
         $author = $request->input('author');
-        $published_company = $request->input('published_company');
+        $publisher = $request->input('published_company');
         $published_year = $request->input('published_year');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
@@ -117,10 +120,12 @@ class ApiBookController extends Controller
             $query->where('name', $name);
         }
         if (!empty($author) && $author) {
-            $query->where('author', $author);
+            $query->where('author', 'like', '%' . $author . '%');
         }
-        if (!empty($published_company) && $published_company) {
-            $query->where('published_company', $published_company);
+        if (!empty($publisher) && $publisher) {
+            $query->whereHas('warehouse.supplier', function ($query) use ($publisher) {
+                $query->where('name', $publisher);
+            });
         }
         if (!empty($published_year) && $published_year) {
             $query->where('published_year', $published_year);
@@ -139,20 +144,21 @@ class ApiBookController extends Controller
             $query->orderBy('name', $sortName);
         }
         if ($sortPrice !== '') {
-            $query->orderBy('price', $sortPrice);
+            $query->leftJoin('warehouses', 'books.id', '=', 'warehouses.book_id')
+                ->orderBy('warehouses.retail_price', $sortPrice)
+                ->select('books.*');
         }
         if ($sortDate !== '') {
-            if ($sortDate === 'new') {
-                $query->latest('created_at');
-            } elseif ($sortDate === 'old') {
-                $query->oldest('created_at');
+            if ($sortDate === 'asc') {
+                $query->leftJoin('warehouses', 'books.id', '=', 'warehouses.book_id')
+                    ->orderBy('warehouses.updated_at', 'asc')
+                    ->select('books.*');
+            } elseif ($sortDate === 'desc') {
+                $query->leftJoin('warehouses', 'books.id', '=', 'warehouses.book_id')
+                    ->orderBy('warehouses.retail_price', 'desc')
+                    ->select('books.*');
             }
         }
-        $query->with(['category', 'warehouse' => function ($query) {
-            $query->select('book_id', 'quantity', 'retail_price', 'wholesale_price');
-        }])->whereHas('warehouse', function ($query) {
-            $query->whereNotNull('book_id');
-        })->where('status', 1);
         $books = $query->paginate(12);
         if ($books->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);

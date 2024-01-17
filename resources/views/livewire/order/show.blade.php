@@ -131,14 +131,14 @@
                                                             VNĐ
                                                         </small>
                                                         <br>
-                                                        @if ($data->quantity <= $data->book->quantity)
+                                                        @if ($data->quantity <= 0)
                                                             <small class="text-success">Còn
                                                                 {{ $data->book->quantity }}</small>
                                                         @elseif ($data->book->quantity == 0)
                                                             <small class="text-danger">Hết hàng</small>
                                                         @else
                                                             <small class="text-warning">Thiếu
-                                                                {{ $data->quantity - $data->book->quantity }}</small>
+                                                                {{ $data->quantity - 0 }}</small>
                                                         @endif
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
