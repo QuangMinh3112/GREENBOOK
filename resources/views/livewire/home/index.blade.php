@@ -353,7 +353,7 @@
             dataLabels: {
                 enabled: true,
                 formatter: function(val) {
-                    return val + " đơn";
+                    return Math.round(val) + " đơn";
                 },
                 offsetY: -20,
                 style: {
@@ -361,7 +361,6 @@
                     colors: ["#304758"]
                 }
             },
-
             xaxis: {
                 categories: ["Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12", "Tháng 1"],
                 position: 'top',
@@ -391,6 +390,8 @@
                 axisBorder: {
                     show: true
                 },
+                min: 0,
+                max: 50,
                 axisTicks: {
                     show: true,
                 },
@@ -398,10 +399,9 @@
                     show: true,
                     formatter: function(val) {
                         var minValue = 50;
-                        return val + " đơn";
+                        return Math.round(val) + " đơn";
                     }
                 }
-
             },
             title: {
                 text: '',

@@ -38,9 +38,9 @@ class Index extends Component
         foreach ($warehouses as $data) {
             $this->totalPrice += ($data->import_price * ($data->quantity + $data->returned_quantity + $data->defective_quantity + $data->stock));
         }
-        $orders = OrderDetail::all();
+        $orders = Order::where('status', 'like', 'completed')->get();
         foreach ($orders as $data) {
-            $this->totalProductPrice += ($data->quantity * $data->book_price);
+            $this->totalProductPrice += $data->total_product_amount;
         }
         $ratings = Review::groupBy('rating')->selectRaw('rating, COUNT(*) as count')->pluck('count', 'rating')->toArray();
         for ($i = 0; $i <= 5; $i++) {
@@ -73,6 +73,7 @@ class Index extends Component
             })
             ->values()
             ->toArray();
+        // dd($this->completed);
         $this->ratting = Review::all();
         $this->rattingCount = [
             1 => 0,
