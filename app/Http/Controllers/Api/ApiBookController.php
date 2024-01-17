@@ -177,7 +177,7 @@ class ApiBookController extends Controller
         if (!empty($name) && $name) {
             $query->where('name', $name);
         }
-        $books = $query->paginate(12);
+        $books = $query->get();
         if ($books->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sách phù hợp'], 404);
         } else {
