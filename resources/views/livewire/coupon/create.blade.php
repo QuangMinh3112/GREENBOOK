@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="type">Loại hình KM:</label>
                     <select class="form-control" wire:model="type">
-                        <option selected value="percent">Chọn loại KM</option>
+                        <option selected value="">Chọn loại KM</option>
                         <option value="percent">Phần trăm</option>
                         <option value="number">Giá tiền</option>
                         <option value="free_ship">Free ship</option>

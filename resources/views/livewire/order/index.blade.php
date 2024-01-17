@@ -15,10 +15,12 @@
                         wire:model.live.debounce.300ms = "status">
                         <option value="" selected>Trạng thái đơn hàng</option>
                         <option value="pending">Chờ xác nhận</option>
+                        <option value="confirmed">Đã xác nhận</option>
                         <option value="shipping">Đang giao</option>
                         <option value="completed">Hoàn thành</option>
                         <option value="failed">Thất bại</option>
                         <option value="cancel">Đã huỷ</option>
+                        <option value="refund">Trả hàng</option>
                     </select>
                 </div>
                 <div class="mb-3 mr-2">
@@ -34,8 +36,8 @@
                     <select name="" id="" class="form-control"
                         wire:model.live.debounce.300ms = "sortDate">
                         <option value="" selected>Ngày đặt</option>
-                        <option value="asc">Mới nhất</option>
-                        <option value="desc">Cũ nhất</option>
+                        <option value="asc">Cũ nhất</option>
+                        <option value="desc">Mới nhất</option>
                     </select>
                 </div>
                 <div class="mb-3 mr-2 align-item-center">

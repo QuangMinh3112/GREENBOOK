@@ -9,7 +9,9 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApproveOrder;
+use App\Models\Coupon;
 use App\Models\User;
+use App\Models\UserCoupon;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +22,10 @@ class Show extends Component
     public $order;
     public $orderDetail;
     public $quantity = [];
+    public $usingCoupon;
+    public $userCoupon;
+    public $coupon_id;
+    public $otherCouponId;
 
     public function mount($id)
     {
@@ -29,6 +35,10 @@ class Show extends Component
             ->get();
         foreach ($this->orderDetail as $detail) {
             $this->quantity[$detail->id] = $detail->quantity;
+        }
+        if ($this->order->user_id != null && $this->order->coupon) {
+            $coupon = Coupon::where('code', $this->order->coupon)->first();
+            $this->usingCoupon = UserCoupon::where('user_id', $this->order->user_id)->where('coupon_id', $coupon->id)->with('coupon')->first();
         }
     }
     public function render()
@@ -43,15 +53,21 @@ class Show extends Component
                 $i++;
             }
         }
-        if ($i == 0) {
-            $trangThai = '';
-            Mail::to($this->order->email)->send(new ApproveOrder($this->order, $this->orderDetail, $trangThai));
-            $this->order->update([
-                "status" => "confirmed",
-            ]);
-            request()->session()->flash('success', 'Đã xác nhận đơn hàng');
+        if ($this->order->payment === 'Đang chờ thanh toán') {
+            request()->session()->flash('fail', 'Đơn hàng chưa được thanh toán');
+        } elseif ($this->order->total_product_amount < $this->usingCoupon->coupon->price_required) {
+            request()->session()->flash('fail', 'Số tiền tối thiểu không đủ để sử dụng phiếu giảm giá');
         } else {
-            request()->session()->flash('fail', 'Vui lòng kiểm tra lại số lượng sản phẩm');
+            if ($i == 0) {
+                $trangThai = '';
+                Mail::to($this->order->email)->send(new ApproveOrder($this->order, $this->orderDetail, $trangThai));
+                $this->order->update([
+                    "status" => "confirmed",
+                ]);
+                request()->session()->flash('success', 'Đã xác nhận đơn hàng');
+            } else {
+                request()->session()->flash('fail', 'Vui lòng kiểm tra lại số lượng sản phẩm');
+            }
         }
     }
     public function update()
@@ -63,10 +79,24 @@ class Show extends Component
             $total += $newQuantity * $detail->book_price;
             OrderDetail::where('id', $detailId)->update(['quantity' => $newQuantity]);
         }
-        $this->order->update([
-            "total_product_amount" => $total,
-            "total" => $total + $this->order->ship_fee,
-        ]);
+        if ($this->usingCoupon != null) {
+            if ($this->usingCoupon->coupon->type === "number") {
+                $total = $total - $this->usingCoupon->coupon->value;
+            }
+            if ($this->usingCoupon->coupon->type === "percent") {
+                $total = $total - ($total * ($this->usingCoupon->coupon->value / 100));
+            }
+            $this->order->update([
+                "total_product_amount" => $total,
+                "total" => $total + $this->order->ship_fee,
+            ]);
+        } else {
+            $this->order->update([
+                "total_product_amount" => $total,
+                "total" => $total + $this->order->ship_fee,
+            ]);
+        }
+
         request()->session()->flash('success', 'Cập nhật số lượng thành công!');
     }
     public function shipping()
@@ -165,5 +195,11 @@ class Show extends Component
         $this->order->update([
             "status" => "refund",
         ]);
+    }
+    public function cancel()
+    {
+        if ($this->usingCoupon->is_used) {
+            $this->usingCoupon->is_used = 0;
+        }
     }
 }

@@ -31,6 +31,9 @@ class Index extends Component
                 ->when($this->sortDate != '', function ($query) {
                     $query->orderBy('created_at', $this->sortDate);
                 })
+                ->when($this->order_code != '', function ($query) {
+                    $query->where('order_code', 'like', '%' . $this->order_code . '%');
+                })
                 ->paginate($this->page),
         ]);
     }

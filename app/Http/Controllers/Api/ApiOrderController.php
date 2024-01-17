@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\UserCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -126,9 +127,16 @@ class ApiOrderController extends Controller
     public function cancelOrder($order_id)
     {
         $order = Order::find($order_id);
+        if ($order->coupon != null) {
+            $coupon = Coupon::where('code', $order->coupon)->first();
+            $userCoupon = UserCoupon::where('user_id', $order->user_id)->where('coupon_id', $coupon->id)->first();
+            $userCoupon->is_used = 0;
+            $userCoupon->save();
+        }
         if ($order && $order->status === "Chờ xử lý") {
             $order->status = "cancel";
             $order->save();
+
             return response()->json(['message' => 'Huỷ đơn hàng thành công', 'data' => $order], 200);
         } else {
             return response()->json(['message' => 'Bạn không thể hủy đơn hàng'], 404);
