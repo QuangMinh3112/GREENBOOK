@@ -24,6 +24,6 @@ class OrderDetail extends Model
     }
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class);
+        return $this->belongsTo(Warehouse::class, 'book_id', 'book_id');
     }
 }

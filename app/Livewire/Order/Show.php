@@ -10,6 +10,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApproveOrder;
 use App\Models\User;
+use App\Models\Warehouse;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('Layout.app')]
 #[Title('Danh sách đơn hàng')]
@@ -22,8 +24,9 @@ class Show extends Component
     public function mount($id)
     {
         $this->order = Order::find($id);
-        $this->orderDetail = OrderDetail::where('order_id', $id)->with(['book', 'warehouse'])->get();
-        dd($this->orderDetail->warehouse);
+        $this->orderDetail = OrderDetail::where('order_id', $id)
+            ->with(['book', 'warehouse'])
+            ->get();
         foreach ($this->orderDetail as $detail) {
             $this->quantity[$detail->id] = $detail->quantity;
         }
@@ -36,16 +39,15 @@ class Show extends Component
     {
         $i = 0;
         foreach ($this->orderDetail as $data) {
-            if ($data->quantity > $data->book->quantity) {
+            if ($data->quantity > $data->warehouse->quantity) {
                 $i++;
             }
         }
         if ($i == 0) {
             $trangThai = '';
-            $user = User::find($this->order->user_id);
-            Mail::to($user->email)->send(new ApproveOrder($this->order, $this->orderDetail, $trangThai));
+            Mail::to($this->order->email)->send(new ApproveOrder($this->order, $this->orderDetail, $trangThai));
             $this->order->update([
-                "status" => "shipping",
+                "status" => "confirmed",
             ]);
             request()->session()->flash('success', 'Đã xác nhận đơn hàng');
         } else {
@@ -54,11 +56,11 @@ class Show extends Component
     }
     public function update()
     {
+        $total = 0;
         foreach ($this->orderDetail as $detail) {
             $detailId = $detail->id;
             $newQuantity = $this->quantity[$detailId] ?? $detail->quantity;
-            $total = 0;
-            $total = $newQuantity * $detail->book_price;
+            $total += $newQuantity * $detail->book_price;
             OrderDetail::where('id', $detailId)->update(['quantity' => $newQuantity]);
         }
         $this->order->update([
@@ -66,6 +68,21 @@ class Show extends Component
             "total" => $total + $this->order->ship_fee,
         ]);
         request()->session()->flash('success', 'Cập nhật số lượng thành công!');
+    }
+    public function shipping()
+    {
+        foreach ($this->orderDetail as $detail) {
+            $warehouse = Warehouse::where('book_id', $detail->book_id)->first();
+            if ($warehouse) {
+                $warehouse->quantity -= $detail->quantity;
+                $warehouse->delivery_quantity += $detail->quantity;
+                $warehouse->save();
+            }
+        }
+        $this->order->update([
+            'status' => 'shipping',
+        ]);
+        request()->session()->flash('success', 'Cập nhật trạng thái thành công!');
     }
     public function delete($id)
     {
@@ -88,18 +105,20 @@ class Show extends Component
         $this->order->update([
             "status" => "completed",
         ]);
-        $point = 10;
+        $point = 5;
         $count = 0;
         foreach ($this->orderDetail as $data) {
             $count += $data->quantity;
         }
         $user = User::find($this->order->user_id);
-        $newPoint = $user->point + ($point * $count);
         if ($user) {
+            $newPoint = $user->point + ($point * $count);
             $user->point = $newPoint;
             $user->save();
+            request()->session()->flash('success', 'Cập nhật thành công');
+        } else {
+            request()->session()->flash('success', 'Cập nhật thành công');
         }
-        request()->session()->flash('success', 'Cập nhật thành công');
     }
     public function noRecive()
     {
@@ -112,11 +131,39 @@ class Show extends Component
             $count += $data->quantity;
         }
         $user = User::find($this->order->user_id);
-        $newPoint = $user->point - ($point * $count);
         if ($user) {
-            $user->point = $newPoint;
-            $user->save();
+            $newPoint = $user->point - ($point * $count);
+            if ($user) {
+                $user->point = $newPoint;
+                $user->save();
+            }
         }
         request()->session()->flash('success', 'Cập nhật thành công');
+    }
+    public function defective()
+    {
+        foreach ($this->orderDetail as $detail) {
+            $warehouse = Warehouse::where('book_id', $detail->book_id)->first();
+            $warehouse->update([
+                "delivery_quantity" => $warehouse->defective_quantity - $detail->quantity,
+                "defective_quantity" => $warehouse->defective_quantity + $detail->quantity,
+            ]);
+        }
+        $this->order->update([
+            "status" => "failed",
+        ]);
+    }
+    public function returned()
+    {
+        foreach ($this->orderDetail as $detail) {
+            $warehouse = Warehouse::where('book_id', $detail->book_id)->first();
+            $warehouse->update([
+                "delivery_quantity" => $warehouse->returned_quantity - $detail->quantity,
+                "returned_quantity" => $warehouse->returned_quantity + $detail->quantity,
+            ]);
+        }
+        $this->order->update([
+            "status" => "refund",
+        ]);
     }
 }
