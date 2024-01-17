@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CouponEmail;
+use App\Models\UserCoupon;
 use Livewire\WithPagination;
 
 #[Layout('Layout.app')]
@@ -27,7 +28,7 @@ class GiveCoupon extends Component
     public function render()
     {
         return view('livewire.coupon.give-coupon', [
-            "coupon_privates" => Coupon::where('status', 'private')->where('is_activate', 1)->get(),
+            "coupon_privates" => Coupon::where('status', 'private')->where('is_activate', 1)->where('quantity', '>', 0)->get(),
             'users' => User::nameSearch($this->name)
                 ->emailSearch($this->email)
                 ->where('role', 0)
@@ -42,14 +43,22 @@ class GiveCoupon extends Component
             request()->session()->flash('fail', 'Vui lòng chọn mã giảm giá');
         } else {
             $quantity = $coupon->quantity;
-            $selectedUser = User::whereIn('id', $this->userList)->pluck('email');
+            $selectedUser = User::whereIn('id', $this->userList)->get();
             if ($quantity != count($selectedUser)) {
-                request()->session()->flash('fail', 'Số lượng người tặng khác số lượng mã giảm giá');
+                request()->session()->flash('fail', 'Số lượng người tặng không đủ');
             } else {
-                foreach ($selectedUser as $email) {
-                    Mail::to($email)->send(new CouponEmail($coupon));
-                    request()->session()->flash('success', 'Đã gửi mã giảm giá');
+                foreach ($selectedUser as $user) {
+                    Mail::to($user->email)->send(new CouponEmail($coupon));
+                    UserCoupon::create([
+                        "user_id" => $user->id,
+                        "coupon_id" => $coupon->id,
+                        "is_used" => 0
+                    ]);
                 }
+                $coupon->update([
+                    "quantity" => 0,
+                ]);
+                request()->session()->flash('success', 'Đã gửi mã giảm giá');
                 $this->reset();
             }
         }

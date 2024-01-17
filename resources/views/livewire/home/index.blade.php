@@ -391,7 +391,7 @@
                     show: true
                 },
                 min: 0,
-                max: 50,
+                max: 30,
                 axisTicks: {
                     show: true,
                 },
