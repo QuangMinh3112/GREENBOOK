@@ -55,8 +55,10 @@ class Show extends Component
         }
         if ($this->order->payment === 'Đang chờ thanh toán') {
             request()->session()->flash('fail', 'Đơn hàng chưa được thanh toán');
-        } elseif ($this->order->total_product_amount < $this->usingCoupon->coupon->price_required) {
-            request()->session()->flash('fail', 'Số tiền tối thiểu không đủ để sử dụng phiếu giảm giá');
+        } elseif ($this->usingCoupon != null) {
+            if ($this->order->total_product_amount < $this->usingCoupon->coupon->price_required) {
+                request()->session()->flash('fail', 'Số tiền tối thiểu không đủ để sử dụng phiếu giảm giá');
+            }
         } else {
             if ($i == 0) {
                 $trangThai = '';
