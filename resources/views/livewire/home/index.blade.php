@@ -331,6 +331,18 @@
 
 @push('thongke')
     <script>
+        var currentDate = new Date();
+        var sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+
+        // Array to map month index to month name
+        var monthNames = [
+            "Tháng 1", "Tháng 2", "Tháng 3",
+            "Tháng 4", "Tháng 5", "Tháng 6",
+            "Tháng 7", "Tháng 8", "Tháng 9",
+            "Tháng 10", "Tháng 11", "Tháng 12"
+        ];
+
         var options = {
             series: [{
                 name: 'Đơn hoàn thành',
@@ -361,7 +373,15 @@
                 }
             },
             xaxis: {
-                categories: ["Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12", "Tháng 1"],
+                categories: [
+                    monthNames[(currentDate.getMonth() - 6 + 12) % 12], // 6 tháng trước
+                    monthNames[(currentDate.getMonth() - 5 + 12) % 12], // 5 tháng trước
+                    monthNames[(currentDate.getMonth() - 4 + 12) % 12], // 4 tháng trước
+                    monthNames[(currentDate.getMonth() - 3 + 12) % 12], // 3 tháng trước
+                    monthNames[(currentDate.getMonth() - 2 + 12) % 12], // 2 tháng trước
+                    monthNames[(currentDate.getMonth() - 1 + 12) % 12], // 1 tháng trước
+                    monthNames[currentDate.getMonth()], // Tháng hiện tại
+                ].reverse(),
                 position: 'top',
                 axisBorder: {
                     show: false

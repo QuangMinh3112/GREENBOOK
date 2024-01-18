@@ -52,18 +52,11 @@ class Index extends Component
             ->orderByDesc('total_reviews')
             ->take(5)
             ->get();
-        $this->chart_options = [
-            'chart_title' => 'Users by months',
-            'report_type' => 'group_by_date',
-            'model' => 'App\Models\User',
-            'group_by_field' => 'created_at',
-            'group_by_period' => 'month',
-            'chart_type' => 'bar',
-        ];
         $currentDateTime = Carbon::now();
         $sixMonthsAgo = Carbon::now()->subMonths(6);
         $this->completed = Order::where('status', 'completed')
             ->whereBetween('created_at', [$sixMonthsAgo, $currentDateTime])
+            ->orderBy('created_at')
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->created_at)->format('m');
@@ -73,7 +66,6 @@ class Index extends Component
             })
             ->values()
             ->toArray();
-        // dd($this->completed);
         $this->ratting = Review::all();
         $this->rattingCount = [
             1 => 0,
