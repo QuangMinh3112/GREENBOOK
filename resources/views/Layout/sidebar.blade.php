@@ -203,12 +203,12 @@
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a wire:navigate class="collapse-item" href="{{ route('order.index') }}">Danh sách</a>
-                <a class="collapse-item" href="cards.html">Thêm mới</a>
+                <a wire:navigate class="collapse-item" href="{{ route('order.create') }}">Thêm mới</a>
             </div>
         </div>
     </li>
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#eight"
             aria-expanded="true" aria-controls="eight">
             <i class="fa-solid fa-gear"></i>
@@ -220,7 +220,7 @@
                 <a wire:navigate class="collapse-item spa_route" href="{{ route('setting.create') }}">Thêm mới</a>
             </div>
         </div>
-    </li>
+    </li> --}}
 
     <hr class="sidebar-divider d-none d-md-block">
     <!-- Sidebar Toggler (Sidebar) -->

@@ -75,7 +75,8 @@
                                                     nhật</button>
                                             </div>
                                             <div>
-                                                <button wire:click='cancel()' class="btn btn-danger">Huỷ đơn hàng</button>
+                                                <button wire:click='cancel()' class="btn btn-danger">Huỷ đơn
+                                                    hàng</button>
                                             </div>
                                         @elseif ($order->status === 'Đã xác nhận')
                                             <div>

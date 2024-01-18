@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>{{ $title }}</title>
-
+    <link rel="icon" href="https://png.pngtree.com/png-vector/20230105/ourmid/pngtree-book-icon-vector-image-png-image_6552370.png" type="image/png">
     <link href="{{ asset('startbootstrap-sb-admin-2-gh-pages/vendor/fontawesome-free/css/all.min.css') }}"
         rel="stylesheet" type="text/css">
     <link

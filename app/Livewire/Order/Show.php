@@ -199,7 +199,13 @@ class Show extends Component
     public function cancel()
     {
         if ($this->usingCoupon->is_used) {
-            $this->usingCoupon->is_used = 0;
+            $this->usingCoupon->update([
+                "is_used" => 0,
+            ]);
         }
+        $this->order->update([
+            "status" => "cancel",
+        ]);
+        request()->session()->flash('success', 'Đã huỷ đơn hàng');
     }
 }

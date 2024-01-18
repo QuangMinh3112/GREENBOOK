@@ -42,7 +42,7 @@ class Create extends Component
     public function render()
     {
         return view('livewire.product-movement.create', [
-            "books" => Book::whereIn('id', $this->book_id)->get(),
+            "books" => Book::whereIn('id', $this->book_id)->where('status', 1)->get(),
         ]);
     }
     public function addField($key)

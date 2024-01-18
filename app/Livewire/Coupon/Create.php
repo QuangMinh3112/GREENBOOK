@@ -63,7 +63,7 @@ class Create extends Component
             'value' => 'required|numeric',
             'quantity' => 'required|integer|min:1',
             'type' => 'required',
-            'startDate' => 'required|date',
+            'startDate' => 'required|date|after_or_equal:today',
             'endDate' => 'required|date|after_or_equal:startDate',
             'pointRequired' => 'required|integer|min:0',
             'priceRequired' => 'required|integer|min:0'
@@ -81,6 +81,7 @@ class Create extends Component
             'quantity.min' => 'Số lượng không được nhỏ hơn 1.',
             'startDate.required' => 'Vui lòng nhập ngày bắt đầu.',
             'startDate.date' => 'Ngày bắt đầu không hợp lệ.',
+            'startDate.after_or_equal' => 'Ngày bắt đầu phải là ngày hiện tại hoặc tương lai.',
             'endDate.required' => 'Vui lòng nhập ngày kết thúc.',
             'endDate.date' => 'Ngày kết thúc không hợp lệ.',
             'endDate.after_or_equal' => 'Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.',
